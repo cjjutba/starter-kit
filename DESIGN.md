@@ -42,7 +42,7 @@ Rules that follow from it.
 
 - An input is always one step of tone away from what it sits on. On a sheet it is `--field`. On the page it is `--sheet`. It never has a border.
 - Text links are `--text` at medium weight. No underline at rest, no blue.
-- `--tint` is for cards that show featured content. It never colours a button, a status or text.
+- `--tint` is for cards that show featured content. It never colours a button, a status or text. Text on a tint card is always `--text`, because `--text-2` on the tint fails AA for small text and axe catches it.
 - `--error` never fills anything. A red ring on the field and one line of helper text is the whole treatment. The danger pill is a secondary pill with red text.
 - The one shadow allowed is on a floating card over a photograph, because it sits on an image rather than a surface.
 - Photographs and illustrations are the only saturated things on any screen.
@@ -123,6 +123,8 @@ in `globals.css`, for everything.
 | `--text-2` on `--sheet`, dark | 6.6:1 |
 | `--error` on `--sheet`, light | 4.8:1 |
 | `--error` on `--sheet`, dark | 6.6:1 |
+| `--text` on `--tint`, light | 15.6:1 |
+| `--text-2` on `--tint`, light | 4.2:1, fails AA for small text, which is why tint cards use `--text` only |
 | `--text-3` on `--field` | 2.3:1, placeholder only, the label carries the meaning |
 
 ## Components

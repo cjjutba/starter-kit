@@ -155,7 +155,7 @@ export function DesignSheet() {
                 <p className="mt-1 text-small text-text-2">White on grey, no shadow.</p>
               </Card>
               <Card tone="tint" className="p-5">
-                <p className="text-label font-medium text-text-2">Next up</p>
+                <p className="text-label font-medium text-text">Next up</p>
                 <p className="mt-1 text-body">Review the brief, 9:30 AM</p>
               </Card>
               <Card className="flex flex-col gap-3 p-5">

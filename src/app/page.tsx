@@ -30,7 +30,7 @@ export default function HomePage() {
         </Pill>
       </div>
       <Card tone="tint" className="p-5">
-        <p className="text-small text-text-2">
+        <p className="text-small text-text">
           Started from starter-kit. In Claude Code, run /setup to name the product and wire the
           services, then /plan to write the brief.
         </p>
