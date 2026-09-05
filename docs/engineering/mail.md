@@ -1,0 +1,22 @@
+# Mail
+
+Cap: 200 words. One entry point, two providers, one log.
+
+`send()` in `src/lib/mail/index.ts` is the only way a message leaves.
+`MAIL_PROVIDER` picks the provider. `log`, the default everywhere but
+production, writes the message to `mail_log` and sends nothing. `resend`
+sends through Resend and then logs. Both return the log id.
+
+Templates in `src/lib/mail/templates.ts` are plain functions that return
+`{ to, subject, text, html }`. Text first. The html is the same words in a
+light wrapper.
+
+Better Auth calls `send()` for password resets and invitations. The privacy
+form calls it for deletion requests. New messages go through the same
+function.
+
+To read what was sent locally, `pnpm mail:log` prints the last five rows,
+or `pnpm mail:log 20` for more. The verify skill uses it.
+
+`/api/jobs/purge-mail-log` deletes rows older than thirty days. `vercel.ts`
+runs it daily and Vercel sends `CRON_SECRET` as a bearer token.

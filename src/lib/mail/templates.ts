@@ -1,0 +1,48 @@
+import { product } from "../../config";
+import type { Mail } from "./index";
+
+// Plain functions that return a message. Text first, html as a light
+// wrapper around the same words, so a client that strips html loses nothing.
+
+function html(title: string, paragraphs: string[]): string {
+  const body = paragraphs.map((p) => `<p style="margin:0 0 16px">${p}</p>`).join("");
+  return `<div style="font-family:system-ui,sans-serif;font-size:16px;line-height:1.5;max-width:560px;margin:0 auto;padding:24px"><h1 style="font-size:20px;font-weight:500;margin:0 0 24px">${title}</h1>${body}</div>`;
+}
+
+export function resetPasswordMail({ to, name, url }: { to: string; name: string; url: string }): Mail {
+  const title = `Reset your ${product.name} password`;
+  const lines = [
+    `Hi ${name || "there"},`,
+    "Someone asked to reset the password for this address. If it was you, open this link:",
+    url,
+    "If it was not you, ignore this message. The link stops working after an hour.",
+  ];
+  return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
+}
+
+export function invitationMail({
+  to,
+  inviterName,
+  organisationName,
+  url,
+}: {
+  to: string;
+  inviterName: string;
+  organisationName: string;
+  url: string;
+}): Mail {
+  const title = `${inviterName} invited you to ${organisationName}`;
+  const lines = [
+    `${inviterName} has invited you to join ${organisationName} on ${product.name}.`,
+    "Open this link to accept:",
+    url,
+    "If you were not expecting this, ignore it and nothing happens.",
+  ];
+  return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
+}
+
+export function deletionRequestMail({ email, message }: { email: string; message: string }): Mail {
+  const title = `Deletion request from ${email}`;
+  const lines = [`${email} asked for their data to be deleted.`, "Their message:", message || "(none)"];
+  return { to: product.contactEmail, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
+}

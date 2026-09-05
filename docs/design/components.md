@@ -1,0 +1,30 @@
+# Components
+
+Cap: 400 words. What exists, when to use which, and what to reach for when nothing fits.
+
+## Primitives, in `src/components/primitives/`
+
+| Component | Use | Not for |
+| --- | --- | --- |
+| `Pill` | Every button. Primary, secondary, text, danger. Loading is a spinner inside it. | Links that read as text. Use `Link` with `font-medium`. |
+| `InputField`, `TextareaField`, `SelectField` | Every form control. They own label, helper and error. | Search boxes inside a toolbar, which use `controlClass` directly. |
+| `Sheet` | The large panel on auth pages, 24 px corners. | Content inside the app. |
+| `Card` | The everyday panel, 20 px corners, `tone` picks sheet, field or tint. | A list row. |
+| `GuideCard` | A note from a colleague during onboarding. | Anything on sign in. |
+| `Row` | A row in a list of records, with an optional secondary line and trailing content. | Tables with more than three columns. Use `ui/table`. |
+| `ThemeToggle` | The three way theme switch. | |
+
+## shadcn, in `src/components/ui/`
+
+Menus, dialogs, popovers, tabs, tables, switches, tooltips, avatars and
+skeletons. Already token mapped. Add more with `pnpm dlx shadcn add name`
+and check the result on `/design` before using it.
+
+## When nothing fits
+
+Write it in `primitives/`, give it the tokens, add it to the design sheet
+and to this table. Do not style a one off inline.
+
+## Product components
+
+List the components this product adds, with the screen that owns each.
