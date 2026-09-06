@@ -63,6 +63,38 @@ fall back to the error boundary, and axe reports four colour contrast failures
 on elements that are not the problem. `playwright.config.ts` now stops first
 with a sentence naming the cause.
 
+**A modal now owns the work it starts.** `Modal` and `ConfirmModal` are new
+primitives. The confirm pill spins in place, the modal stays open while the
+server is working, and it closes only after the promise resolves. A failure
+keeps it open and puts the reason inside it, beside the button that caused it,
+rather than dropping the person back onto a screen that looks unchanged.
+Escape and the overlay are ignored while the work is in flight, so a half
+finished action cannot be dismissed into silence.
+
+This is a primitive and not a paragraph because eslint stops anything outside
+`src/components/primitives` from importing the dialog, and three Playwright
+tests hold the behaviour down in both schemes. There is no second way to open
+a modal, so there is no wrong way.
+
+**The tokens are the source of truth for numbers, not just colours.** Layout
+had no tokens, so components measured themselves: `text-[13px]` in five files,
+`max-w-[480px]` in five more, `h-[52px]` inside the pill that DESIGN.md
+describes as 52 px. Sizes and widths are tokens now, `h-control`, `h-input`,
+`px-gutter`, `w-sidebar`, `max-w-auth`, `max-w-prose` and `max-w-content`, and
+the type scale that already existed is used instead of pixel values.
+
+`tests/rules/no-raw-values.test.ts` fails the build on Tailwind's arbitrary
+value syntax for any design axis, outside the shadcn set, which the CLI
+regenerates. Variant selectors such as `data-[state=open]` are not design
+values and are left alone. One exception is allowlisted with its reason: a
+honeypot has to leave the viewport, and no spacing token should exist for
+that. A second test fails if the allowlisted file ever disappears, so an
+exception cannot outlive what it excused.
+
+Two type sizes moved by a hair on the way. A guide card body and a row title
+carried `leading-[1.35]` and `leading-[1.4]` next to their pixel size, and the
+type tokens carry their own line height, so both now take the scale's value.
+
 ## 2026-09-06, first version
 
 Built from Kalinga's design system with Geist in place of Inter, plus the

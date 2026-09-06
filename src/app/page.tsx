@@ -10,7 +10,7 @@ import { product } from "@/config";
 
 export default function HomePage() {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-[640px] flex-col justify-center gap-8 px-5 py-12">
+    <main className="mx-auto flex min-h-dvh w-full max-w-prose flex-col justify-center gap-8 px-gutter py-12">
       <header className="flex items-center justify-between">
         <span className="text-heading font-medium">{product.name}</span>
         <ThemeToggle />

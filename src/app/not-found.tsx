@@ -4,7 +4,7 @@ import { Sheet } from "@/components/primitives/surfaces";
 
 export default function NotFound() {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col justify-center px-5 py-12">
+    <main className="mx-auto flex min-h-dvh w-full max-w-auth flex-col justify-center px-gutter py-12">
       <Sheet className="space-y-4 p-6">
         <h1 className="text-heading font-medium">There is nothing here</h1>
         <p className="text-body text-text-2">The address may be mistyped, or the page moved.</p>

@@ -6,6 +6,7 @@ import { ChevronRight } from "lucide-react";
 import { Pill } from "@/components/primitives/pill";
 import { InputField, SelectField, TextareaField } from "@/components/primitives/field";
 import { Card, GuideCard, Row, Sheet } from "@/components/primitives/surfaces";
+import { ConfirmModal } from "@/components/primitives/modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { product } from "@/config";
@@ -44,6 +45,8 @@ function Section({ title, children, note }: { title: string; children: React.Rea
 
 export function DesignSheet() {
   const [role, setRole] = useState("member");
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [failOpen, setFailOpen] = useState(false);
   return (
     <main className="mx-auto w-full max-w-5xl px-5 py-10 md:px-8">
       <header className="mb-10 flex flex-wrap items-center justify-between gap-4">
@@ -81,6 +84,44 @@ export function DesignSheet() {
             <p className="text-body tabular">Tabular figures for anything in a column: 9:30 AM, 10:15 AM, 11:00 AM</p>
             <p className="font-mono text-small">Geist Mono for references and code: ref_8f3a21</p>
           </Card>
+        </Section>
+
+        <Section
+          title="Modals"
+          note="A modal that asks a question owns the work. The pill spins in place, the modal holds while the server works, and it closes only once the work resolves. Try the failing one."
+        >
+          <Card className="flex flex-wrap items-center gap-3 p-6">
+            <Pill size="sm" onClick={() => setConfirmOpen(true)}>
+              Confirm that succeeds
+            </Pill>
+            <Pill size="sm" variant="danger" onClick={() => setFailOpen(true)}>
+              Confirm that fails
+            </Pill>
+          </Card>
+          <ConfirmModal
+            open={confirmOpen}
+            onOpenChange={setConfirmOpen}
+            title="Send the invitation?"
+            description="They get an email with a link that expires in seven days."
+            confirmLabel="Send invitation"
+            pendingLabel="Sending"
+            onConfirm={async () => {
+              await new Promise((resolve) => setTimeout(resolve, 1200));
+            }}
+          />
+          <ConfirmModal
+            open={failOpen}
+            onOpenChange={setFailOpen}
+            title="Delete this note?"
+            description="This cannot be undone."
+            confirmLabel="Delete note"
+            pendingLabel="Deleting"
+            destructive
+            onConfirm={async () => {
+              await new Promise((resolve) => setTimeout(resolve, 1200));
+              return "The note was already deleted by someone else.";
+            }}
+          />
         </Section>
 
         <Section title="Pills" note="52 px on phone, 48 px on a desk. Primary, secondary, text. Loading is a spinner inside the pill.">

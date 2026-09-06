@@ -44,6 +44,8 @@ accent hue.
 Rules that follow from it.
 
 - An input is always one step of tone away from what it sits on. On a sheet it is `--field`. On the page it is `--sheet`. It never has a border.
+- A modal that asks a question owns the work it starts. The confirm pill spins in place, the modal stays open while the server is working, and it closes only after the work resolves. A failure keeps it open and puts the reason inside it. `ConfirmModal` is the only way to do this, and eslint stops anything outside `primitives/` from importing the dialog.
+- No component measures its own. Every size, space, radius and type step is a token in `globals.css`, so the system can be restyled in one file. `text-[13px]` and `max-w-[480px]` are the way that rule gets broken quietly, and `tests/rules/no-raw-values.test.ts` fails the build on them.
 - Text links are `--text` at medium weight. No underline at rest, no blue.
 - `--tint` is for cards that show featured content. It never colours a button, a status or text. Text on a tint card is always `--text`, because `--text-2` on the tint fails AA for small text and axe catches it.
 - `--error` never fills anything. A red ring on the field and one line of helper text is the whole treatment. The danger pill is a secondary pill with red text.
@@ -77,6 +79,21 @@ The shadcn variables in `globals.css` point at these, so a generated
 component takes the system without edits. A product that needs a status
 palette adds its tokens in the same file and documents them here, with a
 cue beyond colour for each.
+
+### Layout
+
+The numbers below are tokens, so a component names an intent rather than a
+measurement. Anything not here uses Tailwind's own scale.
+
+| Token | Value | Utility | Use |
+| --- | --- | --- | --- |
+| `--spacing-control` | 52 px | `h-control` | The pill on a phone |
+| `--spacing-input` | 48 px | `h-input` | Inputs, and the pill on a desk |
+| `--spacing-gutter` | 20 px | `px-gutter` | Page gutters |
+| `--spacing-sidebar` | 240 px | `w-sidebar` | The app sidebar |
+| `--container-auth` | 480 px | `max-w-auth` | The auth sheet and single column forms |
+| `--container-prose` | 640 px | `max-w-prose` | Reading width for the notice and the home page |
+| `--container-content` | 1200 px | `max-w-content` | App content beside the sidebar |
 
 ### Shape
 
