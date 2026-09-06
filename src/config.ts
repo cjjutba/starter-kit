@@ -21,7 +21,7 @@ export const locale = {
 export const theme = {
   // The browser chrome colour cannot read a CSS variable, so these two hex
   // values live here rather than in a component. Keep them equal to --page.
-  light: "#f5f5f7",
+  light: "#ffffff",
   dark: "#0a0a0a",
 } as const;
 

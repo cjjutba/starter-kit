@@ -61,7 +61,7 @@ export function DesignSheet() {
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {swatches.map((s) => (
               <li key={s.token} className="flex flex-col gap-2">
-                <div className={`h-16 rounded-guide ${s.cls} ${s.cls === "bg-page" || s.cls === "bg-sheet" ? "ring-1 ring-divider ring-inset" : ""}`} />
+                <div className={`h-16 rounded-guide ${s.cls} ${s.cls === "bg-page" || s.cls === "bg-sheet" || s.cls === "bg-field" ? "ring-1 ring-divider ring-inset" : ""}`} />
                 <div>
                   <p className="text-label font-medium">{s.token}</p>
                   <p className="text-label text-text-2">{s.use}</p>

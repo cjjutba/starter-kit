@@ -32,11 +32,14 @@ The template's point of view. Kalinga settled it against generated boards
 on 2026-09-05, and the reasoning is in that project's `docs/design/direction.md`.
 Change it here and in `globals.css` together.
 
-Near white and near black. A soft grey page, white sheets and cards, no
-borders and no shadows, so surfaces are told apart by tone alone. Pill
-buttons with a near black primary. One pale blue tint reserved for featured
-content. Geist for everything. Warmth, when the product needs it, comes from
-photography or illustration, never from an accent hue.
+Near white and near black. A white page, soft grey sheets and cards, no
+borders and no shadows, so surfaces are told apart by tone alone. Light mode
+runs two tones and alternates them, so whatever a thing sits on, it is the
+other one. Dark mode keeps its own ladder, where each surface is a step
+lighter than the last. Pill buttons with a near black primary. One pale blue
+tint reserved for featured content. Geist for everything. Warmth, when the
+product needs it, comes from photography or illustration, never from an
+accent hue.
 
 Rules that follow from it.
 
@@ -53,9 +56,9 @@ Rules that follow from it.
 
 | Token | Use | Light | Dark |
 | --- | --- | --- | --- |
-| `--page` | Page background | `#F5F5F7` | `#0A0A0A` |
-| `--sheet` | Sheets, cards, inputs on the page | `#FFFFFF` | `#161618` |
-| `--field` | Inputs and guide cards on a sheet | `#F2F2F4` | `#1F1F22` |
+| `--page` | Page background | `#FFFFFF` | `#0A0A0A` |
+| `--sheet` | Sheets, cards, inputs on the page | `#F5F5F7` | `#161618` |
+| `--field` | Inputs and guide cards on a sheet | `#FFFFFF` | `#1F1F22` |
 | `--text` | Primary text, icons, links | `#0A0A0A` | `#F5F5F7` |
 | `--text-2` | Secondary text | `#656569` | `#9A9AA1` |
 | `--text-3` | Placeholder only, never content | `#A0A0A6` | `#6B6B70` |
