@@ -33,6 +33,7 @@ Private is the default because most products are for a client. Add
 pnpm install
 cp .env.example .env.local   # fill DATABASE_URL and BETTER_AUTH_SECRET
 pnpm db:push && pnpm db:seed
+pnpm exec playwright install chromium   # once per machine, for the axe run
 pnpm dev
 ```
 

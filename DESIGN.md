@@ -65,10 +65,10 @@ Rules that follow from it.
 | `--action-pressed` | Primary pill pressed | `#262626` | `#D9D9DE` |
 | `--pill-2` | Secondary pill background | `#EBEBEE` | `#26262A` |
 | `--tint` | Featured content cards only | `#D9E5F5` | `#1B2A40` |
-| `--error` | Field ring and helper text only | `#D92D20` | `#F97066` |
+| `--error` | Field ring, helper text, the danger pill | `#C4281C` | `#F97066` |
 | `--focus` | Focus ring | `#0A0A0A` | `#F5F5F7` |
 
-Light `--text-2` is `#656569` where Kalinga had `#6B6B70`. Six points darker, invisible to the eye, and it lifts secondary text on the secondary pill from 4.4 to 4.8 against AA. Kalinga should take the same value.
+Light `--text-2` is `#656569` where Kalinga had `#6B6B70`. Six points darker, invisible to the eye, and it lifts secondary text on the secondary pill from 4.45 to 4.9 against the AA line of 4.5. Kalinga should take the same value. Light `--error` is `#C4281C` where Kalinga had `#D92D20`, which was 4.4 on the page and 4.1 on the secondary pill. Same reason, same advice.
 
 The shadcn variables in `globals.css` point at these, so a generated
 component takes the system without edits. A product that needs a status
@@ -121,13 +121,15 @@ in `globals.css`, for everything.
 | Pair | Ratio |
 | --- | --- |
 | `--text` on `--page`, light | 18:1 |
-| `--text-2` on `--sheet`, light | 5.7:1 |
-| `--text-2` on `--pill-2`, light | 4.8:1 |
+| `--text-2` on `--sheet`, light | 5.8:1 |
+| `--text-2` on `--pill-2`, light | 4.9:1 |
 | `--text-2` on `--sheet`, dark | 6.6:1 |
-| `--error` on `--sheet`, light | 4.8:1 |
+| `--error` on `--sheet`, light | 5.7:1 |
+| `--error` on `--page`, light | 5.3:1 |
+| `--error` on `--pill-2`, light | 4.8:1, the danger pill |
 | `--error` on `--sheet`, dark | 6.6:1 |
 | `--text` on `--tint`, light | 15.6:1 |
-| `--text-2` on `--tint`, light | 4.5:1, at the AA line, which is why tint cards use `--text` only |
+| `--text-2` on `--tint`, light | 4.6:1, close to the AA line, which is why tint cards use `--text` only |
 | `--text-3` on `--field` | 2.3:1, placeholder only, the label carries the meaning |
 
 ## Components
