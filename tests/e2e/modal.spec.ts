@@ -51,6 +51,10 @@ test.describe("a modal owns the work it starts", () => {
     await page.keyboard.press("Escape");
     await expect(modal).toBeVisible();
 
+    // The close button goes away rather than sitting there looking live while
+    // it cannot close anything.
+    await expect(modal.getByRole("button", { name: "Close" })).toHaveCount(0);
+
     await expect(modal).toBeHidden({ timeout: 5000 });
   });
 });

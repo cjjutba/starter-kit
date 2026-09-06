@@ -23,12 +23,18 @@ export interface ModalProps {
   children?: ReactNode;
   /** Rendered in the footer, before the confirm pill. */
   footer?: ReactNode;
+  /**
+   * Work is in flight. Takes the close button away, because it cannot close
+   * anything while the work runs and a control that looks live and does
+   * nothing is worse than no control.
+   */
+  busy?: boolean;
 }
 
-export function Modal({ open, onOpenChange, title, description, children, footer }: ModalProps) {
+export function Modal({ open, onOpenChange, title, description, children, footer, busy }: ModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent showCloseButton={!busy}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description ? <DialogDescription>{description}</DialogDescription> : null}
@@ -105,6 +111,7 @@ export function ConfirmModal({
     <Modal
       open={open}
       onOpenChange={requestChange}
+      busy={pending}
       title={title}
       description={description}
       footer={
