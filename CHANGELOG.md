@@ -95,6 +95,19 @@ Two type sizes moved by a hair on the way. A guide card body and a row title
 carried `leading-[1.35]` and `leading-[1.4]` next to their pixel size, and the
 type tokens carry their own line height, so both now take the scale's value.
 
+**The app shipped with no security headers.** `next.config.ts` held a
+placeholder comment and nothing else, so every response went out without
+`Strict-Transport-Security`, `X-Content-Type-Options`, `X-Frame-Options`,
+`Referrer-Policy` or `Permissions-Policy`. Nothing breaks when those are
+missing and no screen shows them, which is why they were still missing. They
+are set for every path now and two Playwright tests assert them.
+
+A full content security policy is deliberately still absent. Next needs a
+nonce on every inline script for a strict one, and a policy written without
+that either breaks the app or is loose enough to be theatre. The frame
+ancestors directive is set, because that part needs no nonce. A product that
+wants the rest does the nonce work and records the decision.
+
 ## 2026-09-06, first version
 
 Built from Kalinga's design system with Geist in place of Inter, plus the
