@@ -61,7 +61,10 @@ two open projects do not collide by name.
 `BETTER_AUTH_SECRET` and Better Auth throws while rendering, the auth pages
 fall back to the error boundary, and axe reports four colour contrast failures
 on elements that are not the problem. `playwright.config.ts` now stops first
-with a sentence naming the cause.
+with a sentence naming the cause. It loads `.env.local` before it looks,
+because the config runs in plain Node rather than through Next, and a check
+that cannot see the file it is asking about fails every correctly set up
+project.
 
 **A modal now owns the work it starts.** `Modal` and `ConfirmModal` are new
 primitives. The confirm pill spins in place, the modal stays open while the
