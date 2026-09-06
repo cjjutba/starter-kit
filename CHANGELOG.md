@@ -72,7 +72,9 @@ server is working, and it closes only after the promise resolves. A failure
 keeps it open and puts the reason inside it, beside the button that caused it,
 rather than dropping the person back onto a screen that looks unchanged.
 Escape and the overlay are ignored while the work is in flight, so a half
-finished action cannot be dismissed into silence.
+finished action cannot be dismissed into silence, and the close button is
+taken away rather than left sitting there looking live while it cannot close
+anything.
 
 This is a primitive and not a paragraph because eslint stops anything outside
 `src/components/primitives` from importing the dialog, and three Playwright
