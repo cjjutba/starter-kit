@@ -1,4 +1,10 @@
+import { config as loadEnv } from "dotenv";
 import { defineConfig } from "@playwright/test";
+
+// The app reads .env.local through Next, but this file runs in plain Node, so
+// it has to load it too or the check below fires on a correctly set up
+// project. dotenv does not overwrite what is already set, so CI still wins.
+loadEnv({ path: ".env.local", quiet: true });
 
 // The axe smoke test. Points at a running app when E2E_BASE_URL is set,
 // otherwise starts the production build on PORT, default 3000.
