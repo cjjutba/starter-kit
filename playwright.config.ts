@@ -6,6 +6,17 @@ import { defineConfig } from "@playwright/test";
 const port = process.env.PORT ?? "3000";
 const baseURL = process.env.E2E_BASE_URL ?? `http://localhost:${port}`;
 
+// Without a secret Better Auth throws while rendering, the auth pages fall back
+// to the error boundary, and axe reports four colour contrast failures on
+// elements that are not the problem. Fail here instead, where the cause is
+// readable. Only when this config starts the server; a deployed target carries
+// its own environment.
+if (!process.env.E2E_BASE_URL && !process.env.BETTER_AUTH_SECRET) {
+  throw new Error(
+    "BETTER_AUTH_SECRET is missing, so /sign-in and /sign-up would render the error boundary and axe would blame the wrong elements. Copy .env.example to .env.local and fill it, or export the variable for this run.",
+  );
+}
+
 export default defineConfig({
   testDir: "tests/e2e",
   timeout: 30_000,

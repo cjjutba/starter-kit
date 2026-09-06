@@ -35,7 +35,7 @@ export function ThemeToggle({ className, compact = false }: { className?: string
             className={cn(
               "inline-flex h-8 items-center gap-1.5 rounded-full px-2.5 text-[13px] font-medium transition-colors duration-150 motion-reduce:transition-none",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-page",
-              active ? "bg-sheet text-text" : "text-text-2 hover:text-text",
+              active ? "bg-page text-text" : "text-text-2 hover:text-text",
             )}
           >
             <Icon className="size-4" strokeWidth={1.5} aria-hidden />
