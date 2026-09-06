@@ -35,17 +35,17 @@ interface FieldFrameProps {
 function FieldFrame({ label, helper, error, hint, className, id, children }: FieldFrameProps) {
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
-      <label htmlFor={id} className="flex items-baseline justify-between text-[13px] font-medium text-text">
+      <label htmlFor={id} className="flex items-baseline justify-between text-label font-medium text-text">
         <span>{label}</span>
         {hint ? <span className="font-normal text-text-2">{hint}</span> : null}
       </label>
       {children}
       {error ? (
-        <p id={`${id}-error`} role="alert" className="text-[13px] text-error">
+        <p id={`${id}-error`} role="alert" className="text-label text-error">
           {error}
         </p>
       ) : helper ? (
-        <p id={`${id}-helper`} className="text-[13px] text-text-2">
+        <p id={`${id}-helper`} className="text-label text-text-2">
           {helper}
         </p>
       ) : null}
@@ -55,7 +55,7 @@ function FieldFrame({ label, helper, error, hint, className, id, children }: Fie
 
 export const controlClass = (on: Surface, error?: boolean, extra?: string) =>
   cn(
-    "w-full rounded-input px-4 text-[17px] text-text placeholder:text-text-3",
+    "w-full rounded-input px-4 text-body text-text placeholder:text-text-3",
     "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-sheet",
     surfaceFill[on],
     error ? "ring-2 ring-error focus-visible:ring-error" : "focus-visible:ring-focus",
@@ -102,7 +102,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(function
       {prefix || isPassword ? (
         <div className={cn("relative flex items-stretch rounded-input", error && "ring-2 ring-error", surfaceFill[on])}>
           {prefix ? (
-            <span className="flex items-center pl-4 pr-1 text-[17px] text-text-2 select-none" aria-hidden>
+            <span className="flex items-center pl-4 pr-1 text-body text-text-2 select-none" aria-hidden>
               {prefix}
             </span>
           ) : null}
@@ -113,7 +113,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(function
             aria-invalid={error ? true : undefined}
             aria-describedby={describedBy}
             className={cn(
-              "h-12 w-full min-w-0 bg-transparent text-[17px] text-text placeholder:text-text-3 focus:outline-none rounded-input",
+              "h-input w-full min-w-0 bg-transparent text-body text-text placeholder:text-text-3 focus:outline-none rounded-input",
               "focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-sheet",
               prefix ? "pl-0 pr-4" : "px-4",
               isPassword && "pr-12",
@@ -164,7 +164,7 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaFieldProps>
         rows={rows}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : helper ? `${id}-helper` : undefined}
-        className={cn(controlClass(on, !!error, "py-3 leading-[1.4] resize-y"), className)}
+        className={cn(controlClass(on, !!error, "py-3 resize-y"), className)}
         {...props}
       />
     </FieldFrame>

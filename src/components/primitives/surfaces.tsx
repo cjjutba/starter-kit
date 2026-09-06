@@ -52,13 +52,13 @@ export function GuideCard({
     <div className={cn("flex gap-3 rounded-guide p-4", tones[tone], className)}>
       <span
         aria-hidden
-        className={cn("grid size-9 shrink-0 place-items-center rounded-full text-[13px] font-medium text-text", avatarTones[tone])}
+        className={cn("grid size-9 shrink-0 place-items-center rounded-full text-label font-medium text-text", avatarTones[tone])}
       >
         {initials}
       </span>
       <div className="min-w-0">
-        <p className="text-[15px] font-medium text-text">{name}</p>
-        <p className="text-[15px] leading-[1.4] text-text-2">{children}</p>
+        <p className="text-small font-medium text-text">{name}</p>
+        <p className="text-small text-text-2">{children}</p>
       </div>
     </div>
   );
@@ -85,8 +85,8 @@ export function Row({
   const inner = (
     <>
       <div className="min-w-0 flex-1">
-        <div className="text-[17px] leading-[1.35] text-text">{title}</div>
-        {secondary ? <div className="mt-0.5 text-[15px] leading-[1.4] text-text-2">{secondary}</div> : null}
+        <div className="text-body text-text">{title}</div>
+        {secondary ? <div className="mt-0.5 text-small text-text-2">{secondary}</div> : null}
       </div>
       {trailing ? <div className="flex shrink-0 items-center gap-2">{trailing}</div> : null}
     </>

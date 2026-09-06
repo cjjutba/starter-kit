@@ -137,7 +137,7 @@ ships with v1, the deletion request form works from day one, and
 | Path | What |
 | --- | --- |
 | `src/app/` | Routes. Marketing at the root, the auth pages, the product under `app/`. |
-| `src/components/primitives/` | The design system. See `DESIGN.md`. |
+| `src/components/primitives/` | The design system, including the only modal anything is allowed to open. See `DESIGN.md`. |
 | `src/components/ui/` | shadcn components, already token mapped. Add more with `pnpm dlx shadcn add`. |
 | `src/lib/db/` | Drizzle client, schema, the table lists and the scoped layer. |
 | `src/lib/auth/` | Better Auth config, session helpers, organisation helpers. |

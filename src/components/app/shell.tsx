@@ -23,7 +23,7 @@ export function AppShell({
 }) {
   return (
     <div className="flex min-h-dvh flex-col md:flex-row">
-      <aside className="flex w-full flex-col gap-6 p-5 md:min-h-dvh md:w-[240px] md:shrink-0 md:py-8">
+      <aside className="flex w-full flex-col gap-6 p-gutter md:min-h-dvh md:w-sidebar md:shrink-0 md:py-8">
         <Link href="/app" className="text-heading font-medium">
           {product.name}
         </Link>
@@ -51,7 +51,7 @@ export function AppShell({
         </div>
       </aside>
       <main className="flex-1 px-5 py-6 md:px-8 md:py-8">
-        <div className="mx-auto w-full max-w-[1200px]">{children}</div>
+        <div className="mx-auto w-full max-w-content">{children}</div>
       </main>
     </div>
   );

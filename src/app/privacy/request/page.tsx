@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Deletion request" };
 
 export default function DeletionRequestPage() {
   return (
-    <main className="mx-auto w-full max-w-[480px] px-5 py-12">
+    <main className="mx-auto w-full max-w-auth px-gutter py-12">
       <Link href="/privacy" className="text-small font-medium">
         {product.name} privacy
       </Link>

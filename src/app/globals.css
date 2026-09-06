@@ -119,6 +119,18 @@
   --text-title: 28px;
   --text-title--line-height: 1.2;
 
+  /* Layout. The numbers DESIGN.md names, so no component measures its own.
+     Sizes become h-control, w-sidebar, px-gutter. Widths become max-w-auth,
+     max-w-prose, max-w-content. */
+  --spacing-control: 52px;
+  --spacing-input: 48px;
+  --spacing-gutter: 20px;
+  --spacing-sidebar: 240px;
+
+  --container-auth: 480px;
+  --container-prose: 640px;
+  --container-content: 1200px;
+
   /* shadcn expects these */
   --color-background: var(--background);
   --color-foreground: var(--foreground);

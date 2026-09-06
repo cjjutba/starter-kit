@@ -9,7 +9,7 @@ import { product } from "@/config";
 
 export function AuthShell({ title, lead, children }: { title: string; lead?: string; children: ReactNode }) {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col justify-center px-5 py-12">
+    <main className="mx-auto flex min-h-dvh w-full max-w-auth flex-col justify-center px-gutter py-12">
       <Link href="/" className="mb-6 text-heading font-medium">
         {product.name}
       </Link>
