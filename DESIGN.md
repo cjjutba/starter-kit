@@ -57,7 +57,7 @@ Rules that follow from it.
 | `--sheet` | Sheets, cards, inputs on the page | `#FFFFFF` | `#161618` |
 | `--field` | Inputs and guide cards on a sheet | `#F2F2F4` | `#1F1F22` |
 | `--text` | Primary text, icons, links | `#0A0A0A` | `#F5F5F7` |
-| `--text-2` | Secondary text | `#6B6B70` | `#9A9AA1` |
+| `--text-2` | Secondary text | `#656569` | `#9A9AA1` |
 | `--text-3` | Placeholder only, never content | `#A0A0A6` | `#6B6B70` |
 | `--divider` | Rare. Table rows in dense views | `#E5E5EA` | `#26262A` |
 | `--action` | Primary pill background | `#0A0A0A` | `#F5F5F7` |
@@ -67,6 +67,8 @@ Rules that follow from it.
 | `--tint` | Featured content cards only | `#D9E5F5` | `#1B2A40` |
 | `--error` | Field ring and helper text only | `#D92D20` | `#F97066` |
 | `--focus` | Focus ring | `#0A0A0A` | `#F5F5F7` |
+
+Light `--text-2` is `#656569` where Kalinga had `#6B6B70`. Six points darker, invisible to the eye, and it lifts secondary text on the secondary pill from 4.4 to 4.8 against AA. Kalinga should take the same value.
 
 The shadcn variables in `globals.css` point at these, so a generated
 component takes the system without edits. A product that needs a status
@@ -119,12 +121,13 @@ in `globals.css`, for everything.
 | Pair | Ratio |
 | --- | --- |
 | `--text` on `--page`, light | 18:1 |
-| `--text-2` on `--sheet`, light | 5.3:1 |
+| `--text-2` on `--sheet`, light | 5.7:1 |
+| `--text-2` on `--pill-2`, light | 4.8:1 |
 | `--text-2` on `--sheet`, dark | 6.6:1 |
 | `--error` on `--sheet`, light | 4.8:1 |
 | `--error` on `--sheet`, dark | 6.6:1 |
 | `--text` on `--tint`, light | 15.6:1 |
-| `--text-2` on `--tint`, light | 4.2:1, fails AA for small text, which is why tint cards use `--text` only |
+| `--text-2` on `--tint`, light | 4.5:1, at the AA line, which is why tint cards use `--text` only |
 | `--text-3` on `--field` | 2.3:1, placeholder only, the label carries the meaning |
 
 ## Components
