@@ -6,7 +6,7 @@ Cap: 300 words. Every screen passes this list before it is done. Generated mocku
 
 **Empty.** Nothing yet. Name what is missing, say how the first one arrives, give the action.
 
-**Loading.** Including the Neon cold start, which is real and needs a skeleton rather than a spinner.
+**Loading.** Including the Neon cold start, which is real and needs a skeleton rather than a spinner. A button that starts work spins in place instead. When the work was asked for in a modal, the modal holds open until it resolves, so nobody is left guessing whether it happened.
 
 **Error.** The save failed. The record was changed by someone else while you typed. The network went away.
 

@@ -26,9 +26,9 @@ const pill = cva(
         danger: "bg-pill-2 text-error hover:bg-divider active:bg-divider",
       },
       size: {
-        md: "h-[52px] px-6 text-[17px] md:h-12",
-        sm: "h-10 px-4 text-[15px]",
-        xs: "h-8 px-3 text-[13px]",
+        md: "h-control px-6 text-body md:h-input",
+        sm: "h-10 px-4 text-small",
+        xs: "h-8 px-3 text-label",
       },
       block: {
         true: "w-full",

@@ -32,17 +32,22 @@ The template's point of view. Kalinga settled it against generated boards
 on 2026-09-05, and the reasoning is in that project's `docs/design/direction.md`.
 Change it here and in `globals.css` together.
 
-Near white and near black. A soft grey page, white sheets and cards, no
-borders and no shadows, so surfaces are told apart by tone alone. Pill
-buttons with a near black primary. One pale blue tint reserved for featured
-content. Geist for everything. Warmth, when the product needs it, comes from
-photography or illustration, never from an accent hue.
+Near white and near black. A white page, soft grey sheets and cards, no
+borders and no shadows, so surfaces are told apart by tone alone. Light mode
+runs two tones and alternates them, so whatever a thing sits on, it is the
+other one. Dark mode keeps its own ladder, where each surface is a step
+lighter than the last. Pill buttons with a near black primary. One pale blue
+tint reserved for featured content. Geist for everything. Warmth, when the
+product needs it, comes from photography or illustration, never from an
+accent hue.
 
 Rules that follow from it.
 
 - An input is always one step of tone away from what it sits on. On a sheet it is `--field`. On the page it is `--sheet`. It never has a border.
+- A modal that asks a question owns the work it starts. The confirm pill spins in place, the modal stays open while the server is working, and it closes only after the work resolves. A failure keeps it open and puts the reason inside it. `ConfirmModal` is the only way to do this, and eslint stops anything outside `primitives/` from importing the dialog.
+- No component measures its own. Every size, space, radius and type step is a token in `globals.css`, so the system can be restyled in one file. `text-[13px]` and `max-w-[480px]` are the way that rule gets broken quietly, and `tests/rules/no-raw-values.test.ts` fails the build on them.
 - Text links are `--text` at medium weight. No underline at rest, no blue.
-- `--tint` is for cards that show featured content. It never colours a button, a status or text.
+- `--tint` is for cards that show featured content. It never colours a button, a status or text. Text on a tint card is always `--text`, because `--text-2` on the tint fails AA for small text and axe catches it.
 - `--error` never fills anything. A red ring on the field and one line of helper text is the whole treatment. The danger pill is a secondary pill with red text.
 - The one shadow allowed is on a floating card over a photograph, because it sits on an image rather than a surface.
 - Photographs and illustrations are the only saturated things on any screen.
@@ -53,11 +58,11 @@ Rules that follow from it.
 
 | Token | Use | Light | Dark |
 | --- | --- | --- | --- |
-| `--page` | Page background | `#F5F5F7` | `#0A0A0A` |
-| `--sheet` | Sheets, cards, inputs on the page | `#FFFFFF` | `#161618` |
-| `--field` | Inputs and guide cards on a sheet | `#F2F2F4` | `#1F1F22` |
+| `--page` | Page background | `#FFFFFF` | `#0A0A0A` |
+| `--sheet` | Sheets, cards, inputs on the page | `#F5F5F7` | `#161618` |
+| `--field` | Inputs and guide cards on a sheet | `#FFFFFF` | `#1F1F22` |
 | `--text` | Primary text, icons, links | `#0A0A0A` | `#F5F5F7` |
-| `--text-2` | Secondary text | `#6B6B70` | `#9A9AA1` |
+| `--text-2` | Secondary text | `#656569` | `#9A9AA1` |
 | `--text-3` | Placeholder only, never content | `#A0A0A6` | `#6B6B70` |
 | `--divider` | Rare. Table rows in dense views | `#E5E5EA` | `#26262A` |
 | `--action` | Primary pill background | `#0A0A0A` | `#F5F5F7` |
@@ -65,13 +70,30 @@ Rules that follow from it.
 | `--action-pressed` | Primary pill pressed | `#262626` | `#D9D9DE` |
 | `--pill-2` | Secondary pill background | `#EBEBEE` | `#26262A` |
 | `--tint` | Featured content cards only | `#D9E5F5` | `#1B2A40` |
-| `--error` | Field ring and helper text only | `#D92D20` | `#F97066` |
+| `--error` | Field ring, helper text, the danger pill | `#C4281C` | `#F97066` |
 | `--focus` | Focus ring | `#0A0A0A` | `#F5F5F7` |
+
+Light `--text-2` is `#656569` where Kalinga had `#6B6B70`. Six points darker, invisible to the eye, and it lifts secondary text on the secondary pill from 4.45 to 4.9 against the AA line of 4.5. Kalinga should take the same value. Light `--error` is `#C4281C` where Kalinga had `#D92D20`, which was 4.4 on the page and 4.1 on the secondary pill. Same reason, same advice.
 
 The shadcn variables in `globals.css` point at these, so a generated
 component takes the system without edits. A product that needs a status
 palette adds its tokens in the same file and documents them here, with a
 cue beyond colour for each.
+
+### Layout
+
+The numbers below are tokens, so a component names an intent rather than a
+measurement. Anything not here uses Tailwind's own scale.
+
+| Token | Value | Utility | Use |
+| --- | --- | --- | --- |
+| `--spacing-control` | 52 px | `h-control` | The pill on a phone |
+| `--spacing-input` | 48 px | `h-input` | Inputs, and the pill on a desk |
+| `--spacing-gutter` | 20 px | `px-gutter` | Page gutters |
+| `--spacing-sidebar` | 240 px | `w-sidebar` | The app sidebar |
+| `--container-auth` | 480 px | `max-w-auth` | The auth sheet and single column forms |
+| `--container-prose` | 640 px | `max-w-prose` | Reading width for the notice and the home page |
+| `--container-content` | 1200 px | `max-w-content` | App content beside the sidebar |
 
 ### Shape
 
@@ -119,10 +141,15 @@ in `globals.css`, for everything.
 | Pair | Ratio |
 | --- | --- |
 | `--text` on `--page`, light | 18:1 |
-| `--text-2` on `--sheet`, light | 5.3:1 |
+| `--text-2` on `--sheet`, light | 5.8:1 |
+| `--text-2` on `--pill-2`, light | 4.9:1 |
 | `--text-2` on `--sheet`, dark | 6.6:1 |
-| `--error` on `--sheet`, light | 4.8:1 |
+| `--error` on `--sheet`, light | 5.7:1 |
+| `--error` on `--page`, light | 5.3:1 |
+| `--error` on `--pill-2`, light | 4.8:1, the danger pill |
 | `--error` on `--sheet`, dark | 6.6:1 |
+| `--text` on `--tint`, light | 15.6:1 |
+| `--text-2` on `--tint`, light | 4.6:1, close to the AA line, which is why tint cards use `--text` only |
 | `--text-3` on `--field` | 2.3:1, placeholder only, the label carries the meaning |
 
 ## Components

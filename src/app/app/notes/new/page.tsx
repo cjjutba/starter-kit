@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "New note" };
 
 export default function NewNotePage() {
   return (
-    <div className="mx-auto w-full max-w-[480px]">
+    <div className="mx-auto w-full max-w-auth">
       <h1 className="text-title font-medium">New note</h1>
       <div className="mt-6">
         <NoteForm />
