@@ -4,6 +4,36 @@ The template's own history. A product made from it keeps its decisions in
 `docs/product/decisions.md`, which starts empty. This file is about the
 template.
 
+## 2026-09-08, third version
+
+**Light mode turned back over, and this time it stays.** The page is a soft
+grey again and sheets and cards are white. The second version had it the other
+way and told Kalinga to decide for itself. Kalinga decided: a white card on
+grey reads as a thing you could pick up, which is what a card is for, and a
+grey ground gives a product a floor to stand on. `--page` is `#F5F5F7`,
+`--sheet` is `#FFFFFF`, `--field` is `#F2F2F4`.
+
+**Light mode stopped being two alternating tones.** It is a ladder now, the
+same shape dark mode always had: a ground, a panel raised off it, and a control
+inside that panel. What changed is that the control steps away from whatever
+holds it rather than simply taking the other tone. On the grey ground it steps
+up to white, inside a white card it steps down to grey. `surfaceFill` in
+`primitives/field.tsx` already said this in relationships rather than colours,
+so no component needed touching, which is the whole point of naming the
+relationship.
+
+**One thing the swap does not do by itself.** Anything drawn on the assumption
+that the ground is the lightest surface has to move, because the tone it used
+to step to may now be the ground. In Kalinga that was two places, a sidebar
+group header and a pair of hover states, both of which had picked the shade
+that became the page. Grep for `bg-field` on anything that sits directly on the
+page before shipping the swap in a product.
+
+**Contrast recomputed, all pairs still AA.** The table in `DESIGN.md` now lists
+secondary text on all three light surfaces rather than one, and adds
+`--text-2` on `--divider` at 4.6 to 1, which is what a raised group header
+needs.
+
 ## 2026-09-07, second version
 
 Everything here came from running `/setup` end to end on a real product,
