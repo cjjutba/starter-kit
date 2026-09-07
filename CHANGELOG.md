@@ -131,6 +131,12 @@ project actually uses. It was on 20, which was two majors behind the pinned
 runtime and nobody had noticed. Dependabot will keep offering 26, and the
 answer stays no until `.node-version` moves.
 
+TypeScript to 6.0.3, a major, and it needed no code changes at all. Lint,
+typecheck, the unit tests, a build and twenty six Playwright tests all pass
+untouched. 7.0.2 exists and was not taken, because Dependabot did not offer it
+and a second major in the same pass is how a green suite stops meaning
+anything.
+
 ## 2026-09-06, first version
 
 Built from Kalinga's design system with Geist in place of Inter, plus the

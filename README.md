@@ -64,7 +64,7 @@ when any of them moves.
 | tailwindcss | 4.3.3 |
 | shadcn | 4.21.0 |
 | geist | 1.7.2 |
-| typescript | 5.9 |
+| typescript | 6.0 |
 | vitest | 4.1.11 |
 | @playwright/test | 1.63.0 |
 | Node | 22 or later. The Better Auth CLI needs it. |
