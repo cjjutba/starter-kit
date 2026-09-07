@@ -19,6 +19,9 @@ does. Those run in the fresh clone proof.
 
 ## End to end, in `tests/e2e/`
 
+Once per machine: `pnpm exec playwright install chromium`. CI does this
+itself.
+
 axe with the WCAG 2A and 2AA tags on every public route from
 `src/content/routes.ts`, in light and dark. Playwright starts the
 production build or points at `E2E_BASE_URL`. Add a route to the directory

@@ -5,8 +5,13 @@ import { walk } from "../walk";
 // DESIGN.md: never use a hex value in a component. Tokens live in
 // globals.css and the two browser chrome colours live in src/config.ts.
 // Everything rendered reads a token.
+//
+// The %23 branch matters. A hex inside a data URI is written url encoded, so
+// a select chevron carried a hardcoded grey past this test for a whole
+// version. An svg background cannot read currentColor, so the fix is a real
+// icon element with a token class, not a cleverer string.
 
-const hex = /#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\b/;
+const hex = /(?:#|%23)(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3,4})\b/;
 
 describe("no raw colours in components", () => {
   it("uses tokens, not hex values, in every tsx file under src", () => {
