@@ -32,11 +32,14 @@ The template's point of view. Kalinga settled it against generated boards
 on 2026-09-05, and the reasoning is in that project's `docs/design/direction.md`.
 Change it here and in `globals.css` together.
 
-Near white and near black. A white page, soft grey sheets and cards, no
-borders and no shadows, so surfaces are told apart by tone alone. Light mode
-runs two tones and alternates them, so whatever a thing sits on, it is the
-other one. Dark mode keeps its own ladder, where each surface is a step
-lighter than the last. Pill buttons with a near black primary. One pale blue
+Near white and near black. A soft grey page with white sheets and cards, no
+borders and no shadows, so surfaces are told apart by tone alone. A white card
+on grey reads as a thing you could pick up, which is what a card is for, and it
+gives a product a floor to stand on. A control steps away from whatever holds
+it: up to white on the grey ground, down to grey inside a white card. Dark mode
+keeps its own ladder, where each surface is a step lighter than the last, and
+it needed no change because it already ran ground first. Pill buttons with a
+near black primary. One pale blue
 tint reserved for featured content. Geist for everything. Warmth, when the
 product needs it, comes from photography or illustration, never from an
 accent hue.
@@ -58,9 +61,9 @@ Rules that follow from it.
 
 | Token | Use | Light | Dark |
 | --- | --- | --- | --- |
-| `--page` | Page background | `#FFFFFF` | `#0A0A0A` |
-| `--sheet` | Sheets, cards, inputs on the page | `#F5F5F7` | `#161618` |
-| `--field` | Inputs and guide cards on a sheet | `#FFFFFF` | `#1F1F22` |
+| `--page` | Page background, the ground | `#F5F5F7` | `#0A0A0A` |
+| `--sheet` | Sheets, cards, inputs on the page | `#FFFFFF` | `#161618` |
+| `--field` | Inputs and guide cards on a sheet | `#F2F2F4` | `#1F1F22` |
 | `--text` | Primary text, icons, links | `#0A0A0A` | `#F5F5F7` |
 | `--text-2` | Secondary text | `#656569` | `#9A9AA1` |
 | `--text-3` | Placeholder only, never content | `#A0A0A6` | `#6B6B70` |
@@ -73,7 +76,7 @@ Rules that follow from it.
 | `--error` | Field ring, helper text, the danger pill | `#C4281C` | `#F97066` |
 | `--focus` | Focus ring | `#0A0A0A` | `#F5F5F7` |
 
-Light `--text-2` is `#656569` where Kalinga had `#6B6B70`. Six points darker, invisible to the eye, and it lifts secondary text on the secondary pill from 4.45 to 4.9 against the AA line of 4.5. Kalinga should take the same value. Light `--error` is `#C4281C` where Kalinga had `#D92D20`, which was 4.4 on the page and 4.1 on the secondary pill. Same reason, same advice.
+Light `--text-2` is `#656569` where Kalinga had `#6B6B70`. Six points darker, invisible to the eye, and it lifts secondary text on the secondary pill from 4.45 to 4.9 against the AA line of 4.5. Light `--error` is `#C4281C` where Kalinga had `#D92D20`, which was 4.4 on the page and 4.1 on the secondary pill. Kalinga took both values on 2026-09-07 and they are now the same in each repository.
 
 The shadcn variables in `globals.css` point at these, so a generated
 component takes the system without edits. A product that needs a status
@@ -138,19 +141,26 @@ in `globals.css`, for everything.
 
 ### Contrast, as set
 
+Recomputed on 2026-09-08, when the ground and the sheet swapped. Secondary
+text sits on three surfaces now rather than two, so all three are listed.
+
 | Pair | Ratio |
 | --- | --- |
-| `--text` on `--page`, light | 18:1 |
+| `--text` on `--page`, light | 18.2:1 |
+| `--text` on `--sheet`, light | 19.8:1 |
+| `--text-2` on `--page`, light | 5.3:1 |
 | `--text-2` on `--sheet`, light | 5.8:1 |
+| `--text-2` on `--field`, light | 5.2:1 |
 | `--text-2` on `--pill-2`, light | 4.9:1 |
-| `--text-2` on `--sheet`, dark | 6.6:1 |
+| `--text-2` on `--divider`, light | 4.6:1, the header of an open group |
+| `--text-2` on `--sheet`, dark | 6.5:1 |
 | `--error` on `--sheet`, light | 5.7:1 |
 | `--error` on `--page`, light | 5.3:1 |
 | `--error` on `--pill-2`, light | 4.8:1, the danger pill |
-| `--error` on `--sheet`, dark | 6.6:1 |
-| `--text` on `--tint`, light | 15.6:1 |
+| `--error` on `--sheet`, dark | 6.5:1 |
+| `--text` on `--tint`, light | 15.5:1 |
 | `--text-2` on `--tint`, light | 4.6:1, close to the AA line, which is why tint cards use `--text` only |
-| `--text-3` on `--field` | 2.3:1, placeholder only, the label carries the meaning |
+| `--text-3` on `--field`, light | 2.3:1, placeholder only, the label carries the meaning |
 
 ## Components
 
