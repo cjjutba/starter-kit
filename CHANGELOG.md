@@ -113,6 +113,24 @@ that either breaks the app or is loose enough to be theatre. The frame
 ancestors directive is set, because that part needs no nonce. A product that
 wants the rest does the nonce work and records the decision.
 
+## 2026-09-07, dependency pass
+
+Five Dependabot pull requests were open and all five failed. They were built
+against a main from before the light scheme change, which had a real contrast
+failure on the home page and the design sheet, so the failures were the old
+code and not the bumps. Rebasing each one onto current main turned them green,
+which is worth remembering the next time a batch of them looks broken at once.
+
+`actions/checkout` to v7, `actions/setup-node` to v7 and `pnpm/action-setup`
+to v6. The workflow warned that Node 20 was deprecated and the older actions
+were being forced onto Node 24, so this stops a warning becoming a break.
+
+`@types/node` went to 24 rather than the 26 Dependabot offered, because
+`.node-version` pins Node 24 and the types should describe the runtime the
+project actually uses. It was on 20, which was two majors behind the pinned
+runtime and nobody had noticed. Dependabot will keep offering 26, and the
+answer stays no until `.node-version` moves.
+
 ## 2026-09-06, first version
 
 Built from Kalinga's design system with Geist in place of Inter, plus the
