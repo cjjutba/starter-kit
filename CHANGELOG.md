@@ -113,6 +113,29 @@ that either breaks the app or is loose enough to be theatre. The frame
 ancestors directive is set, because that part needs no nonce. A product that
 wants the rest does the nonce work and records the decision.
 
+## 2026-09-07, the primary button had no text
+
+Shipped and live before it was caught, and caused by this version's own token
+work. The type scale became `text-body` and friends when the layout tokens went
+in, replacing `text-[17px]`. A size named as a word and a colour named as a
+word are both "text-" plus a word, so the class merger could not tell them
+apart, put them in one group, and dropped whichever came first.
+
+The primary pill sets `text-on-action` in its variant and `text-body` in its
+size. The size wins by order, so the white disappeared and the button rendered
+black on black with an invisible label. The danger pill lost its red the same
+way, which nobody noticed because black text on a grey pill looks deliberate.
+
+`src/lib/utils.ts` now builds `cn` with the scale named, so the merger knows
+those five are sizes. Add a size to `globals.css` and add it there in the same
+change: `tests/unit/class-merge.test.ts` fails when the two lists drift apart,
+and thirteen of its sixteen cases fail if the fix is removed.
+
+The lesson worth keeping is not about this bug. Replacing an arbitrary value
+with a token is normally safe, and here it silently changed how another tool
+parsed the class name. A token rename deserves a look at everything that reads
+class strings, not just everything that renders them.
+
 ## 2026-09-07, dependency pass
 
 Five Dependabot pull requests were open and all five failed. They were built
