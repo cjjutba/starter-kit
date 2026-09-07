@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: privacyNotice.title };
 
 export default function PrivacyPage() {
   return (
-    <main className="mx-auto w-full max-w-[640px] px-5 py-12">
+    <main className="mx-auto w-full max-w-prose px-gutter py-12">
       <Link href="/" className="text-small font-medium">
         {product.name}
       </Link>

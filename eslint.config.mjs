@@ -2,7 +2,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 
-// Two rules from AGENTS.md live here instead of in prose, so an agent that
+// Three rules from AGENTS.md live here instead of in prose, so an agent that
 // skims the manual still cannot ship the bug.
 //
 // 1. The raw database handle never leaves the data layer. Application code
@@ -10,16 +10,27 @@ import nextTs from "eslint-config-next/typescript";
 //    organisation id.
 // 2. Only src/lib/time imports date-fns. Every other file uses its helpers,
 //    so timezone handling stays in one place.
+// 3. Only src/components/primitives opens a dialog. Product code uses Modal
+//    and ConfirmModal, which keep the modal open until the work resolves.
+//    Reach for the raw dialog and it is possible to close on click and leave
+//    the person guessing whether anything happened.
 
 const rawDatabaseMessage =
   "Import forOrganisation from @/lib/db/scoped instead. The raw handle is only for src/lib/db, src/lib/auth, src/lib/mail, src/lib/guard, scripts and tests.";
 const rawDateMessage = "Only src/lib/time imports date-fns. Add a helper there and use it.";
+const rawDialogMessage =
+  "Import Modal or ConfirmModal from @/components/primitives/modal instead. They spin the confirm pill in place, hold the modal open while the server works, and close only after it resolves.";
 
 const restrictRawDatabase = {
   paths: [{ name: "@/lib/db/client", message: rawDatabaseMessage }],
   patterns: [
     { group: ["**/db/client", "*/db/client", "../db/client", "../../db/client", "../../../db/client"], message: rawDatabaseMessage },
   ],
+};
+
+const restrictRawDialog = {
+  paths: [{ name: "@/components/ui/dialog", message: rawDialogMessage }],
+  patterns: [{ group: ["**/ui/dialog", "*/ui/dialog", "../ui/dialog", "./dialog"], message: rawDialogMessage }],
 };
 
 const restrictRawDates = {
@@ -38,6 +49,20 @@ const eslintConfig = defineConfig([
   {
     files: ["src/**/*.{ts,tsx}"],
     ignores: [...dataLayer, "src/lib/time/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [...restrictRawDatabase.paths, ...restrictRawDates.paths, ...restrictRawDialog.paths],
+          patterns: [...restrictRawDatabase.patterns, ...restrictRawDialog.patterns],
+        },
+      ],
+    },
+  },
+  {
+    // The primitives are where the dialog is allowed to be imported, because
+    // they are what everything else has to go through.
+    files: ["src/components/primitives/**", "src/components/ui/**"],
     rules: {
       "no-restricted-imports": ["error", { ...restrictRawDatabase, paths: [...restrictRawDatabase.paths, ...restrictRawDates.paths] }],
     },

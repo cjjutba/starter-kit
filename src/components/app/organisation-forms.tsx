@@ -55,7 +55,7 @@ export function InviteForm() {
     <form action={action} className="flex flex-col gap-5">
       <InputField label="Email" name="email" type="email" required error={state.fieldErrors?.email} />
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="invite-role" className="text-[13px] font-medium text-text">
+        <label htmlFor="invite-role" className="text-label font-medium text-text">
           Role
         </label>
         <select id="invite-role" name="role" defaultValue="member" className={controlClass("sheet", false, "h-12")}>
