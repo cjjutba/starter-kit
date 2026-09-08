@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Drives the running app the way a person does and reports what worked, with evidence. Pre-filled for what starter-kit ships. Every feature appends its steps under its own heading. Use before any review, before claiming anything works, and whenever the person asks whether the app still works.
+description: Drives the running app the way a person does and reports what worked, with evidence. Pre-filled for what starter-kit-web ships. Every feature appends its steps under its own heading. Use before any review, before claiming anything works, and whenever the person asks whether the app still works.
 ---
 
 # verify

@@ -4,7 +4,7 @@ Cap: 800 words. Numbered, in build order. Every feature has a "done means" line 
 
 ## F0 Foundation
 
-Shipped by starter-kit. Sign up with the address verified before a session exists, open or by invitation, sign in, reset, invitations, organisations with a personal one per person and the people managed from their page, the account page, the app shell, the example notes feature with edit and delete, the privacy notice and a deletion request that is recorded, mail logging, the purge cron, error reports, the rule tests and the axe smoke test.
+Shipped by starter-kit-web. Sign up with the address verified before a session exists, open or by invitation, sign in, reset, invitations, organisations with a personal one per person and the people managed from their page, the account page, the app shell, the example notes feature with edit and delete, the privacy notice and a deletion request that is recorded, mail logging, the purge cron, error reports, the rule tests and the axe smoke test.
 
 **Done means:** `/setup` has run, production is green, and `/verify` passes.
 
