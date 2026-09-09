@@ -79,8 +79,12 @@ one deploy and one design system.
 
 Server Components by default. `"use client"` only on interactive leaves.
 Server actions for mutations, route handlers where a real HTTP endpoint is
-needed. Static copy lives as typed data in `src/content/`, not as markup.
-Every value that changes between products is in `src/config.ts`.
+needed. Copy longer than a sentence, and any copy shown on more than one
+screen, lives as typed data in `src/content/`, not as markup. Every value
+that changes between products is in `src/config.ts`, including the two
+flags that set the product's shape: `features.multipleOrganisations`,
+whether people can create organisations beyond their personal one, and
+`features.openSignUp`, whether anyone can sign up or only the invited.
 
 ---
 
@@ -93,7 +97,11 @@ Application code reaches tenant tables only through `forOrganisation()` in
 `src/lib/db/scoped.ts`, which cannot be called without an organisation id.
 The raw handle is importable only inside the data layer, and eslint fails
 the build otherwise. `tests/rules/tenancy.test.ts` fails when a table lacks
-the column or is not classified in `src/lib/db/tables.ts`.
+the column or is not classified in `src/lib/db/tables.ts`, and
+`scoped-coverage.test.ts` fails when it has no block in the scoped layer.
+The organisation id on a session is a hint: `requireOrganisation()` joins
+it on membership every request, because Better Auth clears it only on the
+session of the person who acted.
 
 Every person has an organisation from the moment they sign up. Single tenant
 products keep that and set `features.multipleOrganisations` to false.
@@ -119,16 +127,20 @@ date-fns, and eslint enforces that. Need something new? Add a helper there.
 Anything a stranger can submit follows one pattern, shown in
 `src/app/privacy/request/actions.ts`: honeypot, rate limit by IP, validate,
 then act. A bot gets a quiet success. A person over the limit is told when
-to try again.
+to try again. `tests/rules/guards.test.ts` fails when a public action skips
+either guard. The auth endpoints are limited through the same Postgres
+counter, because Better Auth's own limiter counts in memory per instance.
 
 ---
 
 ## Privacy
 
 The product collects names and email addresses. RA 10173, the Data Privacy
-Act of 2012, applies to data about people in the Philippines. `/privacy`
-ships with v1, the deletion request form works from day one, and
-`docs/product/privacy.md` records what is collected and for how long.
+Act of 2012, applies to data about people in the Philippines. A product
+elsewhere cites its own law before launch. `/privacy` ships with v1, the
+deletion request form records a row and mails the contact address from day
+one, and `docs/product/privacy.md` records what is collected, for how long,
+and which processors see it.
 
 ---
 
@@ -140,6 +152,7 @@ ships with v1, the deletion request form works from day one, and
 | `src/components/primitives/` | The design system, including the only modal anything is allowed to open. See `DESIGN.md`. |
 | `src/components/ui/` | shadcn components, already token mapped. Add more with `pnpm dlx shadcn add`. |
 | `src/lib/db/` | Drizzle client, schema, the table lists and the scoped layer. |
+| `drizzle/` | The migrations, baseline first. `main` migrates, every other branch pushes. |
 | `src/lib/auth/` | Better Auth config, session helpers, organisation helpers. |
 | `src/lib/mail/`, `src/lib/guard/`, `src/lib/time/` | Mail with the log switch, the public form guards, the time helpers. |
 | `src/content/` | Typed copy, the privacy notice, the route directory. |
@@ -155,7 +168,8 @@ ships with v1, the deletion request form works from day one, and
 
 A feature is done when it is merged, on production, green in CI, covered by
 `/verify`, and recorded: a decision entry if anything was decided, a
-screenshot if a screen changed.
+screenshot if a screen changed. The checkpoint feature is also done only
+when `docs/engineering/launch.md` has been run.
 
 v1 is done when every feature in `docs/product/features.md` is done, the
 privacy page is live, and the numbers in `docs/product/metrics.md` are

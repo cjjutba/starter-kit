@@ -20,7 +20,7 @@ These hold whatever the product looks like.
 - Focus is always visible on keyboard focus. A 2 px ring in `--focus` with a 2 px offset, on every interactive element.
 - Every list has an empty state. Every screen handles empty, loading, error, full and overflowing before it is done. See `docs/design/states.md`.
 - Status is never carried by colour alone. A label, an icon or a strike through goes with it.
-- Contrast passes WCAG AA. The table at the bottom is checked when a value changes.
+- Contrast passes WCAG AA. `tests/rules/contrast.test.ts` computes every pair in the table at the bottom, in both schemes, and fails the build under the line.
 - Motion answers an action. Nothing animates on entry. Everything respects `prefers-reduced-motion`.
 - Sentence case everywhere. No letterspaced caps, no display face, no italics.
 - Names wrap. A name that needs two lines gets two lines. Never truncate a person's name with an ellipsis.
@@ -42,7 +42,8 @@ it needed no change because it already ran ground first. Pill buttons with a
 near black primary. One pale blue
 tint reserved for featured content. Geist for everything. Warmth, when the
 product needs it, comes from photography or illustration, never from an
-accent hue.
+accent hue. A product that wants an accent anyway follows the recipe at
+the end of this file, and the contrast test decides whether it holds.
 
 Rules that follow from it.
 
@@ -141,8 +142,10 @@ in `globals.css`, for everything.
 
 ### Contrast, as set
 
-Recomputed on 2026-09-08, when the ground and the sheet swapped. Secondary
-text sits on three surfaces now rather than two, so all three are listed.
+The test is the source and this table is the record. `pnpm test` prints
+every pair it checks with its ratio, so refresh the table from that output
+when a value changes. Recomputed on 2026-09-08, when the ground and the
+sheet swapped.
 
 | Pair | Ratio |
 | --- | --- |
@@ -171,3 +174,26 @@ a label. `Sheet`, `Card`, `GuideCard` and `Row` are the surfaces.
 `src/components/ui/` is the shadcn set for everything else, menus, dialogs,
 tables and tabs, already token mapped. `docs/design/components.md` says when
 to use which.
+
+## Adding an accent
+
+The template is monochrome on purpose, and most products should stay so.
+When one has a reason, the accent is a values change, not a method change,
+and it stays inside the tokens.
+
+Change these, in both schemes: `--action` to the hue, `--on-action` to
+whatever reads on it, `--action-pressed` a step darker, `--focus` to the
+hue so the ring and the pill agree, and `--tint` to a pale wash of the same
+hue for featured cards. The selection colour reads `--tint` and follows.
+Nothing else moves: text, surfaces, dividers and the error red stay grey
+and red, and a status still never rides on colour alone.
+
+Two limits. `--on-action` on the hue has to clear 4.5 to 1, which rules out
+pale and mid hues for a white label and means a light scheme accent is a
+dark hue. And shadcn already uses the name `--accent` for the field tone,
+so the product's hue keeps the names above rather than taking that one.
+
+Then `pnpm test`. The contrast test names any pair that fell under the
+line with its ratio. Adjust until it is green, write the hex values into
+the table above, and put the reasoning in `docs/design/direction.md`.
+`theme` in `src/config.ts` does not change, because it tracks the page.
