@@ -13,6 +13,8 @@ Cap: 300 words. Three environments, one env file each.
 | `MAIL_FROM` | any | any | a verified sender |
 | `RESEND_API_KEY` | empty | empty | set |
 | `CRON_SECRET` | any | its own | its own |
+| `NEXT_PUBLIC_SENTRY_DSN` | empty | empty | set, once a product wants error reports |
+| `SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_AUTH_TOKEN` | empty | empty | CI only, for source maps |
 | `SEED_EMAIL`, `SEED_PASSWORD`, `SEED_NAME` | set | unused | unused |
 
 Local reads `.env.local`, which is never committed. Preview and production

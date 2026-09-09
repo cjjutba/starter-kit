@@ -11,7 +11,9 @@ import { walk } from "../walk";
 // Variables the platform sets, with the reason each is not in the example.
 const platform = new Map([
   ["NODE_ENV", "set by Next"],
+  ["NEXT_RUNTIME", "set by Next inside instrumentation"],
   ["CI", "set by GitHub Actions"],
+  ["VERCEL_ENV", "set by Vercel, names the environment in error reports"],
   ["VERCEL_URL", "set by Vercel per deployment"],
   ["VERCEL_BRANCH_URL", "set by Vercel per branch"],
   ["PORT", "set by the Playwright config for its own server"],

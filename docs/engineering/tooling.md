@@ -5,8 +5,7 @@ missing.
 
 ## MCP servers
 
-All registered at user scope in Claude Code, so every repo on the machine
-gets them. Nothing about them lives in this repo. `/setup` checks each one
+Registered at user scope in Claude Code, so every repo gets them. Nothing about them lives in this repo. `/setup` checks each one
 it needs with ToolSearch before it starts and stops with the fix.
 
 | Server | Used by | Fallback when down |
@@ -35,8 +34,13 @@ They travel with the repo, so every project made from the template has
 them. `skills-lock.json` lists the Neon skills that reinstall from their
 own repository rather than being vendored.
 
+## Error reports
+
+Sentry needs nothing locally. An empty DSN
+loads nothing. Production sets `NEXT_PUBLIC_SENTRY_DSN` when it wants
+reports.
+
 ## Permissions
 
 `.claude/settings.json` allows the commands the skills run: pnpm, node,
-the read only git commands plus add, commit and push, `gh`, `vercel` and
-`openssl rand`. Anything destructive still asks.
+git except the destructive commands, `gh`, `vercel` and `openssl rand`.
