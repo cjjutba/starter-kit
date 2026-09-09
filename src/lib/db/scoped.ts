@@ -55,11 +55,15 @@ export function forOrganisation(organisationId: string, db: Database = defaultDb
           .returning();
         return rows[0];
       },
-      update: async (id: string, input: Partial<NoteInput>) => {
+      /**
+       * With expectedUpdatedAt, the update only lands when the row still
+       * carries that timestamp, and null means someone else saved first.
+       */
+      update: async (id: string, input: Partial<NoteInput>, expectedUpdatedAt?: Date) => {
         const rows = await db
           .update(notes)
           .set(input)
-          .where(and(inScope, eq(notes.id, id)))
+          .where(and(inScope, eq(notes.id, id), expectedUpdatedAt ? eq(notes.updatedAt, expectedUpdatedAt) : undefined))
           .returning();
         return rows[0] ?? null;
       },

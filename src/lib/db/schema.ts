@@ -23,8 +23,12 @@ export const notes = pgTable(
     authorId: text("author_id").references(() => user.id, { onDelete: "set null" }),
     title: text("title").notNull(),
     body: text("body").notNull().default(""),
-    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-    updatedAt: timestamp("updated_at", { withTimezone: true })
+    // Millisecond precision on both. Postgres stores now() to the
+    // microsecond and a JS Date holds milliseconds, so a column compared as
+    // a version, as updated_at is on the edit screen, has to match what
+    // comes back or the first edit of every row fails the check.
+    createdAt: timestamp("created_at", { withTimezone: true, precision: 3 }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, precision: 3 })
       .notNull()
       .defaultNow()
       .$onUpdate(() => new Date()),
