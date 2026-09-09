@@ -14,11 +14,14 @@ export function AppShell({
   user,
   organisation,
   organisations,
+  canCreate,
   children,
 }: {
   user: { name: string; email: string };
   organisation: OrganisationOption;
   organisations: OrganisationOption[];
+  /** features.multipleOrganisations. Shows the link to make another. */
+  canCreate: boolean;
   children: ReactNode;
 }) {
   return (
@@ -27,7 +30,14 @@ export function AppShell({
         <Link href="/app" className="text-heading font-medium">
           {product.name}
         </Link>
-        <OrgSwitcher current={organisation} organisations={organisations} />
+        <div className="flex flex-col gap-2">
+          <OrgSwitcher current={organisation} organisations={organisations} />
+          {canCreate ? (
+            <Link href="/app/organisation/new" className="text-label font-medium text-text-2 hover:text-text">
+              New organisation
+            </Link>
+          ) : null}
+        </div>
         <nav aria-label="Main">
           <ul className="flex gap-1 md:flex-col">
             <li>

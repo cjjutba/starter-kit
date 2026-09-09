@@ -47,6 +47,7 @@ export const routeGroups: RouteGroup[] = [
       { label: "Notes", href: "/app", protected: true },
       { label: "New note", href: "/app/notes/new", protected: true },
       { label: "Organisation", href: "/app/organisation", protected: true },
+      { label: "New organisation", href: "/app/organisation/new", protected: true, note: "when multipleOrganisations is on" },
       { label: "Account", href: "/app/account", protected: true },
     ],
   },

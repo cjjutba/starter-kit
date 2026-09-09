@@ -155,6 +155,7 @@ export const auth = betterAuth({
   },
   plugins: [
     organization({
+      allowUserToCreateOrganization: () => features.multipleOrganisations,
       // Seconds. A week, because the person invited is often not at a desk.
       invitationExpiresIn: 60 * 60 * 24 * 7,
       requireEmailVerificationOnInvitation: true,

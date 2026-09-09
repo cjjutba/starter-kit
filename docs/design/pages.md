@@ -26,7 +26,8 @@ Cap: 600 words. Every page by surface, with its route and who can reach it. `src
 | --- | --- | --- |
 | Notes | `/app` | Members |
 | New note | `/app/notes/new` | Members |
-| Organisation | `/app/organisation` | Members, editing needs owner or admin |
+| Organisation | `/app/organisation` | Members read. Owners and admins manage people and details. Owners delete. |
+| New organisation | `/app/organisation/new` | Members, when `features.multipleOrganisations` is on. Otherwise not found. |
 | Account | `/app/account` | The signed in person. Name, email, password, deletion. |
 
 ## Not pages

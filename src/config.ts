@@ -38,10 +38,11 @@ export const theme = {
 } as const;
 
 export const features = {
-  // Every project has organisations in the schema. This only decides whether
-  // people can see and switch between more than one. Single tenant products
-  // set it to false and each person keeps their personal organisation.
-  showOrganisationSwitcher: true,
+  // Every project has organisations in the schema. This decides whether
+  // people can create more than their personal one. The switcher shows
+  // whenever a person belongs to more than one, whatever this says, because
+  // an invitation can put them in two. Single tenant products set it false.
+  multipleOrganisations: true,
   // True: anyone can create an account and gets a personal organisation.
   // False: after the first account, sign up needs a pending invitation for
   // the address. A client's internal tool sets this to false on day one.

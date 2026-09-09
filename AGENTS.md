@@ -96,7 +96,7 @@ the build otherwise. `tests/rules/tenancy.test.ts` fails when a table lacks
 the column or is not classified in `src/lib/db/tables.ts`.
 
 Every person has an organisation from the moment they sign up. Single tenant
-products keep that and set `features.showOrganisationSwitcher` to false.
+products keep that and set `features.multipleOrganisations` to false.
 Row level security is deliberately not in v1. It fights Better Auth and a
 misconfigured policy is harder to see than a missing argument in code you
 can read.

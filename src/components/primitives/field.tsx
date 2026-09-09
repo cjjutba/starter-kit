@@ -178,26 +178,49 @@ export interface SelectFieldProps {
   hint?: string;
   on?: Surface;
   id?: string;
-  value: string;
-  onChange: (value: string) => void;
+  /** Posted with the form. Pair with defaultValue for a server action form. */
+  name?: string;
+  /** Controlled, with onChange. Leave both out for a server action form. */
+  value?: string;
+  defaultValue?: string;
+  onChange?: (value: string) => void;
   options: { value: string; label: string }[];
   className?: string;
   disabled?: boolean;
+  required?: boolean;
 }
 
-export function SelectField({ label, helper, error, hint, on = "sheet", id: givenId, value, onChange, options, className, disabled }: SelectFieldProps) {
+export function SelectField({
+  label,
+  helper,
+  error,
+  hint,
+  on = "sheet",
+  id: givenId,
+  name,
+  value,
+  defaultValue,
+  onChange,
+  options,
+  className,
+  disabled,
+  required,
+}: SelectFieldProps) {
   const auto = useId();
   const id = givenId ?? auto;
+  const controlled = value !== undefined ? { value, onChange: (e: React.ChangeEvent<HTMLSelectElement>) => onChange?.(e.target.value) } : { defaultValue };
   return (
     <FieldFrame label={label} helper={helper} error={error} hint={hint} on={on} id={id} className={className}>
       <div className="relative">
         <select
           id={id}
-          value={value}
+          name={name}
           disabled={disabled}
-          onChange={(e) => onChange(e.target.value)}
+          required={required}
           aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${id}-error` : helper ? `${id}-helper` : undefined}
           className={cn(controlClass(on, !!error, "h-12 appearance-none pr-10"))}
+          {...controlled}
         >
           {options.map((o) => (
             <option key={o.value} value={o.value}>

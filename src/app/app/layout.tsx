@@ -7,15 +7,16 @@ import { requireOrganisation } from "@/lib/auth/session";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
   const { session, organisation } = await requireOrganisation();
-  const organisations = features.showOrganisationSwitcher
-    ? await auth.api.listOrganizations({ headers: await headers() })
-    : [];
+  // Always listed. The switcher shows itself when there is more than one,
+  // which an invitation can cause whatever the flag says.
+  const organisations = await auth.api.listOrganizations({ headers: await headers() });
 
   return (
     <AppShell
       user={{ name: session.user.name, email: session.user.email }}
       organisation={{ id: organisation.id, name: organisation.name }}
       organisations={organisations.map((item) => ({ id: item.id, name: item.name }))}
+      canCreate={features.multipleOrganisations}
     >
       {children}
     </AppShell>
