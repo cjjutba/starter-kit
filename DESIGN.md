@@ -53,7 +53,8 @@ Rules that follow from it.
 - Text links are `--text` at medium weight. No underline at rest, no blue.
 - `--tint` is for cards that show featured content. It never colours a button, a status or text. Text on a tint card is always `--text`, because `--text-2` on the tint fails AA for small text and axe catches it.
 - `--error` never fills anything. A red ring on the field and one line of helper text is the whole treatment. The danger pill is a secondary pill with red text.
-- The one shadow allowed is on a floating card over a photograph, because it sits on an image rather than a surface.
+- One shadow, `shadow-lifted`, and only for something that floats over the page: a dialog, a menu, a toast. Nothing that sits on the page has one.
+- The sidebar sits behind a hairline in `--divider`, the one place a line separates two regions, because the sidebar and the page share the ground tone. A menu that floats takes the same hairline as a ring.
 - Photographs and illustrations are the only saturated things on any screen.
 
 ## Values
@@ -94,7 +95,7 @@ measurement. Anything not here uses Tailwind's own scale.
 | `--spacing-control` | 52 px | `h-control` | The pill on a phone |
 | `--spacing-input` | 48 px | `h-input` | Inputs, and the pill on a desk |
 | `--spacing-gutter` | 20 px | `px-gutter` | Page gutters |
-| `--spacing-sidebar` | 240 px | `w-sidebar` | The app sidebar |
+| `--spacing-sidebar` | 272 px | `w-sidebar` | The app sidebar |
 | `--container-auth` | 480 px | `max-w-auth` | The auth sheet and single column forms |
 | `--container-prose` | 640 px | `max-w-prose` | Reading width for the notice and the home page |
 | `--container-content` | 1200 px | `max-w-content` | App content beside the sidebar |
@@ -132,7 +133,7 @@ identifiers and code.
 
 Phone controls are 52 px pills and 48 px inputs, with 20 px gutters. The
 auth sheet is 480 px wide. The app runs at up to 1200 px of content beside a
-240 px sidebar. `docs/design/layouts.md` has the breakpoints.
+272 px sidebar. `docs/design/layouts.md` has the breakpoints.
 
 ### Motion
 

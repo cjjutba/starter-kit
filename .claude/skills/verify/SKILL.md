@@ -41,7 +41,7 @@ second time: `/sign-in` shows the expired line.
 
 **Invite only.** Set `features.openSignUp` to false in `src/config.ts`. Sign
 up with an address nobody invited: the form shows the invitation line.
-Invite that address from the organisation page as the seed owner, sign up
+Invite that address from the people page as the seed owner, sign up
 with it again: the card, the link, signed in inside the inviting
 organisation after accepting. Set the flag back to true.
 
@@ -53,11 +53,19 @@ were editing" line, nothing overwritten. Delete from the list: the modal
 asks, spins, closes, the empty state returns. Delete the same note from a
 stale tab: the modal stays open and says it was already deleted.
 
-**Organisation.** `/app/organisation` shows the name, slug, your role, and
-you as owner. Rename it and pick `Asia/Tokyo` from the timezone list. Save
-says "Saved." and the sidebar shows the new name. Set the timezone back.
+**Shell.** The organisation sits at the top of the sidebar with its
+initial. Open it: the menu lists your organisations with your role and a
+tick on the current one, and "Create another organisation" when the flag
+is on. Settings opens into Organisation and People. The account row at the
+bottom opens upward into Appearance, Account, Privacy and Sign out. Below
+1024 px the sidebar is a top bar and slides in from the left.
 
-Invite `invitee@example.com` as member. The pending invitation is listed.
+**Organisation.** `/app/settings` shows the name, slug, your role. Rename
+it and pick `Asia/Tokyo` from the timezone list. Save says "Saved." and
+the sidebar shows the new name. Set the timezone back.
+
+**People.** `/app/settings/people` lists you as owner. Invite
+`invitee@example.com` as member. The pending invitation is listed.
 Cancel it: gone. Invite again. The mail log has the link to `/invite/<id>`.
 Sign out, sign up as that address, open its confirmation link, open the
 invitation link, accept. Land on `/app` inside the inviting organisation.
@@ -72,9 +80,10 @@ says to make someone else an owner first. Make the invitee owner, leave:
 land in your personal organisation. As the new owner, delete the
 organisation after typing its name: everyone lands in their own.
 
-With `multipleOrganisations` true, "New organisation" is in the sidebar.
-Create one: it opens as the active organisation with you as owner. Set the
-flag false: the link is gone and `/app/organisation/new` is not found.
+With `multipleOrganisations` true, "Create another organisation" is in the
+switcher menu. Create one: it opens as the active organisation with you as
+owner. Set the flag false: the item is gone and `/app/organisation/new` is
+not found.
 
 **Account.** `/app/account` shows the address. Change the name: the
 sidebar updates. Sign in in a second browser context, then change the

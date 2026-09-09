@@ -14,7 +14,7 @@ import {
   removeMember,
   updateMemberRole,
   type OrganisationFormState,
-} from "@/app/app/organisation/actions";
+} from "@/app/app/settings/actions";
 
 // The people list and the two doors out. Anything that takes access away
 // asks in a modal that owns its work: the pill spins, the modal holds, and

@@ -26,6 +26,6 @@ Add a row when a screen ships. `src/app/app/loading.tsx` is the skeleton for eve
 | --- | --- | --- | --- | --- |
 | Notes | Card names what is missing, with the action | Delete refused: the modal says why | No limit | Titles wrap, a gone author is said |
 | Edit note | Not found for a missing or foreign note | Changed under you: one line, reload | No limit | Body scrolls in the field |
-| Organisation | Just you, no invitations | Refusal inside the modal or under the form | Better Auth's member limit message | Rows stack on a phone |
+| Settings | Just you, no invitations | Refusal inside the modal or under the form | Better Auth's member limit message | Rows stack on a phone |
 | Account | Never | Refusal inside the modal, field errors under fields | Never | Long addresses wrap |
 | Sign up, sign in | Never | One line under the field. Unverified: a card with a resend | Never | Never |

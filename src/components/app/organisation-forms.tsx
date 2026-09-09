@@ -9,7 +9,7 @@ import {
   inviteMember,
   updateOrganisation,
   type OrganisationFormState,
-} from "@/app/app/organisation/actions";
+} from "@/app/app/settings/actions";
 
 const initial: OrganisationFormState = {};
 

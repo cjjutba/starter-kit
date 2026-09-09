@@ -55,6 +55,23 @@ export async function firstOrganisationFor(userId: string, db: Database = defaul
   return rows[0]?.id ?? null;
 }
 
+export interface Membership {
+  id: string;
+  name: string;
+  slug: string;
+  role: string;
+}
+
+/** Every organisation this person belongs to, oldest membership first, with the role in each. */
+export async function membershipsFor(userId: string, db: Database = defaultDb): Promise<Membership[]> {
+  return db
+    .select({ id: organization.id, name: organization.name, slug: organization.slug, role: member.role })
+    .from(member)
+    .innerJoin(organization, eq(member.organizationId, organization.id))
+    .where(eq(member.userId, userId))
+    .orderBy(asc(member.createdAt));
+}
+
 /** The organisation and the person's role in it, or null when they are not a member. */
 export async function organisationForMember(
   userId: string,

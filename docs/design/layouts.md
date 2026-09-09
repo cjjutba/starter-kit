@@ -4,7 +4,7 @@ Cap: 300 words. The breakpoints and the two shells, as numbers.
 
 ## Breakpoints
 
-Tailwind defaults. `md` at 768 px is where the app shell goes from stacked to sidebar. `lg` at 1024 px is where auth forms can sit beside a photograph.
+Tailwind defaults. `lg` at 1024 px is where the app shell goes from a top bar to a sidebar, and where auth forms can sit beside a photograph.
 
 ## The auth shell
 
@@ -12,7 +12,7 @@ Tailwind defaults. `md` at 768 px is where the app shell goes from stacked to si
 
 ## The app shell
 
-`src/components/app/shell.tsx`. A 240 px sidebar beside up to 1200 px of content. On a phone the sidebar becomes a header with the navigation in a row. Tone separates the sidebar from the page, never a border.
+`src/components/app/shell.tsx`. A 272 px sidebar behind a hairline, beside up to 1200 px of content. The organisation sits at the top and opens into the switcher. Settings opens into its sections from `src/content/settings-sections.ts`. The account sits at the bottom above a hairline and opens into appearance, the account page, privacy and sign out. Below `lg` the sidebar becomes a top bar and slides in from the left as a sheet.
 
 ## Content widths
 

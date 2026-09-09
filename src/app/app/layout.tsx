@@ -1,21 +1,20 @@
-import { headers } from "next/headers";
 import type { ReactNode } from "react";
 import { AppShell } from "@/components/app/shell";
 import { features } from "@/config";
-import { auth } from "@/lib/auth/server";
+import { membershipsFor } from "@/lib/auth/organisations";
 import { requireOrganisation } from "@/lib/auth/session";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
   const { session, organisation } = await requireOrganisation();
-  // Always listed. The switcher shows itself when there is more than one,
-  // which an invitation can cause whatever the flag says.
-  const organisations = await auth.api.listOrganizations({ headers: await headers() });
+  // Every membership with its role. The switcher shows itself when there is
+  // more than one, which an invitation can cause whatever the flag says.
+  const memberships = await membershipsFor(session.user.id);
 
   return (
     <AppShell
       user={{ name: session.user.name, email: session.user.email }}
-      organisation={{ id: organisation.id, name: organisation.name }}
-      organisations={organisations.map((item) => ({ id: item.id, name: item.name }))}
+      organisation={{ id: organisation.id, name: organisation.name, slug: organisation.slug, role: organisation.role }}
+      memberships={memberships}
       canCreate={features.multipleOrganisations}
     >
       {children}

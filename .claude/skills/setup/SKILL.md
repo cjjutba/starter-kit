@@ -35,7 +35,7 @@ Never push the schema to `main`. It migrates.
 5. **Schema and seed.** `pnpm db:push`, then `pnpm db:seed`, against `dev`. The seed skips itself when the person exists and marks them verified, because that account is the way in until mail is real.
 
    Then `pnpm db:migrate` and `pnpm db:seed` against `main`, with `DATABASE_URL` set to its connection string for those two commands only. `main` takes the committed migrations in `drizzle/` and is never pushed to. Skip this and the first production deploy meets a database with no tables.
-6. **Prove it locally.** Start the `dev` server through the browser preview. Sign in at `/sign-in` with the seed credentials. Expect the empty notes state at `/app`. Open `/app/account`, `/app/organisation` and `/design`. Read the console for errors. Fix before going on.
+6. **Prove it locally.** Start the `dev` server through the browser preview. Sign in at `/sign-in` with the seed credentials. Expect the empty notes state at `/app`. Open `/app/account`, `/app/settings` and `/design`. Read the console for errors. Fix before going on.
 
    If the preview refuses to start because another session holds the port, do not kill that server. Push a branch, let Vercel build a preview, and drive that instead. Previews sign in on their own address. Say in the report that the proof came from a deployment rather than localhost.
 7. **Checks.** `pnpm lint`, `pnpm typecheck`, `pnpm test`. All green.
@@ -47,7 +47,7 @@ Never push the schema to `main`. It migrates.
    `BETTER_AUTH_URL` and `NEXT_PUBLIC_APP_URL` go in production only, and have to wait. The production domain is not known until the first deployment exists, because Vercel suffixes the name when `<slug>.vercel.app` is taken. Deploy, read the production alias from `vercel inspect`, set both to it, and let the next push pick them up. Leave both unset in preview on purpose: a preview signs in on its own address and its mail links point at itself.
 
    Say plainly that production mail stays in the log until a Resend key and a verified sender exist, and that until then nobody new can verify an address on production. The seeded owner is verified and is the way in.
-10. **Record.** `gh api repos/cjjutba/starter-kit/commits/main --jq .sha` and write `.starter-kit` with `template`, `commit` and `date` lines. Append decision 001 to `docs/product/decisions.md`: started from starter-kit at that commit, the name, the slug, where the users are and the region, the shape and the two flags, monochrome or the accent, the Neon project, the Vercel project.
+10. **Record.** `gh api repos/cjjutba/starter-kit-web/commits/main --jq .sha` and write `.starter-kit` with `template`, `commit` and `date` lines. Append decision 001 to `docs/product/decisions.md`: started from starter-kit at that commit, the name, the slug, where the users are and the region, the shape and the two flags, monochrome or the accent, the Neon project, the Vercel project.
 11. **Commit and push.** `git add -A`, commit as "Start <name> from starter-kit" with the reasoning in the body, push. Watch with `vercel ls` or the Vercel MCP until the production deployment is ready.
 12. **Report.** The production URL, where the seed credentials are, and what stays manual. `docs/engineering/launch.md` is that list. Point at it rather than repeating it.
 

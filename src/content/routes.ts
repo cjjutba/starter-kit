@@ -49,9 +49,10 @@ export const routeGroups: RouteGroup[] = [
       { label: "Notes", href: "/app", protected: true },
       { label: "New note", href: "/app/notes/new", protected: true },
       { label: "Edit note", href: "/app/notes/[id]", example: "/app/notes/EXAMPLE", protected: true },
-      { label: "Organisation", href: "/app/organisation", protected: true },
-      { label: "New organisation", href: "/app/organisation/new", protected: true, note: "when multipleOrganisations is on" },
-      { label: "Account", href: "/app/account", protected: true },
+      { label: "Settings, organisation", href: "/app/settings", protected: true },
+      { label: "Settings, people", href: "/app/settings/people", protected: true },
+      { label: "New organisation", href: "/app/organisation/new", protected: true, note: "from the organisation switcher, when multipleOrganisations is on" },
+      { label: "Account", href: "/app/account", protected: true, note: "from the account menu" },
     ],
   },
 ];

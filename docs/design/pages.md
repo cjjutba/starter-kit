@@ -27,9 +27,10 @@ Cap: 600 words. Every page by surface, with its route and who can reach it. `src
 | Notes | `/app` | Members |
 | New note | `/app/notes/new` | Members |
 | Edit note | `/app/notes/[id]` | Members. A note from another organisation is not found. |
-| Organisation | `/app/organisation` | Members read. Owners and admins manage people and details. Owners delete. |
-| New organisation | `/app/organisation/new` | Members, when `features.multipleOrganisations` is on. Otherwise not found. |
-| Account | `/app/account` | The signed in person. Name, email, password, deletion. |
+| Settings, organisation | `/app/settings` | Members read. Owners and admins change details. Anyone leaves, owners delete. |
+| Settings, people | `/app/settings/people` | Members read. Owners and admins invite, change roles, remove. |
+| New organisation | `/app/organisation/new` | From the organisation switcher, when `features.multipleOrganisations` is on. Otherwise not found. |
+| Account | `/app/account` | From the account menu. Name, email, password, deletion. |
 
 ## Not pages
 

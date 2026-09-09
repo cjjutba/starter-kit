@@ -14,7 +14,7 @@ Cap: 400 words. What exists, when to use which, and what to reach for when nothi
 | `Card` | The everyday panel, 20 px corners, `tone` picks sheet, field or tint. | A list row. |
 | `GuideCard` | A note from a colleague during onboarding. | Anything on sign in. |
 | `Row` | A row in a list of records, with an optional secondary line and trailing content. | Tables with more than three columns. Use `ui/table`. |
-| `ThemeToggle` | The three way theme switch. | |
+| `ThemeToggle`, `ThemeMenuRow` | The three way theme switch, on its own or as the appearance row inside the account menu. | |
 
 ## shadcn, in `src/components/ui/`
 

@@ -108,6 +108,17 @@ run, em dashes included, so the dash rule failed the first time the dev
 server ran under Claude Code. The block is committed as Next writes it,
 the rule skips the region between its markers, and rule 7 says so.
 
+**The app shell took Kalinga's shape.** The organisation sits at the top of
+a 272 px sidebar behind a hairline, with its initial, and opens into a menu
+of every organisation the person belongs to, their role in each, a tick on
+the current one, and the way to create another. Settings opens into its
+sections, named once in `src/content/settings-sections.ts`, so the old
+organisation page is two pages now, Organisation and People. The account
+sits at the bottom above a hairline and opens upward into Appearance, the
+account page, Privacy and Sign out. Below the laptop breakpoint the sidebar
+is a top bar and slides in from the left. The hairline and the one shadow a
+floating menu takes are written into DESIGN.md as the exceptions they are.
+
 **Housekeeping.** pnpm 12 with a regenerated lockfile and the three build
 scripts allowlisted. Every ranged dependency pinned. The licence no longer
 names another product. Robots, a sitemap and an Open Graph image from the

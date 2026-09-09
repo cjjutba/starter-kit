@@ -72,7 +72,7 @@ export async function inviteMember(_previous: OrganisationFormState, formData: F
   } catch (error) {
     return { error: explain(error, "The invitation could not be sent.") };
   }
-  revalidatePath("/app/organisation");
+  revalidatePath("/app/settings/people");
   return { ok: true, message: `Invitation sent to ${parsed.data.email}. With MAIL_PROVIDER=log it is in the mail log, not an inbox.` };
 }
 
@@ -93,7 +93,7 @@ export async function updateMemberRole(_previous: OrganisationFormState, formDat
   } catch (error) {
     return { error: explain(error, "The role could not be changed.") };
   }
-  revalidatePath("/app/organisation");
+  revalidatePath("/app/settings/people");
   return { ok: true, message: "Role changed." };
 }
 
@@ -107,7 +107,7 @@ export async function removeMember(memberId: string): Promise<{ error?: string }
   } catch (error) {
     return { error: explain(error, "That person could not be removed.") };
   }
-  revalidatePath("/app/organisation");
+  revalidatePath("/app/settings/people");
   return {};
 }
 
@@ -116,7 +116,7 @@ export async function cancelInvitation(formData: FormData): Promise<void> {
   const invitationId = String(formData.get("invitationId") ?? "");
   if (!invitationId) return;
   await auth.api.cancelInvitation({ body: { invitationId }, headers: await headers() }).catch(() => undefined);
-  revalidatePath("/app/organisation");
+  revalidatePath("/app/settings/people");
 }
 
 export async function leaveOrganisation(): Promise<{ error?: string }> {

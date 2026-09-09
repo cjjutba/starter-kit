@@ -12,12 +12,14 @@ One seed that creates one person and their organisation so sign in works.
 ## Start a product
 
 ```bash
-gh repo create my-product --template cjjutba/starter-kit --private --clone
+gh repo create my-product --template cjjutba/starter-kit-web --private --clone
 cd my-product && claude
 ```
 
 Private is the default because most products are for a client. Add
-`--public` for portfolio work. Then, inside Claude Code:
+`--public` for portfolio work. The template itself owns nothing outside
+GitHub: no Neon project, no Vercel project, no Sentry, no Resend. `/setup`
+wires each of those for the product it makes. Then, inside Claude Code:
 
 | Skill | When | What it does |
 | --- | --- | --- |
@@ -42,7 +44,7 @@ Then `/design` for the design sheet, `/sign-in` with the seeded person, and
 
 ## What is in the box
 
-- **Design system.** Tokens in `globals.css` for colour, type, radius and layout, the primitives in `src/components/primitives/`, the shadcn set token mapped, Geist self hosted, dark mode as a token remap. A grey page with white sheets in light, a ladder in dark. `DESIGN.md` explains it, has the recipe for an accent, and `/design` renders it, modals included.
+- **Design system.** Tokens in `globals.css` for colour, type, radius and layout, the primitives in `src/components/primitives/`, the shadcn set token mapped, Geist self hosted, dark mode as a token remap. A grey page with white sheets in light, a ladder in dark. An app shell with the organisation at the top, settings that open into sections, and the account at the bottom, the same shape as Kalinga's. `DESIGN.md` explains it, has the recipe for an accent, and `/design` renders it, modals included.
 - **Data layer.** A lazy Neon client, a schema where every tenant table carries `organisation_id`, and a scoped query layer that cannot be called without one. The raw handle cannot leave `src/lib/db`, `src/lib/auth`, `src/lib/mail` or `src/lib/guard`.
 - **Auth.** Email and password with the address verified before a session exists, sign up open or by invitation, organisations with invitations and their people managed from one page, a personal organisation on sign up, membership checked on every request, an account page with password, email and deletion, sign in that works on preview deployments, and the real check in every page.
 - **Mail, guards, cron, errors.** One `send()` with a log provider for everything but production. A Postgres rate limiter, shared with the auth endpoints, and a honeypot on the one public form. Deletion requests recorded and listed from the command line. A purge cron with a secret. Security headers on every response, asserted by a test, with zod on every server action. Sentry for errors, off until a DSN exists. Robots, a sitemap and a link card from the route directory.
