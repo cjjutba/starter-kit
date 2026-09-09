@@ -5,13 +5,9 @@ tenancy true.
 
 ## Files
 
-| File | What |
-| --- | --- |
-| `src/lib/auth/server.ts` | The instance. `nextCookies` last. |
-| `src/lib/auth/organisations.ts` | Membership helpers, each taking the database so PGlite proves them. |
-| `src/lib/auth/session.ts` | `requireSession()`, `requireOrganisation()`. The real checks. |
-| `src/lib/auth/client.ts` | The browser client. |
-| `src/proxy.ts` | Optimistic redirect on `/app/**`, cookie presence only. |
+The instance is `src/lib/auth/server.ts`, `nextCookies` last. The
+membership helpers are `organisations.ts`, each taking the database so
+PGlite proves them. The real checks are `session.ts`. `src/proxy.ts` is an optimistic redirect on cookie presence.
 
 ## The hooks
 
@@ -28,8 +24,7 @@ or a new personal one.
 
 ## Verification
 
-No session until the address is verified. Sign up sends the link and says
-where it went. The link signs the person in and lands on `/sign-in`, which
+No session until the address is verified. Sign up sends the link. The link signs the person in and lands on `/sign-in`, which
 forwards to `next`. An unverified sign in is refused and a fresh link sent.
 An existing address gets the same success, and its owner is told by mail.
 
@@ -47,8 +42,16 @@ custom preview domain to the list.
 
 ## Rate limiting
 
-Better Auth's limiter counts in memory, one counter per serverless
-instance. It is routed through the Postgres counter in `src/lib/guard/`.
+Better Auth's limiter counts in memory per instance, so it is routed
+through the Postgres counter in `src/lib/guard/`.
+
+## Account
+
+`/app/account`: name, password with every other session signed out, email
+approved from the current address then confirmed from the new one, and
+deletion behind the password. Deletion is refused for the only owner of
+an organisation others belong to, and removes organisations only that
+person was in.
 
 ## Not built, and the trigger
 
@@ -57,9 +60,8 @@ Social sign in: a customer whose staff cannot manage a password.
 
 ## Flows
 
-Sign in and sign up post through `authClient`. `safeNext()` sanitises
-`next`. Reset always says the same thing. Invitations last a week and
-are accepted by a verified person whose email matches. Re-inviting cancels the old one.
+Reset always says the same thing. Invitations last a week, need a
+verified person whose email matches, and re-inviting cancels the old one.
 
 ## Session cache
 

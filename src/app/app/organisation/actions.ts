@@ -3,15 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";
+import type { FormState } from "@/components/forms/outcome";
 import { auth } from "@/lib/auth/server";
 import { requireOrganisation } from "@/lib/auth/session";
 
-export interface OrganisationFormState {
-  ok?: boolean;
-  message?: string;
-  error?: string;
-  fieldErrors?: Record<string, string | undefined>;
-}
+export type OrganisationFormState = FormState;
 
 const timezones = new Set(Intl.supportedValuesOf("timeZone"));
 

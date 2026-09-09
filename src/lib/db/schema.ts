@@ -18,9 +18,9 @@ export const notes = pgTable(
     organisationId: text("organisation_id")
       .notNull()
       .references(() => organization.id, { onDelete: "cascade" }),
-    authorId: text("author_id")
-      .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
+    // Nullable and set null on delete. A person who leaves must not take the
+    // organisation's records with them. Every author column follows this.
+    authorId: text("author_id").references(() => user.id, { onDelete: "set null" }),
     title: text("title").notNull(),
     body: text("body").notNull().default(""),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

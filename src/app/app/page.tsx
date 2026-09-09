@@ -51,7 +51,11 @@ export default async function NotesPage() {
                 </form>
               </div>
               {note.body ? <p className="whitespace-pre-wrap text-body text-text-2">{note.body}</p> : null}
-              <p className="text-label text-text-2 tabular">{formatShortDate(note.createdAt, tz)}</p>
+              <p className="text-label text-text-2">
+                <span className="tabular">{formatShortDate(note.createdAt, tz)}</span>
+                {", "}
+                {note.authorName ? `by ${note.authorName}` : "by someone who has left"}
+              </p>
             </Card>
           ))}
         </ul>

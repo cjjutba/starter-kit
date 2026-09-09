@@ -1,30 +1,13 @@
 "use client";
 
 import { useActionState } from "react";
+import { Outcome } from "@/components/forms/outcome";
 import { InputField } from "@/components/primitives/field";
 import { Pill } from "@/components/primitives/pill";
 import { controlClass } from "@/components/primitives/field";
 import { inviteMember, updateOrganisation, type OrganisationFormState } from "@/app/app/organisation/actions";
 
 const initial: OrganisationFormState = {};
-
-function Outcome({ state }: { state: OrganisationFormState }) {
-  if (state.error) {
-    return (
-      <p role="alert" className="text-small text-error">
-        {state.error}
-      </p>
-    );
-  }
-  if (state.ok && state.message) {
-    return (
-      <p role="status" className="text-small text-text-2">
-        {state.message}
-      </p>
-    );
-  }
-  return null;
-}
 
 export function OrganisationDetailsForm({ name, timezone }: { name: string; timezone: string }) {
   const [state, action, pending] = useActionState(updateOrganisation, initial);

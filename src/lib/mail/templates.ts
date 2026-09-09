@@ -67,3 +67,24 @@ export function existingAccountMail({ to, name }: { to: string; name: string }):
   ];
   return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
 }
+
+export function changeEmailConfirmationMail({
+  to,
+  name,
+  newEmail,
+  url,
+}: {
+  to: string;
+  name: string;
+  newEmail: string;
+  url: string;
+}): Mail {
+  const title = `Approve changing your ${product.name} address`;
+  const lines = [
+    `Hi ${name || "there"},`,
+    `Someone signed in as you asked to change the address on your account to ${newEmail}. If that was you, open this link to approve it. A confirmation then goes to the new address:`,
+    url,
+    "If it was not you, do not open the link, and change your password.",
+  ];
+  return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
+}

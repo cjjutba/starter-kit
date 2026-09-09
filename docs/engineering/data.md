@@ -15,7 +15,7 @@ Cap: 500 words. The data layer and the rules around it.
 
 ## Adding a table
 
-1. Write it in `schema.ts` with `organisation_id` not null, a foreign key to `organization` with cascade, and an index that starts with it. Every timestamp is `timestamp("x", { withTimezone: true })`.
+1. Write it in `schema.ts` with `organisation_id` not null, a foreign key to `organization` with cascade, and an index that starts with it. Every timestamp is `timestamp("x", { withTimezone: true })`. An author or owner column is nullable with `onDelete: "set null"`, because a person who leaves must not take the organisation's records with them.
 2. Add it to `tenantTables` in `tables.ts`. If it truly holds no tenant data, `sharedTables`, with a line on why.
 3. Add a block to `forOrganisation()` in `scoped.ts` with the queries the product needs. Every query includes the scope.
 4. Run `pnpm test`. The tenancy test and the scoped test have to pass.

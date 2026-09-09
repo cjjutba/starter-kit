@@ -1,4 +1,5 @@
 import { betterAuth } from "better-auth";
+import { APIError } from "better-auth/api";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { nextCookies } from "better-auth/next-js";
 import { organization } from "better-auth/plugins";
@@ -7,12 +8,20 @@ import { db } from "../db/client";
 import * as schema from "../db/schema";
 import { rateLimit } from "../guard/rate-limit";
 import { send } from "../mail";
-import { existingAccountMail, invitationMail, resetPasswordMail, verifyEmailMail } from "../mail/templates";
+import {
+  changeEmailConfirmationMail,
+  existingAccountMail,
+  invitationMail,
+  resetPasswordMail,
+  verifyEmailMail,
+} from "../mail/templates";
 import {
   anyUserExists,
   clearActiveOrganisation,
   createPersonalOrganisation,
+  deleteOrganisationsOnlyMemberOf,
   firstOrganisationFor,
+  organisationsOnlyOwnedBy,
   pendingInvitationFor,
 } from "./organisations";
 
@@ -83,6 +92,28 @@ export const auth = betterAuth({
         error: "invitation_required",
         errorDescription: "This product is by invitation. Sign up with the address your invitation was sent to.",
       };
+    },
+    changeEmail: {
+      enabled: true,
+      // The current address approves first, then the new one is verified.
+      sendChangeEmailConfirmation: async ({ user, newEmail, url }) => {
+        await send(changeEmailConfirmationMail({ to: user.email, name: user.name, newEmail, url }));
+      },
+    },
+    deleteUser: {
+      enabled: true,
+      // Runs after the password check. Refuses when other people would be
+      // left in an organisation with no owner, and takes the organisations
+      // only this person belonged to along with the account.
+      beforeDelete: async (user) => {
+        const stranded = await organisationsOnlyOwnedBy(user.id);
+        if (stranded.length > 0) {
+          throw new APIError("BAD_REQUEST", {
+            message: `You are the only owner of ${stranded.join(", ")}. Make someone else an owner first, or delete it.`,
+          });
+        }
+        await deleteOrganisationsOnlyMemberOf(user.id);
+      },
     },
   },
   session: {

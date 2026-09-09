@@ -1,4 +1,4 @@
-import { and, asc, eq, gt, sql } from "drizzle-orm";
+import { and, asc, eq, gt, inArray, sql } from "drizzle-orm";
 import { locale } from "../../config";
 import { db as defaultDb, type Database } from "../db/client";
 import { invitation, member, organization, session, user } from "../db/schema";
@@ -113,4 +113,45 @@ export async function pendingInvitationFor(email: string, db: Database = default
     )
     .limit(1);
   return rows.length > 0;
+}
+
+function isOwner(role: string): boolean {
+  return role.split(",").map((part) => part.trim()).includes("owner");
+}
+
+/** Every membership row of every organisation this person belongs to. */
+async function membershipsAround(userId: string, db: Database) {
+  const theirs = db.select({ id: member.organizationId }).from(member).where(eq(member.userId, userId));
+  return db
+    .select({ organisationId: member.organizationId, userId: member.userId, role: member.role, name: organization.name })
+    .from(member)
+    .innerJoin(organization, eq(member.organizationId, organization.id))
+    .where(inArray(member.organizationId, theirs));
+}
+
+/**
+ * Names of organisations this person is the only owner of while other
+ * people still belong. Deleting the account would strand them, so the
+ * deletion is refused until someone else owns it.
+ */
+export async function organisationsOnlyOwnedBy(userId: string, db: Database = defaultDb): Promise<string[]> {
+  const rows = await membershipsAround(userId, db);
+  const names = new Map<string, string>();
+  for (const row of rows) {
+    if (row.userId !== userId || !isOwner(row.role)) continue;
+    const others = rows.filter((other) => other.organisationId === row.organisationId && other.userId !== userId);
+    if (others.length > 0 && !others.some((other) => isOwner(other.role))) names.set(row.organisationId, row.name);
+  }
+  return [...names.values()];
+}
+
+/** Deletes every organisation this person is the only member of. Returns how many. */
+export async function deleteOrganisationsOnlyMemberOf(userId: string, db: Database = defaultDb): Promise<number> {
+  const rows = await membershipsAround(userId, db);
+  const counts = new Map<string, number>();
+  for (const row of rows) counts.set(row.organisationId, (counts.get(row.organisationId) ?? 0) + 1);
+  const alone = [...counts.entries()].filter(([, total]) => total === 1).map(([id]) => id);
+  if (alone.length === 0) return 0;
+  await db.delete(organization).where(inArray(organization.id, alone));
+  return alone.length;
 }

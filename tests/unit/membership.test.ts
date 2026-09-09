@@ -7,7 +7,9 @@ import * as schema from "@/lib/db/schema";
 import {
   anyUserExists,
   clearActiveOrganisation,
+  deleteOrganisationsOnlyMemberOf,
   organisationForMember,
+  organisationsOnlyOwnedBy,
   pendingInvitationFor,
 } from "@/lib/auth/organisations";
 
@@ -23,6 +25,7 @@ const now = new Date();
 const orgA = { id: "org-a", name: "Acme Studio", slug: "acme", createdAt: now };
 const orgB = { id: "org-b", name: "Northwind Traders", slug: "northwind", createdAt: now };
 const ana = { id: "user-a", name: "Ana", email: "ana@example.com", createdAt: now, updatedAt: now };
+const ben = { id: "user-b", name: "Ben", email: "ben@example.com", createdAt: now, updatedAt: now };
 
 beforeAll(async () => {
   const { apply } = await pushSchema(schema, db as unknown as Parameters<typeof pushSchema>[1]);
@@ -81,5 +84,29 @@ describe("membership", () => {
     expect(await pendingInvitationFor("old@example.com", db)).toBe(false);
     expect(await pendingInvitationFor("gone@example.com", db)).toBe(false);
     expect(await pendingInvitationFor("nobody@example.com", db)).toBe(false);
+  });
+
+  it("names the organisations a person is the only owner of while others belong", async () => {
+    await db.insert(schema.user).values(ben);
+    // Ana owns Acme with Ben as a member: deletion would strand Ben.
+    await db.update(schema.member).set({ role: "owner" }).where(eq(schema.member.id, "m-a"));
+    await db.insert(schema.member).values({ id: "m-b", organizationId: orgA.id, userId: ben.id, role: "member", createdAt: now });
+
+    expect(await organisationsOnlyOwnedBy(ana.id, db)).toEqual([orgA.name]);
+    expect(await organisationsOnlyOwnedBy(ben.id, db)).toEqual([]);
+
+    // A second owner clears it.
+    await db.update(schema.member).set({ role: "owner" }).where(eq(schema.member.id, "m-b"));
+    expect(await organisationsOnlyOwnedBy(ana.id, db)).toEqual([]);
+  });
+
+  it("deletes only the organisations a person is alone in", async () => {
+    const personal = { id: "org-p", name: "Ana", slug: "ana-personal", createdAt: now };
+    await db.insert(schema.organization).values(personal);
+    await db.insert(schema.member).values({ id: "m-p", organizationId: personal.id, userId: ana.id, role: "owner", createdAt: now });
+
+    expect(await deleteOrganisationsOnlyMemberOf(ana.id, db)).toBe(1);
+    const left = await db.select({ id: schema.organization.id }).from(schema.organization);
+    expect(left.map((row) => row.id).sort()).toEqual([orgA.id, orgB.id]);
   });
 });

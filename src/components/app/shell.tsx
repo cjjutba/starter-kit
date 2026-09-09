@@ -38,12 +38,15 @@ export function AppShell({
             <li>
               <NavLink href="/app/organisation">Organisation</NavLink>
             </li>
+            <li>
+              <NavLink href="/app/account">Account</NavLink>
+            </li>
           </ul>
         </nav>
         <div className="flex flex-col gap-3 md:mt-auto">
-          <p className="truncate text-small text-text-2" title={user.email}>
+          <Link href="/app/account" className="truncate text-small font-medium text-text-2 hover:text-text" title={user.email}>
             {user.name}
-          </p>
+          </Link>
           <div className="flex items-center justify-between gap-3">
             <ThemeToggle compact />
             <SignOutButton />
