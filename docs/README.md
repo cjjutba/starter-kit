@@ -24,7 +24,7 @@
 | [`design/accessibility.md`](design/accessibility.md) | The audit record |
 | [`design/explorations/`](design/explorations/README.md) | Generated boards and vectors with the prompts that produced them |
 | `design/screenshots/` | Screenshots of the running app, by date and page |
-| [`engineering/`](engineering/conventions.md) | Conventions, data, auth, mail, testing, environments, deploy, tooling |
+| [`engineering/`](engineering/conventions.md) | Conventions, data, auth, mail, testing, environments, deploy, tooling, launch |
 | [`workflow.md`](workflow.md) | The build loop, and when to escalate review depth |
 | [`product/decisions.md`](product/decisions.md) | Every decision made so far, and why |
 

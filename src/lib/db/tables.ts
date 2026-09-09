@@ -21,4 +21,5 @@ export const sharedTables = {
   invitation: schema.invitation,
   rateLimits: schema.rateLimits,
   mailLog: schema.mailLog,
+  privacyRequests: schema.privacyRequests,
 } as const;

@@ -1,6 +1,7 @@
 import { PGlite } from "@electric-sql/pglite";
 import { drizzle } from "drizzle-orm/pglite";
 import { pushSchema } from "drizzle-kit/api";
+import { eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import * as schema from "@/lib/db/schema";
 import { forOrganisation } from "@/lib/db/scoped";
@@ -67,5 +68,33 @@ describe("forOrganisation", () => {
     const a = forOrganisation(orgA.id, db);
     const note = await a.notes.create({ title: "Stamped", body: "", authorId: userA.id });
     expect(note.organisationId).toBe(orgA.id);
+  });
+
+  it("refuses an update when the row changed since the form opened", async () => {
+    const a = forOrganisation(orgA.id, db);
+    const note = await a.notes.create({ title: "Draft", body: "", authorId: userA.id });
+    // The version is a millisecond timestamp, so a save inside the same
+    // millisecond as the create would not move it. A person cannot be that
+    // fast; a test can.
+    await new Promise((resolve) => setTimeout(resolve, 5));
+
+    // The first save with the timestamp the form opened with lands.
+    const first = await a.notes.update(note.id, { title: "Draft, edited" }, note.updatedAt);
+    expect(first?.title).toBe("Draft, edited");
+    expect(first!.updatedAt.getTime()).toBeGreaterThan(note.updatedAt.getTime());
+
+    // A second save still carrying the original timestamp is refused.
+    expect(await a.notes.update(note.id, { title: "Stale" }, note.updatedAt)).toBeNull();
+    expect((await a.notes.get(note.id))?.title).toBe("Draft, edited");
+  });
+
+  it("lists the author's name, and null once they are gone", async () => {
+    const a = forOrganisation(orgA.id, db);
+    const note = await a.notes.create({ title: "Signed", body: "", authorId: userA.id });
+    expect((await a.notes.list()).find((row) => row.id === note.id)?.authorName).toBe("Ana");
+
+    await db.delete(schema.user).where(eq(schema.user.id, userA.id));
+    const after = await a.notes.list();
+    expect(after.find((row) => row.id === note.id)?.authorName).toBeNull();
   });
 });

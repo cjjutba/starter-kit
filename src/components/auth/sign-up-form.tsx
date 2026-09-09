@@ -1,14 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { InputField } from "@/components/primitives/field";
 import { Pill } from "@/components/primitives/pill";
+import { Card } from "@/components/primitives/surfaces";
 import { authClient } from "@/lib/auth/client";
 
+// Sign up never signs in. The address has to be verified first, so a
+// success here is a card that says where the link went. The verification
+// link signs the person in and lands on the sign in page, which sees the
+// session and sends them on to next. An existing address gets the same card,
+// so the form cannot be used to find out who has an account.
+
 export function SignUpForm({ next }: { next: string }) {
-  const router = useRouter();
+  const callbackURL = `/sign-in?next=${encodeURIComponent(next)}`;
+  const [sent, setSent] = useState<string | null>(null);
+  const [resent, setResent] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -17,24 +25,53 @@ export function SignUpForm({ next }: { next: string }) {
     setPending(true);
     setError(null);
     const form = new FormData(event.currentTarget);
+    const email = String(form.get("email") ?? "").trim();
     const result = await authClient.signUp.email({
       name: String(form.get("name") ?? "").trim(),
-      email: String(form.get("email") ?? ""),
+      email,
       password: String(form.get("password") ?? ""),
+      callbackURL,
     });
+    setPending(false);
     if (result.error) {
+      // An uninvited address on an invite only product gets the server's
+      // sentence here. An existing address gets the card below, on purpose.
       setError(result.error.message ?? "That did not work. Check the details and try again.");
-      setPending(false);
       return;
     }
-    router.push(next);
-    router.refresh();
+    setSent(email);
+  }
+
+  async function resend() {
+    if (!sent) return;
+    setPending(true);
+    await authClient.sendVerificationEmail({ email: sent, callbackURL });
+    setPending(false);
+    setResent(true);
+  }
+
+  if (sent) {
+    return (
+      <Card tone="field" className="flex flex-col gap-4 p-5" role="status">
+        <p className="text-heading font-medium">Check your email</p>
+        <p className="text-body text-text-2">
+          A link to confirm {sent} is on its way. It stops working after an hour.
+          {process.env.NODE_ENV === "production" ? "" : " With MAIL_PROVIDER=log it is in the mail log, not an inbox."}
+        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Pill variant="secondary" size="sm" onClick={resend} loading={pending} loadingLabel="Sending">
+            Send it again
+          </Pill>
+          {resent ? <span className="text-small text-text-2">Sent.</span> : null}
+        </div>
+      </Card>
+    );
   }
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
       <InputField label="Name" name="name" autoComplete="name" required />
-      <InputField label="Email" name="email" type="email" autoComplete="email" required />
+      <InputField label="Email" name="email" type="email" autoComplete="email" required error={error ?? undefined} />
       <InputField
         label="Password"
         name="password"
@@ -43,7 +80,6 @@ export function SignUpForm({ next }: { next: string }) {
         minLength={10}
         required
         helper="At least 10 characters."
-        error={error ?? undefined}
       />
       <Pill type="submit" block loading={pending} loadingLabel="Creating your account">
         Create account

@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs/config";
 
 // Headers the product should never ship without. A browser applies these on
 // every response, which makes them the cheapest protection in the stack and
@@ -31,4 +32,14 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Sentry wraps the build to wire its instrumentation files in. Source maps
+// upload only when a token is set, which is a CI secret a product adds when
+// it wants readable stack traces. Without one the build is unchanged and
+// quiet.
+export default withSentryConfig(nextConfig, {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  silent: !process.env.CI,
+  telemetry: false,
+  sourcemaps: { disable: !process.env.SENTRY_AUTH_TOKEN },
+});

@@ -6,13 +6,15 @@ Cap: 300 words. Three environments, one env file each.
 | --- | --- | --- | --- |
 | `DATABASE_URL` | Neon `dev` branch | Neon `dev` or a branch per preview | Neon `main` |
 | `BETTER_AUTH_SECRET` | any | its own | its own |
-| `BETTER_AUTH_URL` | `http://localhost:3000` | the preview URL | the real domain |
-| `NEXT_PUBLIC_APP_URL` | same as above | same | same |
+| `BETTER_AUTH_URL` | `http://localhost:3000` | unset, matched from the request | the real domain |
+| `NEXT_PUBLIC_APP_URL` | same as above | unset, the branch address | same |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | any | real | real |
 | `MAIL_PROVIDER` | `log` | `log` | `resend`, once the key exists |
 | `MAIL_FROM` | any | any | a verified sender |
 | `RESEND_API_KEY` | empty | empty | set |
 | `CRON_SECRET` | any | its own | its own |
+| `NEXT_PUBLIC_SENTRY_DSN` | empty | empty | set, once a product wants error reports |
+| `SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_AUTH_TOKEN` | empty | empty | CI only, for source maps |
 | `SEED_EMAIL`, `SEED_PASSWORD`, `SEED_NAME` | set | unused | unused |
 
 Local reads `.env.local`, which is never committed. Preview and production

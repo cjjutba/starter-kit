@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DeleteNote } from "@/components/app/delete-note";
 import { Pill } from "@/components/primitives/pill";
 import { Card } from "@/components/primitives/surfaces";
 import { requireOrganisation } from "@/lib/auth/session";
 import { forOrganisation } from "@/lib/db/scoped";
 import { formatShortDate } from "@/lib/time";
-import { deleteNote } from "./notes/actions";
 
 export const metadata: Metadata = { title: "Notes" };
 
-// The example feature. One list, one empty state, one form, one delete. It
-// proves the scoped layer and the shell, and it is the first thing a new
-// product replaces.
+// The example feature. One list, one empty state, create, edit with a
+// version check, delete in a modal. It proves the scoped layer and the
+// shell, and it is the first thing a new product replaces.
 
 export default async function NotesPage() {
   const { organisationId, organisation } = await requireOrganisation();
@@ -42,16 +42,19 @@ export default async function NotesPage() {
           {notes.map((note) => (
             <Card as="li" key={note.id} className="flex flex-col gap-2 p-5">
               <div className="flex items-start justify-between gap-4">
-                <h2 className="text-heading font-medium">{note.title}</h2>
-                <form action={deleteNote}>
-                  <input type="hidden" name="id" value={note.id} />
-                  <Pill type="submit" variant="danger" size="xs">
-                    Delete
-                  </Pill>
-                </form>
+                <h2 className="text-heading font-medium">
+                  <Link href={`/app/notes/${note.id}`} className="hover:underline">
+                    {note.title}
+                  </Link>
+                </h2>
+                <DeleteNote id={note.id} title={note.title} />
               </div>
               {note.body ? <p className="whitespace-pre-wrap text-body text-text-2">{note.body}</p> : null}
-              <p className="text-label text-text-2 tabular">{formatShortDate(note.createdAt, tz)}</p>
+              <p className="text-label text-text-2">
+                <span className="tabular">{formatShortDate(note.createdAt, tz)}</span>
+                {", "}
+                {note.authorName ? `by ${note.authorName}` : "by someone who has left"}
+              </p>
             </Card>
           ))}
         </ul>

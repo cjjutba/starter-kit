@@ -2,6 +2,8 @@
 
 import { headers } from "next/headers";
 import { z } from "zod";
+import { product } from "@/config";
+import { recordPrivacyRequest } from "@/lib/db/privacy-requests";
 import { clientIp, rateLimit } from "@/lib/guard/rate-limit";
 import { isBot } from "@/lib/guard/honeypot";
 import { send } from "@/lib/mail";
@@ -9,7 +11,9 @@ import { deletionRequestMail } from "@/lib/mail/templates";
 
 // The public write path, and the pattern every other one follows: honeypot,
 // rate limit, validate, then act. A bot gets a quiet success and nothing
-// happens. A person over the limit is told when to try again.
+// happens. A person over the limit is told when to try again. The request
+// is recorded before it is mailed, because the mail log is purged and a
+// contact address may not exist yet.
 
 export interface DeletionRequestState {
   ok: boolean;
@@ -40,6 +44,9 @@ export async function requestDeletion(_previous: DeletionRequestState, formData:
     return { ok: false, fieldErrors: { email: flat.email?.[0], message: flat.message?.[0] } };
   }
 
-  await send(deletionRequestMail(parsed.data));
+  await recordPrivacyRequest(parsed.data);
+  if (product.contactEmail) {
+    await send(deletionRequestMail({ to: product.contactEmail, ...parsed.data }));
+  }
   return { ok: true };
 }

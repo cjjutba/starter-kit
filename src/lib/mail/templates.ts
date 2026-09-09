@@ -41,8 +41,55 @@ export function invitationMail({
   return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
 }
 
-export function deletionRequestMail({ email, message }: { email: string; message: string }): Mail {
+export function deletionRequestMail({ to, email, message }: { to: string; email: string; message: string }): Mail {
   const title = `Deletion request from ${email}`;
-  const lines = [`${email} asked for their data to be deleted.`, "Their message:", message || "(none)"];
-  return { to: product.contactEmail, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
+  const lines = [
+    `${email} asked for their data to be deleted.`,
+    "Their message:",
+    message || "(none)",
+    "The request is recorded. pnpm privacy:requests lists what is open.",
+  ];
+  return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
+}
+
+export function verifyEmailMail({ to, name, url }: { to: string; name: string; url: string }): Mail {
+  const title = `Confirm your ${product.name} address`;
+  const lines = [
+    `Hi ${name || "there"},`,
+    "Open this link to confirm this address is yours. It signs you in as well:",
+    url,
+    "The link stops working after an hour. If you did not ask for this, ignore it and nothing happens.",
+  ];
+  return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
+}
+
+export function existingAccountMail({ to, name }: { to: string; name: string }): Mail {
+  const title = `Someone tried to sign up with your ${product.name} address`;
+  const lines = [
+    `Hi ${name || "there"},`,
+    `Someone just tried to create a ${product.name} account with this address, which already has one. If it was you, sign in instead, or reset your password if you have forgotten it.`,
+    "If it was not you, nothing has changed and you can ignore this.",
+  ];
+  return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
+}
+
+export function changeEmailConfirmationMail({
+  to,
+  name,
+  newEmail,
+  url,
+}: {
+  to: string;
+  name: string;
+  newEmail: string;
+  url: string;
+}): Mail {
+  const title = `Approve changing your ${product.name} address`;
+  const lines = [
+    `Hi ${name || "there"},`,
+    `Someone signed in as you asked to change the address on your account to ${newEmail}. If that was you, open this link to approve it. A confirmation then goes to the new address:`,
+    url,
+    "If it was not you, do not open the link, and change your password.",
+  ];
+  return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
 }

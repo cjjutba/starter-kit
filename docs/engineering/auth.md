@@ -1,61 +1,71 @@
 # Auth
 
-Cap: 400 words. Better Auth as configured here, and the two hooks that
-keep tenancy true.
+Cap: 400 words. Better Auth as configured here, and the hooks that keep
+tenancy true.
 
 ## Files
 
-| File | What |
-| --- | --- |
-| `src/lib/auth/server.ts` | The instance. Email and password, the organization plugin, `nextCookies` last. |
-| `src/lib/auth/organisations.ts` | `createPersonalOrganisation()` and `firstOrganisationFor()`. |
-| `src/lib/auth/session.ts` | `getSession()`, `requireSession()`, `requireOrganisation()`. The real checks. |
-| `src/lib/auth/client.ts` | The browser client with the organization plugin. |
-| `src/proxy.ts` | The optimistic redirect on `/app/**`. Cookie presence only. |
-| `src/app/api/auth/[...all]/route.ts` | The handler. |
+The instance is `src/lib/auth/server.ts`, `nextCookies` last. The
+membership helpers are `organisations.ts`, each taking the database so
+PGlite proves them. The real checks are `session.ts`. `src/proxy.ts` is an optimistic redirect on cookie presence.
 
-## The two hooks
+## The hooks
 
-**Sign up creates a personal organisation.** `databaseHooks.user.create.after`
-inserts an organisation named after the person and an owner membership.
-Nobody is ever without one, which is what lets every query be scoped.
+**Sign up creates a personal organisation.** Nobody is ever without one,
+so every query can be scoped.
 
-**Every session starts with an active organisation.** `databaseHooks.session.create.before`
-sets `activeOrganizationId` to the person's first membership.
-`requireOrganisation()` heals a session that somehow has none rather than
-showing an error.
+**Every session starts active in the first membership.**
 
-## Checks
+**Membership is checked, not assumed.** `requireOrganisation()` joins the
+active id on `member` every call. Better Auth clears the active id only on
+the actor's session, so a removed member or the members of a deleted
+organisation would keep a dead id. A miss heals to the first membership
+or a new personal one.
 
-The proxy redirects a request with no session cookie. It does not validate
-the cookie. Every page and action under `/app` calls `requireOrganisation()`,
-which validates the session and loads the organisation row. That is the
-check that counts. Role checks for owner and admin actions go in the action
-before the scoped call, using the member role from
-`auth.api.getActiveMember`.
+## Verification
+
+No session until the address is verified. Sign up sends the link. The link signs the person in and lands on `/sign-in`, which
+forwards to `next`. An unverified sign in is refused and a fresh link sent.
+An existing address gets the same success, and its owner is told by mail.
+
+## Invite only
+
+`features.openSignUp` false means sign up needs a pending invitation for
+the address. The first account on an empty database is always allowed,
+which is how the seed and a fresh product get their owner.
+
+## Previews
+
+`baseURL` is a host list: the production host from `BETTER_AUTH_URL`,
+`*.vercel.app` and localhost. Add a custom preview domain to the list.
+
+## Rate limiting
+
+Better Auth's limiter counts in memory per instance, so it is routed
+through the Postgres counter in `src/lib/guard/`.
+
+## Account
+
+`/app/account`: name, password with every other session signed out, email
+approved from the current address then confirmed from the new one, and
+deletion behind the password. Deletion is refused for the only owner of
+an organisation others belong to, and removes organisations only that
+person was in.
+
+## Not built, and the trigger
+
+Sessions list: a person asks. Two factor: a paying customer holding money.
+Social sign in: staff who cannot manage a password.
 
 ## Flows
 
-Sign in and sign up post from client components through `authClient` and
-then `router.push(next)`. `next` is sanitised by `safeNext()` so it is
-always a local path. Reset asks for an email, always says the same thing,
-and the mail carries a link back to `/reset?token=`. Invitations are created
-on the organisation page, mailed with a link to `/invite/[id]`, and accepted
-by a signed in person whose email matches.
+Reset always says the same thing. Invitations last a week, need a
+verified person whose email matches, and re-inviting cancels the old one.
 
-## Session cache
+## Sessions
 
-The session is cached in the cookie for five minutes to save a database
-read per request. A role or organisation change takes up to that long to
-show in a page that only reads the cookie. Actions that must be current
-read the database.
+Read from the database on every request, no cookie cache, so a session
+revoked by a password change or a deletion ends on its next request. One
+indexed read, which the membership check needs anyway.
 
-## Environment
-
-`BETTER_AUTH_SECRET` signs everything. `BETTER_AUTH_URL` is the origin the
-handler trusts, and production sets it to the real domain.
-
-## Regenerating the schema
-
-`pnpm auth:generate` after any change to the plugins or additional fields.
-Node 22 or later. Then push or migrate as `data.md` says.
+Regenerating the schema after a config change is in `data.md`.

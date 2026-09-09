@@ -97,6 +97,9 @@
   --color-error: var(--error);
   --color-focus: var(--focus);
 
+  /* The shape scale. DESIGN.md has three presets; change all six together.
+     Circles such as avatars stay rounded-full and are not on this scale. */
+  --radius-pill: 9999px;
   --radius-sheet: 24px;
   --radius-card: 20px;
   --radius-guide: 16px;
@@ -125,11 +128,16 @@
   --spacing-control: 52px;
   --spacing-input: 48px;
   --spacing-gutter: 20px;
-  --spacing-sidebar: 240px;
+  --spacing-sidebar: 272px;
 
   --container-auth: 480px;
   --container-prose: 640px;
   --container-content: 1200px;
+  --container-sidebar: 272px;
+
+  /* One shadow, and only for something that floats over the page: a dialog,
+     a menu, a toast. Nothing that sits on the page has one. */
+  --shadow-lifted: 0 12px 32px rgb(0 0 0 / 0.12);
 
   /* shadcn expects these */
   --color-background: var(--background);

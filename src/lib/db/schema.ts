@@ -18,13 +18,17 @@ export const notes = pgTable(
     organisationId: text("organisation_id")
       .notNull()
       .references(() => organization.id, { onDelete: "cascade" }),
-    authorId: text("author_id")
-      .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
+    // Nullable and set null on delete. A person who leaves must not take the
+    // organisation's records with them. Every author column follows this.
+    authorId: text("author_id").references(() => user.id, { onDelete: "set null" }),
     title: text("title").notNull(),
     body: text("body").notNull().default(""),
-    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-    updatedAt: timestamp("updated_at", { withTimezone: true })
+    // Millisecond precision on both. Postgres stores now() to the
+    // microsecond and a JS Date holds milliseconds, so a column compared as
+    // a version, as updated_at is on the edit screen, has to match what
+    // comes back or the first edit of every row fails the check.
+    createdAt: timestamp("created_at", { withTimezone: true, precision: 3 }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, precision: 3 })
       .notNull()
       .defaultNow()
       .$onUpdate(() => new Date()),
@@ -51,4 +55,20 @@ export const mailLog = pgTable("mail_log", {
   provider: text("provider").notNull(),
   providerId: text("provider_id"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/**
+ * A deletion request from the public form. The mail about it is purged
+ * after thirty days; this row is the record until it is handled, and for a
+ * year after, which the privacy notice says.
+ */
+export const privacyRequests = pgTable("privacy_request", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  email: text("email").notNull(),
+  message: text("message").notNull().default(""),
+  status: text("status").notNull().default("open"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  handledAt: timestamp("handled_at", { withTimezone: true }),
 });

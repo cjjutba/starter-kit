@@ -2,9 +2,9 @@
 
 Cap: 400 words. The screens in the order they get designed, and where each stands. A screen is designed against a board, then built, then screenshotted.
 
-## 0. Auth
+## 0. Shipped by starter-kit
 
-Shipped by starter-kit. The sheet on the page. A product with a photograph adds it to `AuthShell` and nowhere else.
+Auth on a sheet on the page, the notes list and editor, the organisation page with its people, and the account page. A product with a photograph adds it to `AuthShell` and nowhere else. The feature skill writes a row below before building a screen.
 
 ## 1.
 

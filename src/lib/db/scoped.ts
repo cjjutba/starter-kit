@@ -1,6 +1,6 @@
 import { and, desc, eq } from "drizzle-orm";
 import { db as defaultDb, type Database } from "./client";
-import { notes } from "./schema";
+import { notes, user } from "./schema";
 
 // The only way application code reads or writes a tenant table. Every
 // function closes over one organisation id and adds it to every query, so
@@ -24,7 +24,22 @@ export function forOrganisation(organisationId: string, db: Database = defaultDb
   return {
     organisationId,
     notes: {
-      list: () => db.select().from(notes).where(inScope).orderBy(desc(notes.createdAt)),
+      list: () =>
+        db
+          .select({
+            id: notes.id,
+            title: notes.title,
+            body: notes.body,
+            createdAt: notes.createdAt,
+            updatedAt: notes.updatedAt,
+            // Null once the author has deleted their account. The screen
+            // says so rather than showing nothing.
+            authorName: user.name,
+          })
+          .from(notes)
+          .leftJoin(user, eq(notes.authorId, user.id))
+          .where(inScope)
+          .orderBy(desc(notes.createdAt)),
       get: async (id: string) => {
         const rows = await db
           .select()
@@ -40,11 +55,15 @@ export function forOrganisation(organisationId: string, db: Database = defaultDb
           .returning();
         return rows[0];
       },
-      update: async (id: string, input: Partial<NoteInput>) => {
+      /**
+       * With expectedUpdatedAt, the update only lands when the row still
+       * carries that timestamp, and null means someone else saved first.
+       */
+      update: async (id: string, input: Partial<NoteInput>, expectedUpdatedAt?: Date) => {
         const rows = await db
           .update(notes)
           .set(input)
-          .where(and(inScope, eq(notes.id, id)))
+          .where(and(inScope, eq(notes.id, id), expectedUpdatedAt ? eq(notes.updatedAt, expectedUpdatedAt) : undefined))
           .returning();
         return rows[0] ?? null;
       },

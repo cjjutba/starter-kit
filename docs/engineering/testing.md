@@ -4,37 +4,37 @@ Cap: 300 words. Three layers, each with a job.
 
 ## Rules, in `tests/rules/`
 
-The rules from `AGENTS.md` that a test can check. No hex in a component. No
-dashes anywhere. Every table classified, every tenant table scoped. They
-run on every `pnpm test` and need no database. Add one when an instruction
-gets written twice.
+The rules from `AGENTS.md` and `DESIGN.md` that a test can check. They run
+on every `pnpm test`. Add one when an instruction gets
+written twice. Each fails on:
+
+- `no-dashes`: an en or em dash, or a hyphen standing in for one.
+- `no-raw-colors`: a hex value in a component.
+- `no-raw-values`: a component measuring itself with an arbitrary value.
+- `tenancy`, `scoped-coverage`: a table unclassified, without `organisation_id`, or absent from `forOrganisation()`.
+- `contrast`: a token pair under its AA line in either scheme.
+- `theme`: config or manifest colours drifting from the page token.
+- `env`: a variable the code reads that `.env.example` does not list.
+- `routes`: a page, the route directory and `pages.md` disagreeing.
+- `guards`: an app action without the session check, a public action without honeypot and rate limit, a job without `CRON_SECRET`.
+- `word-caps`: a capped doc over its cap.
+
+CI also fails a pull request whose commit messages carry a dash.
 
 ## Unit, in `tests/unit/`
 
 The scoped layer against PGlite, an in-process Postgres, with two
-organisations that must never see each other. The time helpers. Anything
-that needs a real database, like the rate limiter, reads `DATABASE_URL`
-from `.env.local` and skips itself when it is absent, which is what CI
-does. Those run in the fresh clone proof.
+organisations that must never see each other. The time helpers and the
+class merger. Anything needing a real database, like the rate limiter,
+reads `DATABASE_URL` from `.env.local` and skips itself when absent, as
+in CI.
 
 ## End to end, in `tests/e2e/`
 
-Once per machine: `pnpm exec playwright install chromium`. CI does this
-itself.
-
-axe with the WCAG 2A and 2AA tags on every public route from
-`src/content/routes.ts`, in light and dark. Playwright starts the
-production build or points at `E2E_BASE_URL`. Add a route to the directory
-and it is covered.
-
-## What runs where
-
-| | `pnpm test` | `pnpm test:e2e` | CI | Fresh clone proof |
-| --- | --- | --- | --- | --- |
-| Rules | yes | | yes | yes |
-| Scoped, time | yes | | yes | yes |
-| Database gated | if URL | | skipped | yes |
-| axe | | yes | yes | yes |
+Once per machine: `pnpm exec playwright install chromium`. axe with the WCAG 2A and 2AA tags on every public route from
+`src/content/routes.ts` in light and dark, the security headers, and the
+modal holding open until its work resolves. Playwright starts the
+production build or points at `E2E_BASE_URL`.
 
 ## What is not automated
 

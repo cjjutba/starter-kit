@@ -11,12 +11,14 @@ Templates in `src/lib/mail/templates.ts` are plain functions that return
 `{ to, subject, text, html }`. Text first. The html is the same words in a
 light wrapper.
 
-Better Auth calls `send()` for password resets and invitations. The privacy
-form calls it for deletion requests. New messages go through the same
-function.
+Better Auth calls `send()` for verification links, password resets,
+invitations and the note to an address someone else tried to sign up with.
+The privacy form calls it for deletion requests. New messages go through
+the same function.
 
 To read what was sent locally, `pnpm mail:log` prints the last five rows,
 or `pnpm mail:log 20` for more. The verify skill uses it.
 
-`/api/jobs/purge-mail-log` deletes rows older than thirty days. `vercel.ts`
-runs it daily and Vercel sends `CRON_SECRET` as a bearer token.
+`/api/jobs/purge` deletes mail older than thirty days and abuse counters
+older than a day. `vercel.ts` runs it daily and Vercel sends `CRON_SECRET`
+as a bearer token.

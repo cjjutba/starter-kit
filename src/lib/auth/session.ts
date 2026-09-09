@@ -1,14 +1,19 @@
-import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { db } from "../db/client";
-import { organization } from "../db/schema";
-import { createPersonalOrganisation, firstOrganisationFor } from "./organisations";
+import {
+  createPersonalOrganisation,
+  firstOrganisationFor,
+  organisationForMember,
+  type CurrentOrganisation,
+} from "./organisations";
 import { auth } from "./server";
 
 // Server side session helpers. The proxy only checks that a cookie exists.
 // These are the real checks, and every page and action under /app calls one.
 
+export type { CurrentOrganisation };
+
+/** Read from the database every time, so a revoked session ends on its next request. */
 export async function getSession() {
   return auth.api.getSession({ headers: await headers() });
 }
@@ -19,34 +24,32 @@ export async function requireSession() {
   return session;
 }
 
-export interface CurrentOrganisation {
-  id: string;
-  name: string;
-  slug: string;
-  timezone: string | null;
-}
-
-/** The session, the organisation id every scoped query runs against, and that organisation's row. */
+/**
+ * The session, the organisation id every scoped query runs against, and
+ * that organisation's row with the person's role in it. Membership is
+ * checked on every call rather than read from the session, because the
+ * active id outlives a removal or a deletion on every session but the
+ * actor's. When it does not hold, the session is healed to the person's
+ * first organisation, or a fresh personal one, and never dead ended.
+ */
 export async function requireOrganisation() {
   const session = await requireSession();
-  let organisationId = session.session.activeOrganizationId ?? null;
+  const userId = session.user.id;
+  const active = session.session.activeOrganizationId ?? null;
 
-  if (!organisationId) {
-    // Should not happen: sign up creates a personal organisation and every
-    // session starts with one active. Heal it rather than dead end.
-    organisationId = (await firstOrganisationFor(session.user.id)) ?? (await createPersonalOrganisation(session.user));
+  let organisation = active ? await organisationForMember(userId, active) : null;
+
+  if (!organisation) {
+    const organisationId = (await firstOrganisationFor(userId)) ?? (await createPersonalOrganisation(session.user));
+    // Updates the session row. Setting the cookie fails inside a render and
+    // is ignored; the cookie cache expires within five minutes and this
+    // branch runs again until then, one indexed read each time.
     await auth.api
       .setActiveOrganization({ body: { organizationId: organisationId }, headers: await headers() })
       .catch(() => undefined);
+    organisation = await organisationForMember(userId, organisationId);
+    if (!organisation) throw new Error("This person has no organisation and one could not be created.");
   }
 
-  const rows = await db
-    .select({ id: organization.id, name: organization.name, slug: organization.slug, timezone: organization.timezone })
-    .from(organization)
-    .where(eq(organization.id, organisationId))
-    .limit(1);
-  const current: CurrentOrganisation | undefined = rows[0];
-  if (!current) redirect("/sign-in");
-
-  return { session, organisationId, organisation: current };
+  return { session, organisationId: organisation.id, organisation };
 }

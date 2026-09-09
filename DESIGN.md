@@ -20,7 +20,7 @@ These hold whatever the product looks like.
 - Focus is always visible on keyboard focus. A 2 px ring in `--focus` with a 2 px offset, on every interactive element.
 - Every list has an empty state. Every screen handles empty, loading, error, full and overflowing before it is done. See `docs/design/states.md`.
 - Status is never carried by colour alone. A label, an icon or a strike through goes with it.
-- Contrast passes WCAG AA. The table at the bottom is checked when a value changes.
+- Contrast passes WCAG AA. `tests/rules/contrast.test.ts` computes every pair in the table at the bottom, in both schemes, and fails the build under the line.
 - Motion answers an action. Nothing animates on entry. Everything respects `prefers-reduced-motion`.
 - Sentence case everywhere. No letterspaced caps, no display face, no italics.
 - Names wrap. A name that needs two lines gets two lines. Never truncate a person's name with an ellipsis.
@@ -42,7 +42,8 @@ it needed no change because it already ran ground first. Pill buttons with a
 near black primary. One pale blue
 tint reserved for featured content. Geist for everything. Warmth, when the
 product needs it, comes from photography or illustration, never from an
-accent hue.
+accent hue. A product that wants an accent anyway follows the recipe at
+the end of this file, and the contrast test decides whether it holds.
 
 Rules that follow from it.
 
@@ -52,7 +53,8 @@ Rules that follow from it.
 - Text links are `--text` at medium weight. No underline at rest, no blue.
 - `--tint` is for cards that show featured content. It never colours a button, a status or text. Text on a tint card is always `--text`, because `--text-2` on the tint fails AA for small text and axe catches it.
 - `--error` never fills anything. A red ring on the field and one line of helper text is the whole treatment. The danger pill is a secondary pill with red text.
-- The one shadow allowed is on a floating card over a photograph, because it sits on an image rather than a surface.
+- One shadow, `shadow-lifted`, and only for something that floats over the page: a dialog, a menu, a toast. Nothing that sits on the page has one.
+- The sidebar sits behind a hairline in `--divider`, the one place a line separates two regions, because the sidebar and the page share the ground tone. A menu that floats takes the same hairline as a ring.
 - Photographs and illustrations are the only saturated things on any screen.
 
 ## Values
@@ -93,21 +95,25 @@ measurement. Anything not here uses Tailwind's own scale.
 | `--spacing-control` | 52 px | `h-control` | The pill on a phone |
 | `--spacing-input` | 48 px | `h-input` | Inputs, and the pill on a desk |
 | `--spacing-gutter` | 20 px | `px-gutter` | Page gutters |
-| `--spacing-sidebar` | 240 px | `w-sidebar` | The app sidebar |
+| `--spacing-sidebar` | 272 px | `w-sidebar` | The app sidebar |
 | `--container-auth` | 480 px | `max-w-auth` | The auth sheet and single column forms |
 | `--container-prose` | 640 px | `max-w-prose` | Reading width for the notice and the home page |
 | `--container-content` | 1200 px | `max-w-content` | App content beside the sidebar |
 
 ### Shape
 
-| Element | Radius |
-| --- | --- |
-| Sheet | 24 px |
-| Card | 20 px |
-| Guide card | 16 px |
-| Input | 14 px |
-| Small tag | 8 px |
-| Button | Full |
+| Element | Token | Radius |
+| --- | --- | --- |
+| Button | `--radius-pill` | Full |
+| Sheet | `--radius-sheet` | 24 px |
+| Card | `--radius-card` | 20 px |
+| Guide card | `--radius-guide` | 16 px |
+| Input | `--radius-input` | 14 px |
+| Small tag | `--radius-tag` | 8 px |
+
+One scale, and "Making it yours" below has two other presets for it.
+Circles, such as avatars and icon buttons, are `rounded-full` and not on
+the scale.
 
 ### Type
 
@@ -131,7 +137,7 @@ identifiers and code.
 
 Phone controls are 52 px pills and 48 px inputs, with 20 px gutters. The
 auth sheet is 480 px wide. The app runs at up to 1200 px of content beside a
-240 px sidebar. `docs/design/layouts.md` has the breakpoints.
+272 px sidebar. `docs/design/layouts.md` has the breakpoints.
 
 ### Motion
 
@@ -141,8 +147,10 @@ in `globals.css`, for everything.
 
 ### Contrast, as set
 
-Recomputed on 2026-09-08, when the ground and the sheet swapped. Secondary
-text sits on three surfaces now rather than two, so all three are listed.
+The test is the source and this table is the record. `pnpm test` prints
+every pair it checks with its ratio, so refresh the table from that output
+when a value changes. Recomputed on 2026-09-08, when the ground and the
+sheet swapped.
 
 | Pair | Ratio |
 | --- | --- |
@@ -171,3 +179,58 @@ a label. `Sheet`, `Card`, `GuideCard` and `Row` are the surfaces.
 `src/components/ui/` is the shadcn set for everything else, menus, dialogs,
 tables and tabs, already token mapped. `docs/design/components.md` says when
 to use which.
+
+## Making it yours
+
+The template is one point of view, and two products made from it should
+not look like the same product. Four knobs turn without touching the
+method, and each is a values change in one or two files. Setup asks about
+them on the first day, `/plan` can revisit them, and `pnpm test` decides
+whether the result still holds. Judge every change on `/design`, in both
+schemes, before it reaches a screen.
+
+**Accent.** The template is monochrome on purpose. When a product has a
+reason for a hue, change these in both schemes: `--action` to the hue,
+`--on-action` to whatever reads on it, `--action-pressed` a step darker,
+`--focus` to the hue so the ring and the pill agree, and `--tint` to a
+pale wash of the same hue for featured cards. The selection colour reads
+`--tint` and follows. Nothing else moves: text, surfaces, dividers and the
+error red stay grey and red, and a status still never rides on colour
+alone. Two limits. `--on-action` on the hue has to clear 4.5 to 1, which
+rules out pale and mid hues for a white label and means a light scheme
+accent is a dark hue. And shadcn already uses the name `--accent` for the
+field tone, so the product's hue keeps the names above. The contrast test
+names any pair that fell under the line with its ratio. `theme` in
+`src/config.ts` does not change, because it tracks the page.
+
+**Ground.** Light mode is a grey page with white sheets. The other way is
+a white page with grey sheets: set the light values of `--page`, `--sheet`
+and `--field` to `#FFFFFF`, `#F5F5F7` and `#FFFFFF`, then `theme.light` in
+config and both manifest colours to match, which the theme test holds you
+to. Then grep for `bg-field` on anything that sits directly on the page,
+because that tone has become the ground. Dark mode is a ladder and needs
+nothing. The changelog's second and third versions record what each way
+felt like.
+
+**Shape.** The six radii are one scale. Three presets:
+
+| Preset | `--radius-pill` | sheet | card | guide | input | tag |
+| --- | --- | --- | --- | --- | --- | --- |
+| Pill, the default | 9999 px | 24 | 20 | 16 | 14 | 8 |
+| Soft | 14 px | 20 | 16 | 12 | 12 | 6 |
+| Sharp | 8 px | 12 | 10 | 8 | 8 | 4 |
+
+Set all six in `globals.css`, and the shadcn `--radius-*` aliases beside
+them to the nearest values. Circles stay circles.
+
+**Typeface.** Geist, self hosted through `next/font`. Another family comes
+the same way: `next/font/google` downloads it at build time and the app
+serves it, so nothing is fetched at runtime. Import it in
+`src/app/layout.tsx`, point `--font-sans` at its variable in
+`globals.css`, keep the five sizes and the three weights, and keep Geist
+Mono for references. A display face is still out. One family, and weight
+and colour do the hierarchy.
+
+Whatever moved, write the hex values into the tables above, the reasoning
+into `docs/design/direction.md`, and a screenshot of `/design` into
+`docs/design/screenshots/`.

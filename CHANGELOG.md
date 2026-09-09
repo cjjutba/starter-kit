@@ -4,6 +4,134 @@ The template's own history. A product made from it keeps its decisions in
 `docs/product/decisions.md`, which starts empty. This file is about the
 template.
 
+## 2026-09-09, fourth version
+
+A full read of the template found it green and well built, with a set of
+gaps that would have bitten on the first real product rather than the
+tenth. This version closes them. Every commit stayed green on lint,
+typecheck, the unit suite and a production build.
+
+**The migration path could not be followed as written.** The data doc said
+production migrates and there was no migrations folder, while setup pushed
+the schema straight onto main. The first generate in a product would have
+written every table into migration 0000 and failed against production on
+the first create table. `drizzle/` carries a committed baseline now, and
+the rule is one line: dev and preview branches push, main migrates, and a
+schema change lands as a migration before the code that needs it.
+
+**Previews lost sign in the moment setup pinned the origin.** The base URL
+is a host list now, the production host plus the Vercel wildcard plus
+localhost, so a preview signs in on its own address and its mail links
+point at itself. Production alone sets `BETTER_AUTH_URL`.
+
+**Nobody had to prove an address was theirs.** Sign up sends a link and
+creates no session until it is opened. The link signs the person in and
+lands where they were going. An unverified sign in is refused with a fresh
+link on its way, which needs `sendOnSignIn` because the runtime gates the
+resend on it. An existing address gets the same success and its owner gets
+a note. The seed marks its owner verified, because that account is the way
+in until mail is real.
+
+**Every product was a public SaaS.** `features.openSignUp` false means sign
+up needs a pending invitation, checked before the row is written, with the
+first account on an empty database always allowed. `multipleOrganisations`
+replaces the switcher flag and means whether people can create more than
+their personal one. The switcher shows whenever a person is in two, since
+an invitation can do that whatever the flag says.
+
+**The session's organisation id was a hint treated as a fact.** Better Auth
+clears it only on the session of the person who acted, so a removed member
+kept reading the organisation's rows and every other member of a deleted
+organisation would loop between the app and sign in. `requireOrganisation`
+joins the id on membership every request and heals a miss to the first
+membership or a fresh personal organisation. The five minute cookie cache
+went with it: a session revoked by a password change kept working until
+the cache ran out, and the sign in page trusted the same cache, so a
+revoked session looped between the two. Every session read is one indexed
+query now, which the membership check needed anyway.
+
+**Three things the walkthrough caught that no test had.** React resets an
+uncontrolled field to its default when a form action completes, and the
+default still held the old value, so a saved timezone or role snapped back
+on screen while the database had the change. The fields are keyed on the
+value the server holds now. The name field had the same trouble one step
+later, because the session cookie that carries the name is refreshed in
+the same response, so the action returns what it saved. And the sign up
+route hides a 403 from user creation behind the same success it gives a
+duplicate address, so an uninvited stranger on an invite only product saw
+"check your email" and no mail ever came. The gate moved into the create
+hook, where it refuses with a 400 and a sentence.
+
+**People can manage their account and their organisation.** An account page
+with name, password, email change through both addresses, and deletion
+behind the password, refused for the only owner of an organisation others
+belong to. The organisation page changes roles, removes people, cancels
+invitations, lets anyone leave, lets an owner delete after typing the
+name, and creates a new organisation when the flag allows. Better Auth
+already protects the last owner, so no helper duplicates it. Every
+destructive action goes through `ConfirmModal`, which had been a primitive
+with no product use.
+
+**Eight more rules became tests.** Contrast for every token pair in both
+schemes, which is what makes an accent safe. Config and manifest colours
+held to the page token. Every env read listed in the example. Pages, the
+route directory and the pages doc held to each other. Every tenant table
+reachable through the scoped layer. Every app action checking the session
+and every public action behind the honeypot and rate limit. Every doc
+under its own cap. A hyphen standing in for a dash. CI greps commit
+messages for a dash too.
+
+**Deletion requests are a row, not only a mail.** Recorded before any mail
+is sent, listed and closed from `pnpm privacy:requests`. The contact
+address is published only when set. The cron purges abuse counters along
+with mail, which the notice had claimed for a version while the rows lived
+forever. The notice names Neon, Vercel, Resend and Sentry.
+
+**Errors reach Sentry, off until a DSN exists.** Errors only, no traces, no
+replays, no personal data.
+
+**The example is complete.** Edit with a version check, which needed
+millisecond precision on the timestamps because Postgres keeps
+microseconds and a JS Date does not. Delete in a modal. A skeleton while
+loading. The author column set to null when a person leaves, so their
+notes stay with the organisation.
+
+**The skills know all of this.** Setup asks where the users are, the
+product's shape, and whether the design system stays as it is or any of
+four knobs turn, migrates main, and points at the new launch list. Feature designs the screen before building it,
+reviews design beside code, and retires the example in F1. Verify covers
+every flow above. `DESIGN.md` has the accent recipe.
+
+**Next writes into AGENTS.md.** When `next dev` sees a coding agent it
+appends a managed block to the bottom of AGENTS.md and rewrites it on every
+run, em dashes included, so the dash rule failed the first time the dev
+server ran under Claude Code. The block is committed as Next writes it,
+the rule skips the region between its markers, and rule 7 says so.
+
+**The app shell took Kalinga's shape.** The organisation sits at the top of
+a 272 px sidebar behind a hairline, with its initial, and opens into a menu
+of every organisation the person belongs to, their role in each, a tick on
+the current one, and the way to create another. Settings opens into its
+sections, named once in `src/content/settings-sections.ts`, so the old
+organisation page is two pages now, Organisation and People. The account
+sits at the bottom above a hairline and opens upward into Appearance, the
+account page, Privacy and Sign out. Below the laptop breakpoint the sidebar
+is a top bar and slides in from the left. The hairline and the one shadow a
+floating menu takes are written into DESIGN.md as the exceptions they are.
+
+**Four knobs, so two products do not look like one.** DESIGN.md's accent
+recipe became "Making it yours": the accent, the light ground, the shape
+and the typeface, each a values change in one or two files, each held by
+a test. Shape needed a token, `--radius-pill`, where the pill and the
+theme switch had `rounded-full` written in, so a soft or sharp product is
+six numbers rather than a search. Setup asks about the four on the first
+day and takes "keep it" as an answer.
+
+**Housekeeping.** pnpm 12 with a regenerated lockfile and the three build
+scripts allowlisted. Every ranged dependency pinned. The licence no longer
+names another product. Robots, a sitemap and an Open Graph image from the
+route directory.
+
 ## 2026-09-08, third version
 
 **Light mode turned back over, and this time it stays.** The page is a soft

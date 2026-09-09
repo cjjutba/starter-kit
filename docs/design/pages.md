@@ -26,11 +26,15 @@ Cap: 600 words. Every page by surface, with its route and who can reach it. `src
 | --- | --- | --- |
 | Notes | `/app` | Members |
 | New note | `/app/notes/new` | Members |
-| Organisation | `/app/organisation` | Members, editing needs owner or admin |
+| Edit note | `/app/notes/[id]` | Members. A note from another organisation is not found. |
+| Settings, organisation | `/app/settings` | Members read. Owners and admins change details. Anyone leaves, owners delete. |
+| Settings, people | `/app/settings/people` | Members read. Owners and admins invite, change roles, remove. |
+| New organisation | `/app/organisation/new` | From the organisation switcher, when `features.multipleOrganisations` is on. Otherwise not found. |
+| Account | `/app/account` | From the account menu. Name, email, password, deletion. |
 
 ## Not pages
 
-Things that look like pages and are not: mails, the cron, the auth API. One line each on where they live.
+Things that look like pages and are not: mails, the cron, the auth API. One line each on where they live. The kit ships the auth API under `src/app/api/auth`, the purge cron under `src/app/api/jobs`, and robots, the sitemap and the Open Graph image as files beside the root page, all built from the route directory.
 
 ## Open questions this list forces
 
