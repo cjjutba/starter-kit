@@ -4,7 +4,7 @@ Cap: 500 words. How the look was decided, what was tried, and what it cost. `DES
 
 ## What was decided
 
-The taste, in a paragraph. Starter-kit ships the near white and near black direction Kalinga settled. Say whether this product keeps it or changes it, and what changes. An accent is chosen at setup or here, follows "Adding an accent" in `DESIGN.md`, and its hex values and the reason go in this paragraph.
+The taste, in a paragraph. Starter-kit ships the near white and near black direction Kalinga settled. Say whether this product keeps it or changes it, and what changes. The four knobs in `DESIGN.md` under "Making it yours", accent, ground, shape and typeface, are set at setup or here. Say which moved, to what, and why.
 
 ## What was tried, in order
 

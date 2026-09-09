@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 const pill = cva(
   [
-    "inline-flex items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap select-none",
+    "inline-flex items-center justify-center gap-2 rounded-pill font-medium whitespace-nowrap select-none",
     "transition-colors duration-150 motion-reduce:transition-none",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-page",
     "disabled:opacity-60 disabled:pointer-events-none",

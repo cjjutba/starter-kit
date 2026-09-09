@@ -25,7 +25,7 @@ Apply the `unslop` skill to every line written. No dashes as punctuation.
 9. `docs/product/privacy.md`, and `src/content/privacy.ts` to match
 10. `docs/design/pages.md`, and `src/content/routes.ts` to match
 11. `docs/design/screens.md`, because the workflow designs the screen before it breaks into features
-12. `docs/design/direction.md`, if the product changes the template's taste. An accent follows "Adding an accent" in `DESIGN.md`, and the contrast test decides whether it holds.
+12. `docs/design/direction.md`, if the product changes the template's taste. The four knobs, accent, ground, shape and typeface, follow "Making it yours" in `DESIGN.md`, and the tests decide whether the result holds.
 
 One file at a time. Read the file. It has a cap on its first line and a
 prompt under each heading. Ask the person what the prompt asks, in
@@ -34,7 +34,7 @@ count words. Over the cap means cut, not exceed.
 
 ## Rules
 
-- Ask about what is missing. Do not ask what the repo already says. Read `src/config.ts`, `AGENTS.md`, `docs/product/decisions.md` and any existing docs first. Setup already settled the shape, the flags and the colour.
+- Ask about what is missing. Do not ask what the repo already says. Read `src/config.ts`, `AGENTS.md`, `docs/product/decisions.md` and any existing docs first. Setup already settled the product's shape, the flags and the design knobs.
 - Every feature in `features.md` gets a "done means" line a stranger could check, and a review depth from `docs/workflow.md`. Mark the checkpoint after which the product goes in front of a real person, and say that `docs/engineering/launch.md` runs there.
 - Every choice that closes a door goes in `docs/product/decisions.md` as a dated entry with the alternatives.
 - The glossary decides names. Once a term is in it, code uses that word.

@@ -1,6 +1,6 @@
 ---
 name: setup
-description: First session in a project made from starter-kit. Names the product, settles its shape and its colour, wires Neon and Vercel, migrates and seeds, proves sign in, pushes, and confirms the first deploy. Idempotent, every step checks before it acts. Use when a repo still carries the starter-kit defaults, or when an earlier setup stopped partway.
+description: First session in a project made from starter-kit. Names the product, settles its shape and its look, wires Neon and Vercel, migrates and seeds, proves sign in, pushes, and confirms the first deploy. Idempotent, every step checks before it acts. Use when a repo still carries the starter-kit defaults, or when an earlier setup stopped partway.
 ---
 
 # setup
@@ -24,12 +24,12 @@ Never push the schema to `main`. It migrates.
    - The product name, its slug, and one line.
    - Where the users are. A city or country. It sets the Neon region (Singapore for the Philippines and South East Asia, Frankfurt for Europe, Washington for the Americas), `locale.defaultTimezone`, `locale.lang`, and whether the privacy notice can keep citing RA 10173. Outside the Philippines, say now that `src/content/privacy.ts` and `docs/product/privacy.md` cite the wrong law and that `docs/engineering/launch.md` holds the fix.
    - The shape. Teams, where people create and join organisations: `multipleOrganisations` true. One organisation per person: false. Invite only, a client's own tool where nobody signs up unasked: `openSignUp` false. Say what each means for the person deciding whether to pay.
-   - Monochrome or an accent. Monochrome is the template as it stands. An accent takes a hex value now or "decide in `/plan`", and follows "Adding an accent" in `DESIGN.md`.
+   - The design system. Ask whether to keep it as it stands or turn any of the four knobs `DESIGN.md` names under "Making it yours", and show the four with their defaults: an accent hue for the primary pill and the focus ring (monochrome), the ground in light mode (grey page with white sheets, or white page with grey sheets), the shape (pill, soft or sharp), and the typeface (Geist, or a Google family self hosted at build time). "Keep it" for all four is a fine answer, and so is "decide in `/plan`". Two products from this template should not look like the same product unless the person wants them to.
 2. **Rename.** The `product` block, `locale` and `features` in `src/config.ts`. `name` in `package.json`. `name` and `short_name` in `public/manifest.webmanifest`. `MAIL_FROM` in `.env.example`. `name` in `.claude/launch.json`, set to the slug, so two projects open at once do not collide. Replace `{{PRODUCT}}`, `{{SLUG}}` and `{{ONE_LINE}}` in every `.md` file **outside `.claude/skills/`**, because this file names those placeholders as text and a blind replace corrupts it.
 
    Then rewrite `README.md`. It ships describing the template, so a product that keeps it tells a reader to create a repository from starter-kit. One paragraph on what the product is, how to run it locally, and where the docs are. Delete the template's version table and its "start a product" block. Put the product's name in `LICENSE`. Delete `CHANGELOG.md`, which is the template's own history. The product's is `docs/product/decisions.md`.
 
-   If an accent was chosen: set the tokens `DESIGN.md` names in both schemes, run `pnpm test` until the contrast test is green, and write the reasoning into `docs/design/direction.md`.
+   If any knob moved: apply it as "Making it yours" in `DESIGN.md` says, run `pnpm test` until the contrast and theme tests are green, open `/design` in both schemes and look, take a screenshot into `docs/design/screenshots/`, and write the reasoning into `docs/design/direction.md`.
 3. **Env.** Copy `.env.example` to `.env.local` if missing. Fill `BETTER_AUTH_SECRET` and `CRON_SECRET` with `openssl rand -base64 32` where empty. Set `SEED_PASSWORD` to a generated value and tell the person where it is.
 4. **Neon.** If `DATABASE_URL` is empty: list projects, reuse one named after the slug if it exists, else create it in the region from step 1. Create a `dev` branch if missing. Write the pooled connection string of `dev` into `.env.local`.
 5. **Schema and seed.** `pnpm db:push`, then `pnpm db:seed`, against `dev`. The seed skips itself when the person exists and marks them verified, because that account is the way in until mail is real.
@@ -47,7 +47,7 @@ Never push the schema to `main`. It migrates.
    `BETTER_AUTH_URL` and `NEXT_PUBLIC_APP_URL` go in production only, and have to wait. The production domain is not known until the first deployment exists, because Vercel suffixes the name when `<slug>.vercel.app` is taken. Deploy, read the production alias from `vercel inspect`, set both to it, and let the next push pick them up. Leave both unset in preview on purpose: a preview signs in on its own address and its mail links point at itself.
 
    Say plainly that production mail stays in the log until a Resend key and a verified sender exist, and that until then nobody new can verify an address on production. The seeded owner is verified and is the way in.
-10. **Record.** `gh api repos/cjjutba/starter-kit-web/commits/main --jq .sha` and write `.starter-kit` with `template`, `commit` and `date` lines. Append decision 001 to `docs/product/decisions.md`: started from starter-kit at that commit, the name, the slug, where the users are and the region, the shape and the two flags, monochrome or the accent, the Neon project, the Vercel project.
+10. **Record.** `gh api repos/cjjutba/starter-kit-web/commits/main --jq .sha` and write `.starter-kit` with `template`, `commit` and `date` lines. Append decision 001 to `docs/product/decisions.md`: started from starter-kit at that commit, the name, the slug, where the users are and the region, the shape and the two flags, which design knobs moved and which stayed, the Neon project, the Vercel project.
 11. **Commit and push.** `git add -A`, commit as "Start <name> from starter-kit" with the reasoning in the body, push. Watch with `vercel ls` or the Vercel MCP until the production deployment is ready.
 12. **Report.** The production URL, where the seed credentials are, and what stays manual. `docs/engineering/launch.md` is that list. Point at it rather than repeating it.
 

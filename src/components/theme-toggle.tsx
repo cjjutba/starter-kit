@@ -19,10 +19,10 @@ const options = [
 export function ThemeToggle({ className, compact = false }: { className?: string; compact?: boolean }) {
   const { theme, setTheme } = useTheme();
   const mounted = useMounted();
-  if (!mounted) return <div className={cn("h-9 w-30 rounded-full bg-pill-2", className)} aria-hidden />;
+  if (!mounted) return <div className={cn("h-9 w-30 rounded-pill bg-pill-2", className)} aria-hidden />;
 
   return (
-    <div role="radiogroup" aria-label="Colour theme" className={cn("inline-flex h-9 items-center gap-0.5 rounded-full bg-pill-2 p-0.5", className)}>
+    <div role="radiogroup" aria-label="Colour theme" className={cn("inline-flex h-9 items-center gap-0.5 rounded-pill bg-pill-2 p-0.5", className)}>
       {options.map(({ value, label, Icon }) => {
         const active = theme === value;
         return (
@@ -34,7 +34,7 @@ export function ThemeToggle({ className, compact = false }: { className?: string
             aria-label={label}
             onClick={() => setTheme(value)}
             className={cn(
-              "inline-flex h-8 items-center gap-1.5 rounded-full px-2.5 text-label font-medium transition-colors duration-150 motion-reduce:transition-none",
+              "inline-flex h-8 items-center gap-1.5 rounded-pill px-2.5 text-label font-medium transition-colors duration-150 motion-reduce:transition-none",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-page",
               active ? "bg-page text-text" : "text-text-2 hover:text-text",
             )}
@@ -62,7 +62,7 @@ export function ThemeMenuRow() {
       className="flex items-center justify-between gap-3 rounded-tag py-1.5 pl-3 pr-1.5"
     >
       <span className="text-small text-text">Appearance</span>
-      <span className="flex items-center gap-0.5 rounded-full bg-pill-2 p-0.5">
+      <span className="flex items-center gap-0.5 rounded-pill bg-pill-2 p-0.5">
         {options.map(({ value, label, Icon }) => (
           <DropdownMenuPrimitive.RadioItem
             key={value}

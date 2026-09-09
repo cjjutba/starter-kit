@@ -102,14 +102,18 @@ measurement. Anything not here uses Tailwind's own scale.
 
 ### Shape
 
-| Element | Radius |
-| --- | --- |
-| Sheet | 24 px |
-| Card | 20 px |
-| Guide card | 16 px |
-| Input | 14 px |
-| Small tag | 8 px |
-| Button | Full |
+| Element | Token | Radius |
+| --- | --- | --- |
+| Button | `--radius-pill` | Full |
+| Sheet | `--radius-sheet` | 24 px |
+| Card | `--radius-card` | 20 px |
+| Guide card | `--radius-guide` | 16 px |
+| Input | `--radius-input` | 14 px |
+| Small tag | `--radius-tag` | 8 px |
+
+One scale, and "Making it yours" below has two other presets for it.
+Circles, such as avatars and icon buttons, are `rounded-full` and not on
+the scale.
 
 ### Type
 
@@ -176,25 +180,57 @@ a label. `Sheet`, `Card`, `GuideCard` and `Row` are the surfaces.
 tables and tabs, already token mapped. `docs/design/components.md` says when
 to use which.
 
-## Adding an accent
+## Making it yours
 
-The template is monochrome on purpose, and most products should stay so.
-When one has a reason, the accent is a values change, not a method change,
-and it stays inside the tokens.
+The template is one point of view, and two products made from it should
+not look like the same product. Four knobs turn without touching the
+method, and each is a values change in one or two files. Setup asks about
+them on the first day, `/plan` can revisit them, and `pnpm test` decides
+whether the result still holds. Judge every change on `/design`, in both
+schemes, before it reaches a screen.
 
-Change these, in both schemes: `--action` to the hue, `--on-action` to
-whatever reads on it, `--action-pressed` a step darker, `--focus` to the
-hue so the ring and the pill agree, and `--tint` to a pale wash of the same
-hue for featured cards. The selection colour reads `--tint` and follows.
-Nothing else moves: text, surfaces, dividers and the error red stay grey
-and red, and a status still never rides on colour alone.
+**Accent.** The template is monochrome on purpose. When a product has a
+reason for a hue, change these in both schemes: `--action` to the hue,
+`--on-action` to whatever reads on it, `--action-pressed` a step darker,
+`--focus` to the hue so the ring and the pill agree, and `--tint` to a
+pale wash of the same hue for featured cards. The selection colour reads
+`--tint` and follows. Nothing else moves: text, surfaces, dividers and the
+error red stay grey and red, and a status still never rides on colour
+alone. Two limits. `--on-action` on the hue has to clear 4.5 to 1, which
+rules out pale and mid hues for a white label and means a light scheme
+accent is a dark hue. And shadcn already uses the name `--accent` for the
+field tone, so the product's hue keeps the names above. The contrast test
+names any pair that fell under the line with its ratio. `theme` in
+`src/config.ts` does not change, because it tracks the page.
 
-Two limits. `--on-action` on the hue has to clear 4.5 to 1, which rules out
-pale and mid hues for a white label and means a light scheme accent is a
-dark hue. And shadcn already uses the name `--accent` for the field tone,
-so the product's hue keeps the names above rather than taking that one.
+**Ground.** Light mode is a grey page with white sheets. The other way is
+a white page with grey sheets: set the light values of `--page`, `--sheet`
+and `--field` to `#FFFFFF`, `#F5F5F7` and `#FFFFFF`, then `theme.light` in
+config and both manifest colours to match, which the theme test holds you
+to. Then grep for `bg-field` on anything that sits directly on the page,
+because that tone has become the ground. Dark mode is a ladder and needs
+nothing. The changelog's second and third versions record what each way
+felt like.
 
-Then `pnpm test`. The contrast test names any pair that fell under the
-line with its ratio. Adjust until it is green, write the hex values into
-the table above, and put the reasoning in `docs/design/direction.md`.
-`theme` in `src/config.ts` does not change, because it tracks the page.
+**Shape.** The six radii are one scale. Three presets:
+
+| Preset | `--radius-pill` | sheet | card | guide | input | tag |
+| --- | --- | --- | --- | --- | --- | --- |
+| Pill, the default | 9999 px | 24 | 20 | 16 | 14 | 8 |
+| Soft | 14 px | 20 | 16 | 12 | 12 | 6 |
+| Sharp | 8 px | 12 | 10 | 8 | 8 | 4 |
+
+Set all six in `globals.css`, and the shadcn `--radius-*` aliases beside
+them to the nearest values. Circles stay circles.
+
+**Typeface.** Geist, self hosted through `next/font`. Another family comes
+the same way: `next/font/google` downloads it at build time and the app
+serves it, so nothing is fetched at runtime. Import it in
+`src/app/layout.tsx`, point `--font-sans` at its variable in
+`globals.css`, keep the five sizes and the three weights, and keep Geist
+Mono for references. A display face is still out. One family, and weight
+and colour do the hierarchy.
+
+Whatever moved, write the hex values into the tables above, the reasoning
+into `docs/design/direction.md`, and a screenshot of `/design` into
+`docs/design/screenshots/`.

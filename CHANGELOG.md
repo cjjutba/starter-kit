@@ -97,8 +97,8 @@ loading. The author column set to null when a person leaves, so their
 notes stay with the organisation.
 
 **The skills know all of this.** Setup asks where the users are, the
-product's shape and monochrome or an accent, migrates main, and points at
-the new launch list. Feature designs the screen before building it,
+product's shape, and whether the design system stays as it is or any of
+four knobs turn, migrates main, and points at the new launch list. Feature designs the screen before building it,
 reviews design beside code, and retires the example in F1. Verify covers
 every flow above. `DESIGN.md` has the accent recipe.
 
@@ -118,6 +118,14 @@ sits at the bottom above a hairline and opens upward into Appearance, the
 account page, Privacy and Sign out. Below the laptop breakpoint the sidebar
 is a top bar and slides in from the left. The hairline and the one shadow a
 floating menu takes are written into DESIGN.md as the exceptions they are.
+
+**Four knobs, so two products do not look like one.** DESIGN.md's accent
+recipe became "Making it yours": the accent, the light ground, the shape
+and the typeface, each a values change in one or two files, each held by
+a test. Shape needed a token, `--radius-pill`, where the pill and the
+theme switch had `rounded-full` written in, so a soft or sharp product is
+six numbers rather than a search. Setup asks about the four on the first
+day and takes "keep it" as an answer.
 
 **Housekeeping.** pnpm 12 with a regenerated lockfile and the three build
 scripts allowlisted. Every ranged dependency pinned. The licence no longer
