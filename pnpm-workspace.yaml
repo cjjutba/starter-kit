@@ -1,0 +1,8 @@
+# pnpm 10 and later run no dependency build scripts unless the package is
+# approved here, and pnpm 12 fails the install rather than warn. The Sentry
+# CLI and esbuild fetch a binary, and the resolver eslint uses does the
+# same. Approve a new one with: pnpm approve-builds <name>
+allowBuilds:
+  '@sentry/cli': true
+  esbuild: true
+  unrs-resolver: true
