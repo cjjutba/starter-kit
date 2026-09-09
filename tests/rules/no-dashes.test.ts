@@ -10,7 +10,22 @@ import { walk } from "../walk";
 const dash = new RegExp("[\\u2013\\u2014]");
 const extensions = [".md", ".ts", ".tsx", ".mjs", ".css", ".json", ".yml", ".yaml"];
 
+// A hyphen with a space on each side is a dash standing in, which AGENTS.md
+// rule 7 names as well. Prose only, because code subtracts.
+const standIn = / \S - \S/;
+
 describe("no dashes as punctuation", () => {
+  it("has no hyphen standing in for a dash in any markdown file", () => {
+    const offenders = walk(".")
+      .filter((file) => file.endsWith(".md"))
+      .flatMap((file) =>
+        readFileSync(file, "utf8")
+          .split("\n")
+          .flatMap((line, index) => (standIn.test(` ${line}`) ? [`${file}:${index + 1}: ${line.trim().slice(0, 80)}`] : [])),
+      );
+    expect(offenders).toEqual([]);
+  });
+
   it("has no en or em dash in any source or doc file", () => {
     const offenders = walk(".")
       .filter((file) => extensions.some((extension) => file.endsWith(extension)) && !file.endsWith("pnpm-lock.yaml"))

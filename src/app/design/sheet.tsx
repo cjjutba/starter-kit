@@ -217,7 +217,7 @@ export function DesignSheet() {
                 <ul className="mt-3 flex flex-col">
                   {g.routes.map((r) => (
                     <li key={r.href} className="flex items-baseline justify-between gap-3 border-t border-divider py-2 first:border-t-0">
-                      <Link href={r.href} className="text-small font-medium hover:underline">
+                      <Link href={r.example ?? r.href} className="text-small font-medium hover:underline">
                         {r.label}
                       </Link>
                       <span className="truncate text-label text-text-2">
