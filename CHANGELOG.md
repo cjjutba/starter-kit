@@ -44,7 +44,23 @@ clears it only on the session of the person who acted, so a removed member
 kept reading the organisation's rows and every other member of a deleted
 organisation would loop between the app and sign in. `requireOrganisation`
 joins the id on membership every request and heals a miss to the first
-membership or a fresh personal organisation.
+membership or a fresh personal organisation. The five minute cookie cache
+went with it: a session revoked by a password change kept working until
+the cache ran out, and the sign in page trusted the same cache, so a
+revoked session looped between the two. Every session read is one indexed
+query now, which the membership check needed anyway.
+
+**Three things the walkthrough caught that no test had.** React resets an
+uncontrolled field to its default when a form action completes, and the
+default still held the old value, so a saved timezone or role snapped back
+on screen while the database had the change. The fields are keyed on the
+value the server holds now. The name field had the same trouble one step
+later, because the session cookie that carries the name is refreshed in
+the same response, so the action returns what it saved. And the sign up
+route hides a 403 from user creation behind the same success it gives a
+duplicate address, so an uninvited stranger on an invite only product saw
+"check your email" and no mail ever came. The gate moved into the create
+hook, where it refuses with a 400 and a sentence.
 
 **People can manage their account and their organisation.** An account page
 with name, password, email change through both addresses, and deletion
@@ -85,6 +101,12 @@ product's shape and monochrome or an accent, migrates main, and points at
 the new launch list. Feature designs the screen before building it,
 reviews design beside code, and retires the example in F1. Verify covers
 every flow above. `DESIGN.md` has the accent recipe.
+
+**Next writes into AGENTS.md.** When `next dev` sees a coding agent it
+appends a managed block to the bottom of AGENTS.md and rewrites it on every
+run, em dashes included, so the dash rule failed the first time the dev
+server ran under Claude Code. The block is committed as Next writes it,
+the rule skips the region between its markers, and rule 7 says so.
 
 **Housekeeping.** pnpm 12 with a regenerated lockfile and the three build
 scripts allowlisted. Every ranged dependency pinned. The licence no longer

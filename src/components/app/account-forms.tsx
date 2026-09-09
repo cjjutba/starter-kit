@@ -10,9 +10,13 @@ const initial: AccountFormState = {};
 
 export function NameForm({ name }: { name: string }) {
   const [state, action, pending] = useActionState(updateName, initial);
+  // The page reads the name from the session cookie, which the save refreshes
+  // in the same response, so the prop lags one request. The action returns
+  // what it saved, and keying the field on it makes the save visible at once.
+  const shown = state.name ?? name;
   return (
     <form action={action} className="flex flex-col gap-5">
-      <InputField label="Name" name="name" autoComplete="name" defaultValue={name} required error={state.fieldErrors?.name} />
+      <InputField key={shown} label="Name" name="name" autoComplete="name" defaultValue={shown} required error={state.fieldErrors?.name} />
       <Outcome state={state} />
       <div>
         <Pill type="submit" size="sm" loading={pending} loadingLabel="Saving">

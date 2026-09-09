@@ -13,6 +13,7 @@ import { auth } from "./server";
 
 export type { CurrentOrganisation };
 
+/** Read from the database every time, so a revoked session ends on its next request. */
 export async function getSession() {
   return auth.api.getSession({ headers: await headers() });
 }

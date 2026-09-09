@@ -80,19 +80,6 @@ export const auth = betterAuth({
     expiresIn: 60 * 60,
   },
   user: {
-    // Invite only, when the product asks for it. The first account on an
-    // empty database is always allowed, which is how the seed and a fresh
-    // product get their owner. After that, sign up needs a pending
-    // invitation for the address.
-    validateUserInfo: async ({ user, source }) => {
-      if (features.openSignUp || source.action !== "create-user") return;
-      if (!(await anyUserExists())) return;
-      if (user.email && (await pendingInvitationFor(user.email))) return;
-      return {
-        error: "invitation_required",
-        errorDescription: "This product is by invitation. Sign up with the address your invitation was sent to.",
-      };
-    },
     changeEmail: {
       enabled: true,
       // The current address approves first, then the new one is verified.
@@ -116,9 +103,9 @@ export const auth = betterAuth({
       },
     },
   },
-  session: {
-    cookieCache: { enabled: true, maxAge: 5 * 60 },
-  },
+  // No cookie cache. Every session read goes to the database, so a session
+  // revoked by a password change or a deletion ends on its next request
+  // instead of when a cached cookie runs out. One indexed read per request.
   rateLimit: {
     // Better Auth's own limiter keeps its counters in memory, which on
     // serverless is one counter per instance. This routes it through the
@@ -139,6 +126,21 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
+        // Invite only, when the product asks for it. The first account on an
+        // empty database is always allowed, which is how the seed and a
+        // fresh product get their owner. After that, sign up needs a pending
+        // invitation for the address. The refusal is a 400 on purpose: the
+        // sign up route hides a 403 behind the same success it gives a
+        // duplicate address, and a stranger deserves a sentence rather than
+        // a wait for a mail that never comes.
+        before: async (user) => {
+          if (features.openSignUp) return { data: user };
+          if (!(await anyUserExists())) return { data: user };
+          if (user.email && (await pendingInvitationFor(user.email))) return { data: user };
+          throw new APIError("BAD_REQUEST", {
+            message: "This product is by invitation. Sign up with the address your invitation was sent to.",
+          });
+        },
         after: async (user) => {
           await createPersonalOrganisation(user);
         },

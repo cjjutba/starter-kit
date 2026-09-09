@@ -11,7 +11,10 @@ import { requireSession } from "@/lib/auth/session";
 // the session and call Better Auth. Deleting the account is a client call
 // inside a modal, because it needs the password and signs the person out.
 
-export type AccountFormState = FormState;
+export type AccountFormState = FormState & {
+  /** The name as saved. The session cookie that carries the name is refreshed in this same response, so the page cannot read it yet. */
+  name?: string;
+};
 
 function failed(error: unknown, fallback: string): AccountFormState {
   return { error: error instanceof Error ? error.message : fallback };
@@ -33,7 +36,7 @@ export async function updateName(_previous: AccountFormState, formData: FormData
     return failed(error, "The name could not be saved.");
   }
   revalidatePath("/app", "layout");
-  return { ok: true, message: "Saved." };
+  return { ok: true, message: "Saved.", name: parsed.data.name };
 }
 
 const passwordSchema = z.object({

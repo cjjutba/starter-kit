@@ -37,8 +37,7 @@ which is how the seed and a fresh product get their owner.
 ## Previews
 
 `baseURL` is a host list: the production host from `BETTER_AUTH_URL`,
-`*.vercel.app` and localhost. A preview signs in on its own address. Add a
-custom preview domain to the list.
+`*.vercel.app` and localhost. Add a custom preview domain to the list.
 
 ## Rate limiting
 
@@ -56,16 +55,17 @@ person was in.
 ## Not built, and the trigger
 
 Sessions list: a person asks. Two factor: a paying customer holding money.
-Social sign in: a customer whose staff cannot manage a password.
+Social sign in: staff who cannot manage a password.
 
 ## Flows
 
 Reset always says the same thing. Invitations last a week, need a
 verified person whose email matches, and re-inviting cancels the old one.
 
-## Session cache
+## Sessions
 
-Five minutes in the cookie, so a role change can lag that long on a page
-that only reads it. Actions read the database.
+Read from the database on every request, no cookie cache, so a session
+revoked by a password change or a deletion ends on its next request. One
+indexed read, which the membership check needs anyway.
 
 Regenerating the schema after a config change is in `data.md`.

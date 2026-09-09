@@ -5,7 +5,6 @@ import { useState, type FormEvent } from "react";
 import { InputField } from "@/components/primitives/field";
 import { Pill } from "@/components/primitives/pill";
 import { Card } from "@/components/primitives/surfaces";
-import { features } from "@/config";
 import { authClient } from "@/lib/auth/client";
 
 // Sign up never signs in. The address has to be verified first, so a
@@ -35,11 +34,9 @@ export function SignUpForm({ next }: { next: string }) {
     });
     setPending(false);
     if (result.error) {
-      setError(
-        result.error.status === 403 && !features.openSignUp
-          ? "This product is by invitation. Use the address your invitation was sent to."
-          : (result.error.message ?? "That did not work. Check the details and try again."),
-      );
+      // An uninvited address on an invite only product gets the server's
+      // sentence here. An existing address gets the card below, on purpose.
+      setError(result.error.message ?? "That did not work. Check the details and try again.");
       return;
     }
     setSent(email);

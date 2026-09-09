@@ -18,7 +18,7 @@ paragraph, it points at a doc instead of growing.
 4. **Nothing costs money until someone pays.** Free tiers only. No SMS provider, no paid API, no service that bills before revenue.
 5. **Development and previews send nothing.** `MAIL_PROVIDER=log` writes every message to a table instead. Only production sets `resend`.
 6. **No secrets in the repository, ever.** `.env.example` only. Seed and test data is visibly fictional. No data from any other project.
-7. **Write like a person.** No em dashes, no en dashes, no hyphen standing in for a dash. Colons introduce lists, not clauses. Semicolons are almost never right. A test fails the build on a dash. Apply the `unslop` skill to anything that ships, including commit messages.
+7. **Write like a person.** No em dashes, no en dashes, no hyphen standing in for a dash. Colons introduce lists, not clauses. Semicolons are almost never right. A test fails the build on a dash. Apply the `unslop` skill to anything that ships, including commit messages. The one exception is the block `next dev` writes at the bottom of this file, which is Next's prose and is committed as it comes.
 8. **Rules become code where they can.** A rule that only lives in prose gets skipped. When you write the same instruction twice, turn it into a lint, a test or a type. `tests/rules/` is where they go.
 
 ---
@@ -182,3 +182,13 @@ recorded.
 WCAG 2A and 2AA, checked by axe in `pnpm test:e2e` on every public route in
 both colour schemes. Respect `prefers-reduced-motion`. Mobile first, because
 the people who pay are on a phone.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

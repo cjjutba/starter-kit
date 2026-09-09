@@ -67,6 +67,8 @@ export function MemberRow({
               <form action={action} className="flex items-center gap-2">
                 <input type="hidden" name="memberId" value={member.id} />
                 <select
+                  // Keyed on the saved role so a change does not snap back after the action.
+                  key={member.role}
                   name="role"
                   defaultValue={member.role}
                   aria-label={`Role for ${member.name}`}

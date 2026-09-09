@@ -13,12 +13,17 @@ import {
 
 const initial: OrganisationFormState = {};
 
+// React resets an uncontrolled field to its default once a form action
+// completes, and at that moment the default is still the old value. Keying
+// each field on the value the server holds remounts it with the new default
+// as soon as the page revalidates, so a saved change does not snap back.
 export function OrganisationDetailsForm({ name, timezone, timezones }: { name: string; timezone: string; timezones: string[] }) {
   const [state, action, pending] = useActionState(updateOrganisation, initial);
   return (
     <form action={action} className="flex flex-col gap-5">
-      <InputField label="Name" name="name" defaultValue={name} required error={state.fieldErrors?.name} />
+      <InputField key={name} label="Name" name="name" defaultValue={name} required error={state.fieldErrors?.name} />
       <SelectField
+        key={timezone}
         label="Timezone"
         name="timezone"
         defaultValue={timezone}
