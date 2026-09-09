@@ -14,6 +14,8 @@ export interface RouteEntry {
   example?: string;
   /** Not a page. An address that should 404, walked so the not found screen is checked. */
   probe?: boolean;
+  /** Public but not for search engines. Kept out of the sitemap and disallowed in robots. */
+  noindex?: boolean;
 }
 
 export interface RouteGroup {
@@ -28,7 +30,7 @@ export const routeGroups: RouteGroup[] = [
       { label: "Home", href: "/" },
       { label: "Privacy", href: "/privacy" },
       { label: "Deletion request", href: "/privacy/request" },
-      { label: "Design sheet", href: "/design" },
+      { label: "Design sheet", href: "/design", noindex: true },
       { label: "Not found", href: "/this-page-does-not-exist", probe: true },
     ],
   },
@@ -58,3 +60,8 @@ export const routeGroups: RouteGroup[] = [
 export const publicRoutes: RouteEntry[] = routeGroups
   .flatMap((group) => group.routes)
   .filter((route) => !route.protected && !route.example);
+
+/** What a search engine may list: the marketing and legal group, minus the probe and anything marked noindex. */
+export const indexedRoutes: RouteEntry[] = (routeGroups.find((group) => group.title === "Marketing and legal")?.routes ?? []).filter(
+  (route) => !route.probe && !route.noindex && !route.protected,
+);

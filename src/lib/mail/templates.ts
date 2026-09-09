@@ -41,10 +41,15 @@ export function invitationMail({
   return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
 }
 
-export function deletionRequestMail({ email, message }: { email: string; message: string }): Mail {
+export function deletionRequestMail({ to, email, message }: { to: string; email: string; message: string }): Mail {
   const title = `Deletion request from ${email}`;
-  const lines = [`${email} asked for their data to be deleted.`, "Their message:", message || "(none)"];
-  return { to: product.contactEmail, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
+  const lines = [
+    `${email} asked for their data to be deleted.`,
+    "Their message:",
+    message || "(none)",
+    "The request is recorded. pnpm privacy:requests lists what is open.",
+  ];
+  return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
 }
 
 export function verifyEmailMail({ to, name, url }: { to: string; name: string; url: string }): Mail {

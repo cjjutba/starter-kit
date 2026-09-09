@@ -15,8 +15,10 @@ export const product = {
   // the address Vercel gives the branch, so a link in a preview's mail opens
   // the preview. Read on the server; a client component sees localhost.
   url: process.env.NEXT_PUBLIC_APP_URL ?? vercelOrigin() ?? "http://localhost:3000",
-  // Where privacy and deletion requests go. Shown on the privacy page.
-  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "privacy@example.com",
+  // Where deletion requests are mailed and the address the privacy page
+  // shows. Unset until there is one worth publishing: the page then points
+  // at the form and requests are only recorded, never mailed to a placeholder.
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || undefined,
 } as const;
 
 export const locale = {

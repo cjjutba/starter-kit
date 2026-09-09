@@ -56,3 +56,19 @@ export const mailLog = pgTable("mail_log", {
   providerId: text("provider_id"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+/**
+ * A deletion request from the public form. The mail about it is purged
+ * after thirty days; this row is the record until it is handled, and for a
+ * year after, which the privacy notice says.
+ */
+export const privacyRequests = pgTable("privacy_request", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  email: text("email").notNull(),
+  message: text("message").notNull().default(""),
+  status: text("status").notNull().default("open"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  handledAt: timestamp("handled_at", { withTimezone: true }),
+});

@@ -19,5 +19,6 @@ the same function.
 To read what was sent locally, `pnpm mail:log` prints the last five rows,
 or `pnpm mail:log 20` for more. The verify skill uses it.
 
-`/api/jobs/purge-mail-log` deletes rows older than thirty days. `vercel.ts`
-runs it daily and Vercel sends `CRON_SECRET` as a bearer token.
+`/api/jobs/purge` deletes mail older than thirty days and abuse counters
+older than a day. `vercel.ts` runs it daily and Vercel sends `CRON_SECRET`
+as a bearer token.

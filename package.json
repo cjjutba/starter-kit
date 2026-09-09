@@ -19,6 +19,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx scripts/seed.ts",
     "mail:log": "tsx scripts/mail-log.ts",
+    "privacy:requests": "tsx scripts/privacy-requests.ts",
     "auth:generate": "auth generate --config src/lib/auth/server.ts --output src/lib/db/auth-schema.ts --yes && node scripts/fix-auth-schema.mjs"
   },
   "dependencies": {

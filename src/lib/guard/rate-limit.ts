@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { lt, sql } from "drizzle-orm";
 import { db } from "../db/client";
 import { rateLimits } from "../db/schema";
 
@@ -41,4 +41,11 @@ export function clientIp(headers: Headers): string {
   const forwarded = headers.get("x-forwarded-for");
   if (forwarded) return forwarded.split(",")[0].trim();
   return headers.get("x-real-ip") ?? "unknown";
+}
+
+/** Deletes counters whose window started longer ago than this. Returns the count. */
+export async function purgeRateLimits(olderThanSeconds: number, database: typeof db = db): Promise<number> {
+  const cutoff = new Date(Date.now() - olderThanSeconds * 1000);
+  const rows = await database.delete(rateLimits).where(lt(rateLimits.windowStart, cutoff)).returning({ key: rateLimits.key });
+  return rows.length;
 }
