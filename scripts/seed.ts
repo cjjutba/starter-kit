@@ -25,6 +25,10 @@ async function main() {
   }
 
   await auth.api.signUpEmail({ body: { name, email, password } });
+  // Sign up sends a verification mail to the log and creates no session
+  // until the link is opened. The seeded owner is the way in on a database
+  // nobody else can reach yet, so the address is marked verified here.
+  await db.update(user).set({ emailVerified: true }).where(eq(user.email, email));
   console.log(`Seed: created ${email} and a personal organisation.`);
   console.log(`Sign in with ${email} and the password from SEED_PASSWORD.`);
 }

@@ -10,7 +10,10 @@ import { walk } from "../walk";
 
 // Variables the platform sets, with the reason each is not in the example.
 const platform = new Map([
+  ["NODE_ENV", "set by Next"],
   ["CI", "set by GitHub Actions"],
+  ["VERCEL_URL", "set by Vercel per deployment"],
+  ["VERCEL_BRANCH_URL", "set by Vercel per branch"],
   ["PORT", "set by the Playwright config for its own server"],
   ["E2E_BASE_URL", "points the axe run at a deployment instead of a local server"],
 ]);

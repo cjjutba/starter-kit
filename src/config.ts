@@ -1,12 +1,20 @@
 // The values that change per product, in one place. Setup rewrites the
 // first block. The rest are defaults a project changes on purpose.
 
+function vercelOrigin(): string | undefined {
+  const host = process.env.VERCEL_BRANCH_URL ?? process.env.VERCEL_URL;
+  return host ? `https://${host}` : undefined;
+}
+
 export const product = {
   name: "Starter Kit",
   slug: "starter-kit",
   oneLine: "A product started from starter-kit.",
   // The canonical origin. Used for metadata and absolute links in mail.
-  url: process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
+  // Production sets NEXT_PUBLIC_APP_URL. A preview leaves it unset and takes
+  // the address Vercel gives the branch, so a link in a preview's mail opens
+  // the preview. Read on the server; a client component sees localhost.
+  url: process.env.NEXT_PUBLIC_APP_URL ?? vercelOrigin() ?? "http://localhost:3000",
   // Where privacy and deletion requests go. Shown on the privacy page.
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "privacy@example.com",
 } as const;
@@ -34,4 +42,8 @@ export const features = {
   // people can see and switch between more than one. Single tenant products
   // set it to false and each person keeps their personal organisation.
   showOrganisationSwitcher: true,
+  // True: anyone can create an account and gets a personal organisation.
+  // False: after the first account, sign up needs a pending invitation for
+  // the address. A client's internal tool sets this to false on day one.
+  openSignUp: true,
 } as const;

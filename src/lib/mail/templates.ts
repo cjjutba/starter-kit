@@ -46,3 +46,24 @@ export function deletionRequestMail({ email, message }: { email: string; message
   const lines = [`${email} asked for their data to be deleted.`, "Their message:", message || "(none)"];
   return { to: product.contactEmail, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
 }
+
+export function verifyEmailMail({ to, name, url }: { to: string; name: string; url: string }): Mail {
+  const title = `Confirm your ${product.name} address`;
+  const lines = [
+    `Hi ${name || "there"},`,
+    "Open this link to confirm this address is yours. It signs you in as well:",
+    url,
+    "The link stops working after an hour. If you did not ask for this, ignore it and nothing happens.",
+  ];
+  return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
+}
+
+export function existingAccountMail({ to, name }: { to: string; name: string }): Mail {
+  const title = `Someone tried to sign up with your ${product.name} address`;
+  const lines = [
+    `Hi ${name || "there"},`,
+    `Someone just tried to create a ${product.name} account with this address, which already has one. If it was you, sign in instead, or reset your password if you have forgotten it.`,
+    "If it was not you, nothing has changed and you can ignore this.",
+  ];
+  return { to, subject: title, text: lines.join("\n\n"), html: html(title, lines) };
+}
