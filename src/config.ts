@@ -19,10 +19,14 @@ export const locale = {
 } as const;
 
 export const theme = {
-  // The browser chrome colour cannot read a CSS variable, so these two hex
-  // values live here rather than in a component. Keep them equal to --page.
-  light: "#ffffff",
+  // The browser chrome colour cannot read a CSS variable, so these hex values
+  // live here rather than in a component. light and dark are --page in each
+  // scheme, ink is light --text and draws the Open Graph image, which cannot
+  // read CSS either. tests/rules/theme.test.ts fails when they drift from
+  // globals.css or the manifest.
+  light: "#f5f5f7",
   dark: "#0a0a0a",
+  ink: "#0a0a0a",
 } as const;
 
 export const features = {
