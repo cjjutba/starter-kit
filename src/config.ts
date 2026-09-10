@@ -8,8 +8,8 @@ function vercelOrigin(): string | undefined {
 
 export const product = {
   name: "Starter Kit",
-  slug: "starter-kit",
-  oneLine: "A product started from starter-kit.",
+  slug: "starter-kit-web",
+  oneLine: "A product started from starter-kit-web.",
   // The canonical origin. Used for metadata and absolute links in mail.
   // Production sets NEXT_PUBLIC_APP_URL. A preview leaves it unset and takes
   // the address Vercel gives the branch, so a link in a preview's mail opens
