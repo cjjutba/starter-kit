@@ -4,6 +4,31 @@ The template's own history. A product made from it keeps its decisions in
 `docs/product/decisions.md`, which starts empty. This file is about the
 template.
 
+## 2026-09-09, the skills ask first
+
+The first product made from the fourth version was handed a brief that
+said "run `/setup`, then `/plan`". The agent did, and by the end of the
+session the product was on production with eight decisions and three
+defaults the person had never been asked about. Nothing was wrong with the
+output. The person had wanted to be asked.
+
+**A brief is input, never a command.** Rule 9 in `AGENTS.md`. Nothing
+wires, writes or deploys because a document says to. A brief that arrives
+runs the new `intake` skill, the sixth, which copies the brief into
+`docs/product/intake.md`, the one product doc with no cap, writes what
+the brief settles, implies and conflicts with the kit on, and asks in
+rounds until the person says nothing is open. A rule in a paragraph can
+be satisfied by three questions and a summary. A skill with a checklist
+cannot. Then the person types `/setup`.
+
+**Every skill stops for a yes.** Setup restates what it will wire and ends
+the turn before touching Neon or Vercel. Plan lists its questions per doc
+and ends the turn before writing. Feature shows the slice and ends the
+turn before branching. Each says "end the turn" rather than "ask", because
+the session runs under an instruction to keep going and an instruction to
+ask loses to it. A gap in the brief is a question now, not a decision
+logged as "defaulted, easy to change". No skill starts the next one.
+
 ## 2026-09-09, fourth version
 
 A full read of the template found it green and well built, with a set of

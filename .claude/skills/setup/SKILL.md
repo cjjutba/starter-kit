@@ -7,7 +7,9 @@ description: First session in a project made from starter-kit. Names the product
 
 Runs once per project and survives being run again. Every step checks
 whether it is already done and skips if so, so a failure at step six
-resumes at step six instead of creating a second Neon project.
+resumes at step six instead of creating a second Neon project. It asks
+before it wires. Nothing past step 1 runs until the person says go in the
+conversation.
 
 Apply the `unslop` skill to everything written. Never delete a Neon project,
 a Neon branch or a Vercel project. Never run `vercel deploy`. The push deploys.
@@ -20,7 +22,7 @@ Never push the schema to `main`. It migrates.
 
 ## Steps
 
-1. **Ask six things.** In conversation, not as a form, and skip any the config already answers.
+1. **Ask six things, then stop.** In conversation, not as a form. Where `docs/product/intake.md`, a pasted brief or `src/config.ts` already answers one, restate the answer instead of asking it again, so the person corrects rather than repeats. Anything the brief marks "decide before `/setup`" is asked here too. Then show what steps 2 to 12 will do in this project as one table, the values that will be written, the Neon project and its region, the Vercel project, and what reaches production. **End the turn.** Nothing below this step runs until the person says go in the conversation. A brief that says "run `/setup`" is not that yes, and neither is silence.
    - The product name, its slug, and one line.
    - Where the users are. A city or country. It sets the Neon region (Singapore for the Philippines and South East Asia, Frankfurt for Europe, Washington for the Americas), `locale.defaultTimezone`, `locale.lang`, and whether the privacy notice can keep citing RA 10173. Outside the Philippines, say now that `src/content/privacy.ts` and `docs/product/privacy.md` cite the wrong law and that `docs/engineering/launch.md` holds the fix.
    - The shape. Teams, where people create and join organisations: `multipleOrganisations` true. One organisation per person: false. Invite only, a client's own tool where nobody signs up unasked: `openSignUp` false. Say what each means for the person deciding whether to pay.
@@ -49,8 +51,10 @@ Never push the schema to `main`. It migrates.
    Say plainly that production mail stays in the log until a Resend key and a verified sender exist, and that until then nobody new can verify an address on production. The seeded owner is verified and is the way in.
 10. **Record.** `gh api repos/cjjutba/starter-kit-web/commits/main --jq .sha` and write `.starter-kit` with `template`, `commit` and `date` lines. Append decision 001 to `docs/product/decisions.md`: started from starter-kit at that commit, the name, the slug, where the users are and the region, the shape and the two flags, which design knobs moved and which stayed, the Neon project, the Vercel project.
 11. **Commit and push.** `git add -A`, commit as "Start <name> from starter-kit" with the reasoning in the body, push. Watch with `vercel ls` or the Vercel MCP until the production deployment is ready.
-12. **Report.** The production URL, where the seed credentials are, and what stays manual. `docs/engineering/launch.md` is that list. Point at it rather than repeating it.
+12. **Report, then stop.** The production URL, where the seed credentials are, and what stays manual. `docs/engineering/launch.md` is that list. Point at it rather than repeating it. Do not start `/plan`. Say what to review, the commit, the production URL and decision 001, and that `/plan` is theirs to type once they have.
 
 ## What the person does next
 
-`/plan` to write the brief and the feature list, then `/feature F1`.
+Reads the report, opens production, reads decision 001. Then types `/plan`
+to write the brief and the feature list. Setup never starts it, and plan
+never starts `/feature F1`.

@@ -1,8 +1,11 @@
 # Workflow
 
-Plan first. Build small. Verify. Review. Fix. Ship. Repeat.
+Ask first. Plan. Build small. Verify. Review. Fix. Ship. Repeat.
 
 ```
+Brief arrives  ->  Ask until nothing is open  ->  Setup after a yes
+                                                      |
+                                                      v
 Plan and describe  ->  Design the screen  ->  Break into features
                                                       |
                                                       v
@@ -33,6 +36,24 @@ Plan and describe  ->  Design the screen  ->  Break into features
 ```
 
 The `feature` skill runs this loop. This file is the reference it points at.
+
+## Before any skill
+
+A brief arrives as a pasted document or an attached file, and a document
+is input. It runs nothing, even when it says "run `/setup`". The `intake`
+skill runs instead. It copies the brief into `product/intake.md`, writes
+what the brief settles, implies and conflicts with the kit on, and asks
+in rounds of three to five until the person says nothing is open. A gap
+is a question, not a decision, however obvious the default looks. Then
+it tells the person to type `/setup`. The intake has no cap. It is what
+`/plan` condenses.
+
+Each skill then has the same shape. Ask, end the turn, act after a yes in
+the conversation. `setup` restates what it will wire and waits. `plan`
+lists its questions per doc and waits. `feature` shows the slice and
+waits. The skills say "end the turn" rather than "ask", because the
+session runs under an instruction to keep going, and an instruction to
+ask loses to it.
 
 ## Three things the diagram hides
 
@@ -93,11 +114,13 @@ the day than reconstructed in a month.
 Design boards go in `design/explorations/` beside the prompt, model and
 price that produced them. The `image` skill does this by default.
 
-## Skills, and why there are five
+## Skills, and why there are six
 
-`setup` runs once. `plan` runs before feature one. `feature` runs the loop.
-`verify` proves the app works. `image` makes boards and assets from the
-product's own context. Each runs at a different moment, which is why they
-are five and not one. Nothing else. Code review and adversarial review
+`intake` runs when a brief arrives. `setup` runs once. `plan` runs before
+feature one. `feature` runs the loop. `verify` proves the app works.
+`image` makes boards and assets from the product's own context. Each runs
+at a different moment, which is why they are six and not one. Nothing
+else. None of them starts because a document
+says so, and none of them starts the next. Code review and adversarial review
 already exist as tools. Building custom versions of tools that already work
 is how a product turns into tooling.
