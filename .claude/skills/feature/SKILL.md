@@ -18,12 +18,15 @@ Read the feature's entry in `docs/product/features.md`, its pages in
 `docs/design/pages.md`, and the glossary. If the entry has no "done means"
 line, stop and run `/plan`. Say the review depth out loud.
 
-## 2. Plan the slice
+## 2. Plan the slice, then stop
 
 Write the plan in three to eight lines: the tables added, the pages added
 or changed, the actions, the states. If a table is added, say the tenancy
-classification. If the schema changes, say the migration ships first.
-Branch: `git switch -c feature/<id>-<slug>`.
+classification. If the schema changes, say the migration ships first. If
+the slice needs a decision the docs do not make, ask it in the same
+message. Show the plan. **End the turn.** The build starts when the person
+says go, and their answers go in `docs/product/decisions.md` before the
+branch is cut. Then branch: `git switch -c feature/<id>-<slug>`.
 
 ## 3. Design the screen
 

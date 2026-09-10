@@ -4,6 +4,7 @@
 
 | File | What it answers |
 | --- | --- |
+| [`product/intake.md`](product/intake.md) | The brief as it was pasted, and every question and answer before a doc was written |
 | [`product/brief.md`](product/brief.md) | What this is, who it is for, and what has to be true about it |
 | [`product/users.md`](product/users.md) | The people who use it, by role, and what each must never see |
 | [`product/scope.md`](product/scope.md) | What v1 is, what it is not, and the non-goals |
@@ -34,10 +35,12 @@ The two files above this folder matter more than any of them.
 
 ## How the templates work
 
-Every product and design doc opens with a word cap and has one line under
-each heading saying what belongs there. `/plan` fills them in order, in
-conversation, and refuses to pass the cap. Length is not detail. A brief
-that needs more than its cap is a brief that is not settled.
+Every product and design doc but `product/intake.md` opens with a word cap
+and has one line under each heading saying what belongs there. The intake
+has no cap because it holds the brief and the answers whole. `/plan` asks
+first, then fills the rest in order and refuses to pass the cap. Length is
+not detail. A brief that needs more than its cap is a brief that is not
+settled.
 
 ## Keeping this honest
 

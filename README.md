@@ -2,7 +2,7 @@
 
 The repo every new product starts from, so no agent session begins from
 scratch. Next.js 16, Postgres on Neon through Drizzle, Better Auth with
-organisations, Tailwind v4 with a settled design system, five Claude Code
+organisations, Tailwind v4 with a settled design system, six Claude Code
 skills that run the workflow, and a set of rules that fail the build instead
 of living in prose.
 
@@ -19,13 +19,18 @@ cd my-product && claude
 Private is the default because most products are for a client. Add
 `--public` for portfolio work. The template itself owns nothing outside
 GitHub: no Neon project, no Vercel project, no Sentry, no Resend. `/setup`
-wires each of those for the product it makes. Then, inside Claude Code:
+wires each of those for the product it makes. Then, inside Claude Code,
+paste the brief. The `intake` skill runs on its own, asks until nothing is
+open, writes the brief and every answer into `docs/product/intake.md`, and
+tells you to type `/setup`. No skill runs because the brief says so, and
+every skill stops for a yes before it wires, writes or builds. The six:
 
 | Skill | When | What it does |
 | --- | --- | --- |
-| `/setup` | Once, first session | Names the product, settles its shape and its look, wires Neon and Vercel, migrates, seeds, deploys, writes decision 001. Idempotent. |
-| `/plan` | Before feature one | Fills the product docs in order and ends with a feature list where each has a "done means" line. |
-| `/feature F1` | Per feature | The loop: plan the slice, design the screen, build, verify, review code and design, fix, PR, merge, production green. |
+| `/intake` | When a brief or an amendment arrives | Copies it in, lists what it settles, implies and conflicts with, then asks in rounds until you say nothing is open. Runs itself. |
+| `/setup` | Once, first session | Asks, waits for a yes, then names the product, settles its shape and its look, wires Neon and Vercel, migrates, seeds, deploys, writes decision 001. Idempotent. |
+| `/plan` | Before feature one | Asks its questions per doc, waits for a yes, then fills the product docs in order and ends with a feature list where each has a "done means" line. |
+| `/feature F1` | Per feature | The loop: plan the slice, wait for a yes, design the screen, build, verify, review code and design, fix, PR, merge, production green. |
 | `/verify` | Any time | Drives the running app the way a person does. Each feature adds its steps. |
 | `/image` | When a board, mark or asset is needed | Writes the prompt from the brief and DESIGN.md, prices it, runs fal, files the result beside its prompt. |
 

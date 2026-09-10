@@ -29,7 +29,7 @@ Better Auth CLI fails on Node 20. pnpm 8, pinned in `package.json`. The
 
 ## Skills in this repo
 
-`.claude/skills/` holds `setup`, `plan`, `feature`, `verify` and `image`.
+`.claude/skills/` holds `intake`, `setup`, `plan`, `feature`, `verify` and `image`.
 They travel with the repo, so every project made from the template has
 them. `skills-lock.json` lists the Neon skills that reinstall from their
 own repository rather than being vendored.
