@@ -1,4 +1,4 @@
-# starter-kit
+# starter-kit-web
 
 The repo every new product starts from, so no agent session begins from
 scratch. Next.js 16, Postgres on Neon through Drizzle, Better Auth with
