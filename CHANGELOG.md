@@ -4,6 +4,20 @@ The template's own history. A product made from it keeps its decisions in
 `docs/product/decisions.md`, which starts empty. This file is about the
 template.
 
+## 2026-09-10, the agent stops at the commit
+
+**Every feature opened a pull request, and every pull request ran CI.**
+Working in Conductor, where each workspace is a worktree on its own
+branch, a finished feature pushed itself, opened its pull request and
+merged, and the person waited minutes of CI for each one. Rule 10: the
+agent commits on the branch and stops. The push, the pull request and the
+merge are the person's, in batches, unless they ask for a push in the
+conversation. The feature skill ends with a hand back instead of a ship
+step, setup asks before its one push, and `tests/rules/handback.test.ts`
+fails the build on a skill that tells the agent to push, open or merge.
+AGENTS.md says how the two ways in, Conductor and the Claude desktop app,
+meet the one rule.
+
 ## 2026-09-10, the reference skill
 
 **A site someone admires had nowhere to go.** The direction doc asked for
