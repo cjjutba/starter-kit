@@ -159,7 +159,7 @@ and which processors see it.
 | `src/content/` | Typed copy, the privacy notice, the route directory. |
 | `src/config.ts` | Product name, slug, timezone default, feature flags, theme colours. |
 | `tests/rules/` | The rules that fail the build. |
-| `.claude/skills/` | `intake`, `setup`, `plan`, `feature`, `verify`, `image`. |
+| `.claude/skills/` | `intake`, `setup`, `plan`, `feature`, `verify`, `image`, `reference`. |
 | `docs/engineering/` | The detail this file points at. |
 | `docs/product/`, `docs/design/` | Intake, brief, features, decisions. Direction, pages, screens, explorations. |
 

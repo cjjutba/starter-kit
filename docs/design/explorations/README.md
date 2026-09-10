@@ -28,6 +28,17 @@ skill reads this table. Add rows as the product learns.
 | File | Model | Price | Verdict |
 | --- | --- | --- | --- |
 
+## References
+
+Public sites read by the `reference` skill. Each folder holds the
+screenshots, `data.json` with the numbers, and `reference.md` with what
+they argue for. Structure only, never copy or imagery. The verdict is the
+one line the next session reads before deciding whether to run it again.
+
+| Folder | Source | Argues for | Verdict |
+| --- | --- | --- | --- |
+| `references/2026-09-10-vercel.com` | https://vercel.com/ | Keeping all four knobs. Pill controls, grey page with white sheets, Geist at 400 to 500. | The template with a paler ground, sharper cards and a ring to make up the difference. Nothing moves. |
+
 ## Marks
 
 | File | What it is | Verdict |

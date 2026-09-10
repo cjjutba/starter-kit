@@ -4,6 +4,27 @@ The template's own history. A product made from it keeps its decisions in
 `docs/product/decisions.md`, which starts empty. This file is about the
 template.
 
+## 2026-09-10, the reference skill
+
+**A site someone admires had nowhere to go.** The direction doc asked for
+one line per reference and the image skill filed boards, but a URL had no
+path into the four knobs except a person squinting at it. The `reference`
+skill runs `scripts/reference.ts`, which opens the page headless at two
+widths in both schemes, reads the computed styles, and files screenshots
+and `data.json` under `docs/design/explorations/references/`. Fonts by
+characters set, colours by area covered, borders, radii, shadows, the
+spacing values that recur and how many sit on the 4 px grid, container
+widths, the common control styles, and the custom properties on the root.
+The skill maps those onto accent, ground, shape and typeface and says which
+to move. Structure only, never copy or imagery.
+`tests/rules/references.test.ts` fails the build on a reference without
+its source, date, reason, data or index row. The first run, vercel.com, is
+in the folder as the worked example.
+
+**The kit is named after its repository.** `starter-kit` became
+`starter-kit-web` in the config, the package, the README, the docs and the
+skills, because the repository had been for a while.
+
 ## 2026-09-09, the skills ask first
 
 The first product made from the fourth version was handed a brief that

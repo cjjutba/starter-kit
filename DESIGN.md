@@ -186,8 +186,9 @@ The template is one point of view, and two products made from it should
 not look like the same product. Four knobs turn without touching the
 method, and each is a values change in one or two files. Setup asks about
 them on the first day, `/plan` can revisit them, and `pnpm test` decides
-whether the result still holds. Judge every change on `/design`, in both
-schemes, before it reaches a screen.
+whether the result still holds. The `reference` skill reads a site the
+person admires and says which of the four it argues for moving. Judge
+every change on `/design`, in both schemes, before it reaches a screen.
 
 **Accent.** The template is monochrome on purpose. When a product has a
 reason for a hue, change these in both schemes: `--action` to the hue,
