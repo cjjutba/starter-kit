@@ -20,7 +20,8 @@
     "db:seed": "tsx scripts/seed.ts",
     "mail:log": "tsx scripts/mail-log.ts",
     "privacy:requests": "tsx scripts/privacy-requests.ts",
-    "auth:generate": "auth generate --config src/lib/auth/server.ts --output src/lib/db/auth-schema.ts --yes && node scripts/fix-auth-schema.mjs"
+    "auth:generate": "auth generate --config src/lib/auth/server.ts --output src/lib/db/auth-schema.ts --yes && node scripts/fix-auth-schema.mjs",
+    "design:reference": "tsx scripts/reference.ts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "1.7.2",
