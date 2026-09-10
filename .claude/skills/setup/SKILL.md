@@ -39,7 +39,7 @@ Never push the schema to `main`. It migrates.
    Then `pnpm db:migrate` and `pnpm db:seed` against `main`, with `DATABASE_URL` set to its connection string for those two commands only. `main` takes the committed migrations in `drizzle/` and is never pushed to. Skip this and the first production deploy meets a database with no tables.
 6. **Prove it locally.** Start the `dev` server through the browser preview. Sign in at `/sign-in` with the seed credentials. Expect the empty notes state at `/app`. Open `/app/account`, `/app/settings` and `/design`. Read the console for errors. Fix before going on.
 
-   If the preview refuses to start because another session holds the port, do not kill that server. Push a branch, let Vercel build a preview, and drive that instead. Previews sign in on their own address. Say in the report that the proof came from a deployment rather than localhost.
+   If the preview refuses to start because another session holds the port, do not kill that server. Ask to push a branch so Vercel builds a preview, and drive that after a yes. Previews sign in on their own address. Say in the report that the proof came from a deployment rather than localhost.
 7. **Checks.** `pnpm lint`, `pnpm typecheck`, `pnpm test`. All green.
 8. **GitHub.** If there is no `origin`: `gh repo create <slug> --private --source=. --remote=origin`. Ask before making it public.
 9. **Vercel.** If `.vercel/project.json` is missing: `vercel link --yes --project <slug>`. That connects the GitHub repository on its own when the remote exists, so `vercel git connect` is usually a confirmation rather than a step, and the next push deploys.
@@ -50,7 +50,7 @@ Never push the schema to `main`. It migrates.
 
    Say plainly that production mail stays in the log until a Resend key and a verified sender exist, and that until then nobody new can verify an address on production. The seeded owner is verified and is the way in.
 10. **Record.** `gh api repos/cjjutba/starter-kit-web/commits/main --jq .sha` and write `.starter-kit` with `template`, `commit` and `date` lines. Append decision 001 to `docs/product/decisions.md`: started from starter-kit-web at that commit, the name, the slug, where the users are and the region, the shape and the two flags, which design knobs moved and which stayed, the Neon project, the Vercel project.
-11. **Commit and push.** `git add -A`, commit as "Start <name> from starter-kit-web" with the reasoning in the body, push. Watch with `vercel ls` or the Vercel MCP until the production deployment is ready.
+11. **Commit, then ask to push.** `git add -A`, commit as "Start <name> from starter-kit-web" with the reasoning in the body. Say that the push is the first production deploy and **end the turn**. After a yes, push and watch with `vercel ls` or the Vercel MCP until the production deployment is ready. This is the one push a skill makes, and only because setup's job is to prove the deploy.
 12. **Report, then stop.** The production URL, where the seed credentials are, and what stays manual. `docs/engineering/launch.md` is that list. Point at it rather than repeating it. Do not start `/plan`. Say what to review, the commit, the production URL and decision 001, and that `/plan` is theirs to type once they have.
 
 ## What the person does next

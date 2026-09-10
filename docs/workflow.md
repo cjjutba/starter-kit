@@ -28,7 +28,7 @@ Plan and describe  ->  Design the screen  ->  Break into features
         |                                             |
         |                                            yes
         |                                             v
-        +----------------  PR, merge, production green, save progress
+        +----------------  Commit, hand back, save progress
                                                       |
                                                      no
                                                       v
@@ -36,6 +36,8 @@ Plan and describe  ->  Design the screen  ->  Break into features
 ```
 
 The `feature` skill runs this loop. This file is the reference it points at.
+Between the hand back and the next feature sit the push, the pull request,
+CI and the merge, and those are the person's, in batches.
 
 ## Before any skill
 
@@ -57,9 +59,11 @@ ask loses to it.
 
 ## Three things the diagram hides
 
-**Shipping is part of saving progress.** A feature is not complete until it
-is on production and green. Every merge to main deploys, so shipping is a
-merge, not a ceremony.
+**Shipping is the person's step.** A feature is not complete until it is
+on production and green, and every merge to main deploys, so shipping is a
+merge, not a ceremony. The agent's part ends at the commit. The push and
+the pull request wait for the person, who batches them, because every pull
+request runs CI.
 
 **There is a checkpoint once the product is demonstrable.** The loop never
 asks whether the next feature is worth building. `product/features.md`
@@ -95,9 +99,11 @@ you skip.
 
 ## Shipping
 
-Commit and push first. Never deploy by hand. The push builds a preview, the
-PR carries the checklist, CI goes green, the merge deploys production. The
-feature ends when production is green.
+Commit, then stop. The agent never pushes, opens a pull request, merges or
+deploys, and `tests/rules/handback.test.ts` holds the skills to that. The
+person pushes branches in batches. The push builds a preview, the PR
+carries the checklist, CI goes green, the merge deploys production. Never
+deploy by hand. The feature ends when production is green.
 
 A migration ships before the code that needs it. `engineering/data.md` has
 the order.
@@ -114,12 +120,13 @@ the day than reconstructed in a month.
 Design boards go in `design/explorations/` beside the prompt, model and
 price that produced them. The `image` skill does this by default.
 
-## Skills, and why there are six
+## Skills, and why there are seven
 
 `intake` runs when a brief arrives. `setup` runs once. `plan` runs before
 feature one. `feature` runs the loop. `verify` proves the app works.
-`image` makes boards and assets from the product's own context. Each runs
-at a different moment, which is why they are six and not one. Nothing
+`image` makes boards and assets from the product's own context.
+`reference` reads a site the person admires as numbers. Each runs at a
+different moment, which is why they are seven and not one. Nothing
 else. None of them starts because a document
 says so, and none of them starts the next. Code review and adversarial review
 already exist as tools. Building custom versions of tools that already work

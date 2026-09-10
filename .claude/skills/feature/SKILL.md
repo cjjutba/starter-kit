@@ -1,15 +1,16 @@
 ---
 name: feature
-description: Runs the build loop for one feature from docs/product/features.md. Plan the slice, design the screen, build, self check, verify, review code and design at the right depth, fix, screenshot, record, PR, merge, production green. Use for every feature. Takes the feature id, for example "feature F2".
+description: Runs the build loop for one feature from docs/product/features.md. Plan the slice, design the screen, build, self check, verify, review code and design at the right depth, fix, screenshot, record, commit, hand back. The person pushes and opens the pull request. Use for every feature. Takes the feature id, for example "feature F2".
 ---
 
 # feature
 
-One feature, start to production. The loop is `docs/workflow.md`. This is
-the checklist that makes it happen.
+One feature, from the plan to a branch the person can merge. The loop is
+`docs/workflow.md`. This is the checklist that makes it happen.
 
-Apply the `unslop` skill to commit messages, PR bodies, copy and comments.
-Never run `vercel deploy`. The push deploys. Never push the schema to
+Apply the `unslop` skill to commit messages, copy and comments. Never
+push, open a pull request, merge or deploy. The work ends at the commit
+and the person takes it from there, in batches. Never push the schema to
 `main`. It migrates.
 
 ## 1. Read
@@ -45,8 +46,8 @@ through `ConfirmModal`. Copy longer than a sentence goes in `src/content/`.
 A new route goes in `src/content/routes.ts` and `docs/design/pages.md`
 in the same commit, or the routes test goes red.
 
-**Retire the example.** F1 lands the product's first real entity. In the
-same PR, delete the notes: the routes under `src/app/app/notes`, the block
+**Retire the example.** F1 lands the product's first real entity. On the
+same branch, delete the notes: the routes under `src/app/app/notes`, the block
 in `scoped.ts`, the table and its `tenantTables` entry, the nav link, the
 glossary row, the routes and pages rows, the F0 notes steps in the verify
 skill, and the states rows. Generate the migration that drops the table.
@@ -82,17 +83,20 @@ A screenshot of each changed screen into `docs/design/screenshots/` as
 `docs/product/decisions.md` for anything decided. A row in
 `docs/design/states.md` for each new screen.
 
-## 9. Ship
+## 9. Commit, then stop
 
-Commit in small steps with reasons in the body. Push. `gh pr create` with
-the template filled in. Wait for CI green and the preview to build. If a
-migration ships, run `pnpm db:migrate` against `main` first, as
-`docs/engineering/deploy.md` says. Merge. Watch the production deployment
-until it is ready.
+Commit in small steps with reasons in the body, on the feature branch. Do
+not push. Do not open a pull request. Do not merge. If a migration is on
+the branch, say so in the hand back, because `pnpm db:migrate` against
+`main` has to run before the merge, as `docs/engineering/deploy.md` says,
+and that is the person's step too.
 
-## 10. Close
+## 10. Hand back
 
-Mark the feature done in `docs/product/features.md`. Update
-`docs/product/metrics.md` if a number changed. If this was the checkpoint
-feature, run `docs/engineering/launch.md` top to bottom before a real
-person is sent to the product. Say what is next.
+Say the branch, the commits in order, what to review, where the
+screenshots are, whether a migration is on the branch, and what stays
+manual. Update `docs/product/metrics.md` if a number changed. The feature
+is marked done in `docs/product/features.md` only once the person says it
+has merged and production is green. If this was the checkpoint feature,
+say that `docs/engineering/launch.md` has to run before a real person is
+sent to the product. Do not start the next feature.

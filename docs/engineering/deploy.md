@@ -4,13 +4,15 @@ Cap: 300 words. A push deploys. Nothing else does.
 
 ## How it flows
 
-A branch pushed to GitHub builds a preview on Vercel. A pull request carries
-the checklist and CI runs lint, typecheck, tests, build and axe. When both
-are green and the review is done, the merge to `main` builds production.
-The feature ends when that deployment is ready.
+The person pushes. An agent's work ends at a local commit on its branch,
+and the person pushes branches in batches, because every pull request runs
+CI and CI takes minutes. A pushed branch builds a preview on Vercel. A pull
+request carries the checklist and CI runs lint, typecheck, tests, build and
+axe. When both are green and the review is done, the merge to `main` builds
+production. The feature ends when that deployment is ready.
 
 Never run `vercel deploy` by hand. It makes a deployment nobody can trace
-to a commit, and the push would build a second one anyway.
+to a commit.
 
 ## First time
 
@@ -43,5 +45,4 @@ additive first and destructive later.
 
 Add the domain in the Vercel project, then set `BETTER_AUTH_URL` and
 `NEXT_PUBLIC_APP_URL` to it in production. Auth cookies are bound to the
-origin, so sessions from the old URL end. `launch.md` is the rest of the
-list a product runs before its first real person.
+origin, so sessions from the old URL end. `launch.md` has the rest.
