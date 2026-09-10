@@ -31,8 +31,9 @@ skill reads this table. Add rows as the product learns.
 ## References
 
 Public sites read by the `reference` skill. Each folder holds the
-screenshots, `data.json` with the numbers, and `reference.md` with what
-they argue for. Structure only, never copy or imagery. The verdict is the
+screenshots, `data.json` with the numbers, and `reference.md`, the site's
+design system written out in full and mapped onto the four knobs. No word
+cap, on purpose. Structure only, never copy or imagery. The verdict is the
 one line the next session reads before deciding whether to run it again.
 
 | Folder | Source | Argues for | Verdict |
