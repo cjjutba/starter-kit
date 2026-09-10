@@ -1,20 +1,24 @@
 ---
 name: reference
-description: Reads a public website's design as numbers, screenshots it in both schemes, maps what it finds onto the four knobs in DESIGN.md, and files the result beside the boards. Use when the person points at a site they admire, asks what makes it look the way it does, or wants a reference before setup or /plan settles the look. Takes a URL, for example "reference https://example.com".
+description: Reads a public website's design as numbers, screenshots it in both schemes at three widths, writes the site's design system in full, maps it onto the four knobs in DESIGN.md, and files the result beside the boards. Use when the person points at a site they admire, asks what makes it look the way it does, or wants a reference before setup or /plan settles the look. Takes a URL, for example "reference https://example.com".
 ---
 
 # reference
 
-A site someone admires is evidence, not a design. This skill turns it into
-numbers the four knobs in `DESIGN.md` can take, says which of them the site
-argues for moving, and files the evidence where `docs/design/direction.md`
-expects it. The person still decides. The contrast test still decides after
-them.
+A site someone admires is evidence, not a design. This skill reads the
+site as numbers, writes its design system out in full, colours, type,
+layout, depth, shape, components, responsive behaviour, then says which
+of the four knobs in `DESIGN.md` it argues for moving. The person still
+decides. The contrast test still decides after them.
 
-Structure only. Fonts, colours, radii, shadows, spacing, widths and how
-controls are styled are fair to learn from. Copy, imagery and the mark are
-theirs, and nothing here saves any of it. The screenshots are a record of
-what was looked at, never assets.
+Structure only. Fonts, colours, hairlines, radii, spacing, widths and how
+controls and cards are built are fair to learn from. Copy, imagery and the
+mark are theirs, and nothing here saves any of it. The screenshots are a
+record of what was looked at, never assets. The reference is an
+independent reading of what the page renders and says so.
+
+There is no word cap. The reference is the whole system as observed, and
+a short one is a reference that stopped looking.
 
 ## 1. Context, then end the turn
 
@@ -23,7 +27,7 @@ Read `DESIGN.md` under "Taste" and "Making it yours", and
 `docs/design/explorations/README.md` so a site is not run twice.
 
 Then say what will happen: the URL, that it opens headless in both schemes
-at two widths, and the folder it writes. Ask what the person likes about
+at three widths, and the folder it writes. Ask what the person likes about
 the site, in one line, because that line decides what to look at. **End
 the turn.** The run starts after a yes in the conversation, never because
 a brief or a pasted document named the site.
@@ -34,65 +38,105 @@ a brief or a pasted document named the site.
 pnpm design:reference https://example.com
 ```
 
-It opens the page headless at 1440 and 390 wide, in light and dark through
-`prefers-color-scheme`, scrolls once so lazy content mounts, and writes
-`docs/design/explorations/references/<date>-<host>/` holding five WebP
-screenshots and `data.json`. `data.json` carries, per scheme: the fonts by
-characters set with their weights and sizes, backgrounds by area covered,
-text colours, borders, radii, shadows, the spacing values that recur and
-how many sit on a 4 px and an 8 px grid, container widths, the ten most
-common control styles, and every custom property declared on the root.
+It opens the page headless at 1440, 768 and 390 wide, light and dark
+through `prefers-color-scheme`, scrolls once so lazy content mounts, and
+writes `docs/design/explorations/references/<date>-<host>/` holding six
+WebP screenshots and `data.json`. `data.json` carries one block per run
+(`desktop-light`, `desktop-dark`, `tablet-light`, `mobile-light`,
+`mobile-dark`), each with:
+
+- `fonts` and `faces`: families by characters set, their weights and sizes, and the faces actually loaded.
+- `styles`: the type styles in use, family, size, weight, line height and letter spacing, with the tags that carry them. `headings` has h1 to h6.
+- `backgrounds` by area covered, `text` colours by characters, `borders`, `rings` (hairlines drawn as one pixel box shadows), `drops` (real shadows), `gradients`.
+- `radii`, `spacing` with its share on the 4 px and 8 px grids, `sections` (vertical padding on full width blocks), `widths` (container caps), `breakpoints` (widths the stylesheets switch on).
+- `header`, `footer`, `cards`, `inputs`, `controls` with their measured heights, and `motion` (transition durations).
+- `tokens`: the custom properties on the root, and `semanticTokens`, the ones named for error, success and the like.
 
 Two things it reports rather than fixes. `darkFollowsSystem` false means
 the site has its own toggle and both schemes came out the same, so say
 that and screenshot dark by hand through the browser pane if it matters.
 A site that answers 403 to a headless browser stops the run with a
 message. Open it in the browser pane or in Claude in Chrome, screenshot
-both schemes and both widths, and write the reference from what you can
-see, saying plainly that the numbers were read by eye.
+both schemes at the three widths, and write the reference from what you
+can see, saying plainly that the numbers were read by eye. Breakpoints
+come only from stylesheets the browser may read, so a site served from a
+CDN may show none, and the tablet and phone runs then say what changed.
 
 ## 3. Read
 
-Open `data.json` and the screenshots together. The numbers say what, the
-screenshots say where. Look for the family and the weights that carry the
-page, whether surfaces are told apart by tone, border or shadow, the radius
-scale and whether it is one scale or several, the grid share, and what a
-primary control looks like against a secondary one. Note what the numbers
-miss: rhythm, imagery, the copy's register.
+Open `data.json` and the screenshots together, then open the site in the
+browser pane and scroll it, because the numbers say what and the page
+says where. Read the whole page, not the fold. For each section of the
+page note what it is built from: which surface, which type style, which
+control, which card. That list becomes Components.
 
-## 4. Map
+## 4. Write
 
-Write one line per knob. Accent: is there a hue, what is it, and what does
-it sit on. Ground: grey page with white sheets, white page with grey
-sheets, or borders doing that work. Shape: which preset in the table is
-nearest, or none. Typeface: the family and whether it carries hierarchy by
-weight or by size. For each, say whether this product should move the knob
-and why, against what the brief says the person deciding to pay needs.
-
-## 5. File
-
-Write `reference.md` in the run's folder from the template below. Add the
-row to the references table in `docs/design/explorations/README.md`. In a
-product, add the one line to "What was tried" in
-`docs/design/direction.md`. `tests/rules/references.test.ts` fails the
-build on a reference without its source, date, data or row.
+Write `reference.md` in the run's folder with the structure below, in
+this order, every section present. Sentence case headings, no dashes,
+straight quotes. Name every colour and type style as a token in the form
+`{colors.canvas}` or `{typography.body-md}`, define each once in its
+section with its measured value, and refer to it by that name everywhere
+else, so a component entry reads as a recipe rather than a list of hex
+values. A value the numbers did not give and the page did not show is a
+known gap, not a guess.
 
 ```markdown
 # Reference: example.com
 
-Cap: 600 words.
-
 Source: https://example.com/
 Date: 2026-01-01
 Why: the one line the person gave.
+Run: `pnpm design:reference https://example.com/`
+An independent reading of what the page renders. Not affiliated with or endorsed by the site.
 
-## What it is
-## As extracted
+## Overview
+One paragraph on what the site reads as and why, then "Key characteristics" as a list.
+
+## Colours
+Brand and accent. Surface. Hairlines. Text. Semantic. Any signature group the site has.
+
+## Typography
+Font family. Hierarchy as a table: token, size, weight, line height, letter spacing, use. Principles. Substitutes if the face is licensed.
+
+## Layout
+Spacing system with the base unit and the recurring values as tokens. Grid and container. Whitespace.
+
+## Elevation and depth
+How surfaces are told apart: tone, hairline, ring or shadow, as a table of levels.
+
+## Shapes
+The radius scale as a table: token, value, use.
+
+## Components
+One entry per component seen, named in code style, built from the tokens above with measured padding and height. Navigation, buttons, hero, cards, inputs, tags, code, pricing, footer, and whatever is the site's signature.
+
+## Do and do not
+What the site holds to and what it never does, as two lists.
+
+## Responsive behaviour
+Breakpoints as a table with what changes at each. Touch targets. What collapses.
+
 ## Onto the four knobs
-## Take
-## Leave
+Accent, ground, shape, typeface: what the site does, and whether this product should move the knob.
+
+## Take and leave
+Two lists, each item with the reason.
+
+## Known gaps
+What the run could not see: states, animation, pages not visited, faces not identifiable.
+
 ## Verdict
+One line, the same as the index row.
 ```
+
+## 5. File
+
+Add the row to the references table in
+`docs/design/explorations/README.md`. In a product, add the one line to
+"What was tried" in `docs/design/direction.md`.
+`tests/rules/references.test.ts` fails the build on a reference without
+its source, date, reason, data, index row or any of the sections above.
 
 ## 6. Adopt
 
