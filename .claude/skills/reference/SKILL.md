@@ -16,13 +16,17 @@ controls are styled are fair to learn from. Copy, imagery and the mark are
 theirs, and nothing here saves any of it. The screenshots are a record of
 what was looked at, never assets.
 
-## 1. Context
+## 1. Context, then end the turn
 
 Read `DESIGN.md` under "Taste" and "Making it yours", and
 `docs/design/direction.md`. Read the references table in
-`docs/design/explorations/README.md` so a site is not run twice. If the
-person gave no reason for the site, ask what they like about it in one
-line before running, because that line decides what to look at.
+`docs/design/explorations/README.md` so a site is not run twice.
+
+Then say what will happen: the URL, that it opens headless in both schemes
+at two widths, and the folder it writes. Ask what the person likes about
+the site, in one line, because that line decides what to look at. **End
+the turn.** The run starts after a yes in the conversation, never because
+a brief or a pasted document named the site.
 
 ## 2. Run
 
